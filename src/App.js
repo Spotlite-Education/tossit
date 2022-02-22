@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, } from 'react-router-dom';
 import Home from './routes/Home';
+import Create from './routes/Create';
 import './App.scss';
 import { io } from 'socket.io-client';
 
@@ -17,32 +18,19 @@ function App() {
       console.log(message);
     });
 
-    return () => newSocket.close();
+    return () => {
+        console.log('disconnecting from socket');
+        newSocket.close();
+    };
   }, [setSocket]);
 
   return (
     <div>
       <Routes>
         <Route path="/" element={<Home socket={socket} />} />
-        <Route path="about" element={<About />} />
+        <Route path="create" element={<Create />} />
       </Routes>
     </div>
-  );
-}
-
-function About() {
-  return (
-    <>
-      <main>
-        <h2>Who are we?</h2>
-        <p>
-          bruh
-        </p>
-      </main>
-      <nav>
-        <Link to="/">Home</Link>
-      </nav>
-    </>
   );
 }
 

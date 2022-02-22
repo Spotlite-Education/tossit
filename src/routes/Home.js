@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
-import Input from '../components/input';
+import { Link } from 'react-router-dom';
+import Input from '../components/Input';
+import Corner from '../components/Corner';
 import '../styles/Home.scss';
 
-const Home = ({ socket }) => {
+const Home = (/*{ socket }*/) => {
     const [loading, setLoading] = useState(false);
     const [code, setCode] = useState("");
-    const [username, setUsername] = useState("amogus"); // TMP
+    // const [username, setUsername] = useState("amogus"); // TMP
 
     const handleJoin = () => {
         console.log("Attempting to join with code " + code);
         setLoading(true);
 
         // TODO change query - follow this format: toss.it/?code=${code}
-        socket.emit('joinRoom', {
-            code,
-            username,
-        });
+        // socket.emit('joinRoom', {
+        //     code,
+        //     username,
+        // });
 
         setLoading(false);
     }
@@ -29,6 +31,9 @@ const Home = ({ socket }) => {
             {/* TODO: either add a second input here for username, or link/route to another webpage to input name. When both
             code and username states are set, then call handleJoin(). */}
             <button onClick={handleJoin}>Enter</button> {/* TMP */}
+            <Corner corner='tr' className='link-box'>
+                <Link className='link-text' to='/create'>Teacher Mode</Link>
+            </Corner>
         </main>
         {loading &&
             <div id='loading'>
