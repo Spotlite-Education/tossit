@@ -33,6 +33,7 @@ const Dashboard = () => {
                 <h1>Your Room Code: <span id='room-code'>{params.roomCode}</span></h1>
             </nav>
             <main>
+                <button onClick={() => socket.emit('tossRoom', params.roomCode)}>toss</button> {/* TMP - move this to after everyone has finished making their questions */}
                 {players.map((player, index) => {
                     return <div key={index}>{index + 1}. {player.username}</div>;
                 })}

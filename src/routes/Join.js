@@ -16,7 +16,15 @@ const Join = () => {
         setWaiting(true);
         socket.emit('joinRoom', { roomCode, username } );
 
-        // TODO: check is join connection is actually successful before setting waiting to true.
+        socket.on('errorMessage', (props) => {
+            setWaiting(false);
+            if (props.error === 'roomCode') {
+                // TODO: clear roomCode input
+                setShowUsername(false);
+            } else if (props.error === 'username') {
+                // TODO: clear username input
+            }
+        });
     }
 
     return (

@@ -7,9 +7,8 @@ import Dashboard from './routes/Dashboard';
 import './App.scss';
 
 function App() {
-  //below code does not work, but add in some way or another
-  //socket.on('errorMesssage', message => console.log("ERROR: " + message));
-  //socket.on('debugMessage', message => console.log(message));
+  socket.on('debugMessage', (props) => console.log("DEBUG: " + props.message));
+  socket.on('errorMessage', (props) => console.log("ERROR: " + props.message));
 
   return (
     <SocketContext.Provider value={socket}>
