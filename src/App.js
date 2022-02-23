@@ -1,36 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Routes, Route, } from 'react-router-dom';
+import { SocketContext, socket } from './context/socket';
 import Home from './routes/Home';
 import Create from './routes/Create';
+import Dashboard from './routes/Dashboard';
 import './App.scss';
-import { io } from 'socket.io-client';
-
-const serverURL = "http://localhost:8000"; // TODO: change to heroku app URL later
 
 function App() {
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    const newSocket = io(serverURL);
-    setSocket(newSocket);
-
-    newSocket.on('debugMessage', message => {
-      console.log(message);
-    });
-
-    return () => {
-        console.log('disconnecting from socket');
-        newSocket.close();
-    };
-  }, [setSocket]);
-
   return (
-    <div>
+    <SocketContext.Provider value={socket}>
       <Routes>
-        <Route path="/" element={<Home socket={socket} />} />
-        <Route path="create" element={<Create />} />
+        <Route path='/' element={<Home />} />
+        <Route path='create' element={<Create />} />
+        <Route path=':roomCode' element={<Dashboard />} />
       </Routes>
-    </div>
+    </SocketContext.Provider>
   );
 }
 

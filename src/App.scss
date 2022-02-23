@@ -6,7 +6,8 @@
         font-style: normal;
     }
 }
-@include font('Josn-Light', 'Jost-300-Light');
+@include font('Jost-Thin', 'Jost-200-Thin');
+@include font('Jost-Light', 'Jost-300-Light');
 @include font('Jost-Book', 'Jost-400-Book');
 @include font('Jost-Medium', 'Jost-500-Medium');
 
@@ -41,4 +42,20 @@ body {
     &:hover {
         text-decoration: underline;
     }
+}
+
+#loading {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: $bg-color;
+}
+
+#loading-text {
+    position: absolute;
+    font-size: 3rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
 }
