@@ -3,6 +3,12 @@ import { useParams } from 'react-router-dom';
 import { SocketContext } from '../context/socket';
 import '../styles/Dashboard.scss';
 
+const PlayerBox = () => {
+    return (
+        <></>
+    );
+}
+
 const Dashboard = () => {
     const [players, setPlayers] = React.useState([]);
     
