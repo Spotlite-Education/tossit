@@ -1,7 +1,7 @@
 import React, {useRef, useEffect, useState} from 'react';
 
 //can pass variables in to change style, color, width, etc. (TODO)
-const board = () => {
+const DrawingBoard = () => {
 
     //stores references
     const canvasRef = useRef(null)
@@ -58,4 +58,4 @@ const board = () => {
     );
 }
 
-export default board;
+export default DrawingBoard;
