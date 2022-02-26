@@ -1,7 +1,9 @@
 import React, {useRef, useEffect, useState} from 'react';
 
 //can pass variables in to change style, color, width, etc. (TODO)
-const DrawingBoard = () => {
+
+
+const DrawingBoard = ({thickness, color, style, onSubmit}) => {
 
     //stores references
     const canvasRef = useRef(null)
@@ -18,14 +20,24 @@ const DrawingBoard = () => {
 
         const context = canvas.getContext("2d")
         context.scale(2,2)
-        //default style
+        //default style, color, width
         context.lineCap = "round"
-        //default color
         context.strokeStyle = "black"
-        //default width
         context.lineWidth = 5;
+
+        //custom
+        context.lineCap = style
+        context.strokeStyle = color
+        context.lineWidth = thickness;
+
         contextRef.current = context;
     }, [])
+
+    const handleClick = () => {
+        var image = new Image();
+        image.src = canvas.toDataURL();
+        onSubmit(image);        
+    }
 
     const startDrawing = ({nativeEvent}) => {
         const {offsetX, offsetY} = nativeEvent;
@@ -49,12 +61,22 @@ const DrawingBoard = () => {
     }
 
     return(
-        <canvas
-            onMouseDown = {startDrawing}
-            onMouseUp = {stopDrawing}
-            onMouseMove = {draw}
-            ref = {canvasRef}
-        />
+        <div>
+            <button 
+                onClick={() => {
+                    handleClick();
+                }
+            }>
+                Finish
+            </button>
+            <canvas
+                onMouseDown = {startDrawing}
+                onMouseUp = {stopDrawing}
+                onMouseMove = {draw}
+                ref = {canvasRef}
+            />
+        </div>
+        
     );
 }
 

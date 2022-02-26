@@ -1,13 +1,28 @@
 import React, {useRef, useEffect, useState} from 'react';
 
-const TextQuestion = () => {
+const TextQuestion = (onSubmit) => {
 
     const [data,setData] = useState(null);
-    const [print,setPrint] = useState(false);
+    const [finalData, setFinalData] = useState (null);
+    const [print,setSend] = useState(false);
 
 
     const getData = (event) => {
         setData(event.target.value)
+        setSend(false)
+    }
+
+    const saveData = (event) => {
+        setFinalData(data)
+        setSend(true)
+    }
+
+    const handleFinish = () => {
+        if(!print){
+            alert('You have not saved your work!');
+            return;
+        }
+        onSubmit(finalData);
     }
 
     return(
@@ -19,7 +34,12 @@ const TextQuestion = () => {
                 onChange = {getData}
             />
             <button 
-            onClick = {() => setPrint(true)}>
+            onClick = {saveData}>
+                Save
+            </button>
+
+            <button 
+            onClick = {handleFinish}>
                 Finish
             </button>
         </div>
