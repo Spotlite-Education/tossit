@@ -4,6 +4,7 @@ import { SocketContext, socket } from './context/socket';
 import Join from './routes/Join';
 import Create from './routes/Create';
 import Dashboard from './routes/Dashboard';
+import StudentDashboard from './routes/StudentDashboard';
 import './App.scss';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path='/' element={<Join />} />
         <Route path='create' element={<Create />} />
         <Route path=':roomCode' element={<Dashboard />} />
+        <Route path=':room' element={<StudentDashboard/>} />
       </Routes>
     </SocketContext.Provider>
   );
