@@ -1,10 +1,9 @@
-import React, {useRef, useEffect, useState} from 'react';
+import React from 'react';
 
 const TextQuestion = (onSubmit) => {
-
     const [data, setData] = React.useState(new Array(6).fill(""));
     const [finalData, setFinalData] = React.useState(new Array(6).fill(""));
-    const [print,setSend] = useState(false);
+    const [print,setSend] = React.useState(false);
 
 
     const getData = (event,index) => {

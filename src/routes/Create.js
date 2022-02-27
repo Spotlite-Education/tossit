@@ -26,7 +26,7 @@ const Create = () => {
 
     if (loading) {
         return (
-            <div id='loading' className='center' >
+            <div id='loading'>
                 <LoadingCircle speed={1} className='loading-circle' />
                 <p className='loading-text'>Hold on tight, we&apos;re creating a room!</p>
             </div>
@@ -34,7 +34,7 @@ const Create = () => {
     }
 
     if (toDashboard) {
-        return <Navigate to={`/${roomCode}`} />
+        return <Navigate to={`/create/${roomCode}`} />
     }
 
     return (

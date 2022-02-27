@@ -1,30 +1,57 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import Input from '../components/Input';
 import Corner from '../components/Corner';
+import { LoadingCircle } from '../components/Loading';
 import '../styles/Join.scss';
 import { SocketContext } from '../context/socket';
 
 const Join = () => {
-    const [waiting, setWaiting] = React.useState(false);
+    const [roomCode, setRoomCode] = React.useState('');
     const [showUsername, setShowUsername] = React.useState(false);
-    const [roomCode, setRoomCode] = React.useState("");
+    const [status, setStatus] = React.useState(''); // Status can be '', 'loading', 'waiting', or 'joined'
 
     const socket = React.useContext(SocketContext);
 
     const handleJoin = (username) => {
-        setWaiting(true);
+        setStatus('loading');
         socket.emit('joinRoom', { roomCode, username } );
 
-        socket.on('errorMessage', (props) => {
-            setWaiting(false);
-            if (props.error === 'roomCode') {
+        socket.on('errorMessage', ({ error }) => {
+            setStatus('');
+            if (error === 'roomCode') {
                 // TODO: clear roomCode input
                 setShowUsername(false);
-            } else if (props.error === 'username') {
+            } else if (error === 'username') {
                 // TODO: clear username input
             }
         });
+
+        socket.on('playerJoined', () => {
+            setStatus('waiting');
+        })
+
+        socket.on('startSession', () => {
+            setStatus('joined');
+        });
+    }
+
+    if (status === 'loading') {
+        return (
+            <div id='loading'>
+                <LoadingCircle speed={1} className='loading-circle' />
+                <p className='loading-text'>Joining the room...</p>
+            </div>
+        );
+    } else if (status === 'waiting') {
+        return (
+            <div id='loading'>
+                <LoadingCircle speed={1} className='loading-circle' />
+                <p className='loading-text'>Waiting for your teacher to start the session...</p>
+            </div>
+        );
+    } else if (status === 'joined') {
+        return <Navigate to={`/${roomCode}`} />
     }
 
     return (
@@ -46,11 +73,6 @@ const Join = () => {
                 <Link className='link-text' to='/create'>Teacher Mode</Link>
             </Corner>
         </main>
-        {waiting &&
-            <div id='loading'>
-                <p id='loading-text'>Waiting...</p>
-            </div>
-        }
       </>
     );
 }

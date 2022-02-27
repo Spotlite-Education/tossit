@@ -1,0 +1,25 @@
+@use '../App.scss';
+
+#nav-bar {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 1.5rem;
+    width: 100%;
+    height: 10rem;
+    background-color: App.$secondary;
+    font-family: 'Jost-Book', sans-serif;
+    h1 {
+        font-size: 2.5rem;
+    }
+}
+
+#room-code {
+    font-family: 'Jost-Thin', sans-serif;
+    letter-spacing: 0.2rem;
+}
+
+main {
+    padding: 1.5rem;
+    font-size: 2rem;
+}
