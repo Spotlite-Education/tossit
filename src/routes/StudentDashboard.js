@@ -30,6 +30,21 @@ const StudentDashboard = () => {
     return(
         <>
             <main>
+                {/*
+                Possible further extension: multiple answer choices that are right
+                
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                    Pick the number of correct answer choices (default is 1):
+                        <select value={this.state.value} onChange={this.handleChange}>
+                            <option value="one">1</option>
+                            <option value="two">2</option>
+                            <option value="three">3</option>
+                            <option value="four">4</option>
+                        </select>
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>*/}
                 <TextQuestion
                     onSubmit = {handleQuestion}
                 />
@@ -42,6 +57,7 @@ const StudentDashboard = () => {
                 <button onClick={() => console.log("send data to teacher")}>
                     TOSS IT!
                 </button>
+                
             </main>
         </>
     );
