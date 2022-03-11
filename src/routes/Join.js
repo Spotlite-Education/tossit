@@ -9,7 +9,7 @@ import { SocketContext } from '../context/socket';
 const Join = () => {
     const [roomCode, setRoomCode] = React.useState('');
     const [showUsername, setShowUsername] = React.useState(false);
-    const [status, setStatus] = React.useState(''); // Status can be '', 'loading', 'waiting', or 'joined'
+    const [status, setStatus] = React.useState(''); // Status can be '', 'loading', 'waiting', 'joinTransition', or 'joined'
 
     const socket = React.useContext(SocketContext);
 
@@ -27,12 +27,12 @@ const Join = () => {
             }
         });
 
-        socket.on('playerJoined', () => {
+        socket.on('joined', () => {
             setStatus('waiting');
         })
 
         socket.on('startSession', () => {
-            setStatus('joined');
+            setStatus('joinTransition');
         });
     }
 
@@ -47,8 +47,15 @@ const Join = () => {
         return (
             <div id='loading'>
                 <LoadingCircle speed={1} className='loading-circle' />
-                <p className='loading-text'>Waiting for your teacher to start the session...</p>
+                <p className='loading-text'>WAITING FOR START...</p>
             </div>
+        );
+    } else if (status === 'joinTransition') {
+        setTimeout(() => {
+            setStatus('joined');
+        }, 2000);
+        return (
+            <h1 id='centered-subtitle'>CREATE A QUESTION!</h1> // TODO: make text animate by moving upwards, and then switch status to joined
         );
     } else if (status === 'joined') {
         return <Navigate to={`/${roomCode}`} />
@@ -65,7 +72,7 @@ const Join = () => {
                 }} />
             </React.Fragment>}
             {showUsername && <React.Fragment>
-                <h1 id='subtitle'>Username</h1>
+                <h1 id='raised-subtitle'>NAME</h1>
                 <Input width='22.5%' height='3.5rem' numInputs={10} outlineStyle='underscore' onSubmit={handleJoin} /> {/* TODO: use different component than InputBox */}
             </React.Fragment>}
 

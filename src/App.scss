@@ -61,3 +61,24 @@ body {
     text-align: center;
     margin-top: 3rem;
 }
+
+.big-button {
+    position: absolute;
+    width: 15rem;
+    height: 3.5rem;
+    border: none;
+    border-radius: 15px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) translateY(5rem);
+    background-color: $secondary;
+    font-family: 'Jost-Book', sans-serif;
+    font-size: 1.5rem;
+    &:hover {
+        cursor: pointer;
+        filter: brightness(1.1);
+    }
+    &:active {
+        filter: brightness(1);
+    }
+}

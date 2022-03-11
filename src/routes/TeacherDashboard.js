@@ -6,7 +6,9 @@ import PropTypes from 'prop-types';
 
 const PlayerBox = ({ username }) => {
     return (
-        <div>{username}</div> // TODO - make it look better
+        <li className='player-box'>
+            {username}
+        </li>
     );
 }
 PlayerBox.propTypes = {
@@ -19,29 +21,37 @@ const TeacherDashboard = () => {
     const socket = React.useContext(SocketContext);
     const params = useParams();
 
-    const handlePlayerJoined = React.useCallback(newPlayers => {
+    const handlePlayersChanged = React.useCallback(newPlayers => {
         setPlayers(newPlayers);
     });
 
     React.useEffect(() => {
-        socket.on('playerJoined', handlePlayerJoined);
+        socket.on('playersChanged', handlePlayersChanged);
 
         return () => {
-            socket.off('playerJoined', handlePlayerJoined);
+            socket.off('playersChanged', handlePlayersChanged);
         }
     }, [socket]);
 
     return (
         <>
             <nav id='nav-bar'>
-                <h1>Your Room Code: <span id='room-code'>{params.roomCode}</span></h1>
+                <h1>ROOM CODE: <span id='room-code'>{params.roomCode}</span></h1>
             </nav>
             <main>
-                <button onClick={() => socket.emit('startSession', params.roomCode)}>Start Session</button>
+                <button
+                    className='big-button'
+                    style={{ bottom: '1rem', right: '1rem' }}
+                    onClick={() => socket.emit('startSession', params.roomCode)}
+                >
+                    Start
+                </button>
                 <button onClick={() => socket.emit('tossRoom', params.roomCode)}>toss</button> {/* TMP - move this to after everyone has finished making their questions */}
-                {players.map((player, index) => {
-                    return <PlayerBox key={index} username={player.username}/>;
-                })}
+                <ul id='player-list'>
+                    {players.map((player, index) => {
+                        return <PlayerBox key={index} username={player.username}/>;
+                    })}
+                </ul>
             </main>
         </>
     );

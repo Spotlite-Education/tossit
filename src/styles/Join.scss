@@ -9,15 +9,6 @@
     color: white;
 }
 
-#subtitle {
-    position: absolute;
-    font-size: 5rem;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) translateY(-5rem);
-    color: white;
-}
-
 #input {
     display: flex;
     justify-content: space-around;
@@ -37,4 +28,25 @@
     &:focus {
         outline: none;
     }
+}
+
+//TODO: find more efficient way to do both the below subtitles and integrate into App.scss
+#raised-subtitle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateY(-5rem);
+    font-size: 5rem;
+    color: white;
+    white-space: nowrap;
+}
+
+#centered-subtitle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5rem;
+    color: white;
+    white-space: nowrap;
 }

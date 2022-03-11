@@ -34,7 +34,7 @@ const Create = () => {
     }
 
     if (toDashboard) {
-        return <Navigate to={`/create/${roomCode}`} />
+        return <Navigate to={`/host/${roomCode}`} />
     }
 
     return (

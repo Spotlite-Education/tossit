@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Join />} />
         <Route path='create' element={<Create />} />
-        <Route path='/create/:roomCode' element={<TeacherDashboard />} />
+        <Route path='/host/:roomCode' element={<TeacherDashboard />} />
         <Route path=':roomCode' element={<StudentDashboard/>} />
         {/* <Route path='*' element={<ErrorPage />} */}
       </Routes>
