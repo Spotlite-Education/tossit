@@ -17,7 +17,7 @@ const AnswerBoard = ({question, answerChoices, onSubmit}) => {
         const [time, setTime] = 300000;
 
         const interval = setInterval(() => {
-            setTime(time-1000);
+            setTime(prevTime => prevTime - 1000);
 
             const m = Math.floor((time) / (1000 * 60));
             setMinutes(m);
