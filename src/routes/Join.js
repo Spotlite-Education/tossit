@@ -72,7 +72,13 @@ const Join = () => {
       <>
         <main>
             {!showUsername && <React.Fragment>
-                <h1 id='title'>TOSS - IT</h1>
+                {/*<h1 id='title'>TOSS - IT</h1>*/}
+                <img src={require('../logoforrealsies.svg').default} style= {{
+                    position: 'absolute',
+                    top: '33%',
+                    left: '26%',
+                    height: 175,
+                }} />
                 <Input width='22.5%' height='3.5rem' numInputs={6} outlineStyle='underscore' onSubmit={newRoomCode => {
                     setRoomCode(newRoomCode);
                     setShowUsername(true);
