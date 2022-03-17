@@ -10,20 +10,27 @@ const Join = () => {
     const [roomCode, setRoomCode] = React.useState('');
     const [showUsername, setShowUsername] = React.useState(false);
     const [status, setStatus] = React.useState(''); // Status can be '', 'loading', 'waiting', 'joinTransition', or 'joined'
+    const [username, setUsername] = React.useState('');
 
     const socket = React.useContext(SocketContext);
 
-    const handleJoin = (username) => {
+    const handleChange = (e) => {
+        setUsername(e.target.value);
+    }
+
+    const handleJoin = (e, username) => { // FIX WHY IS IT BEING CALLED BY ROOMACODOJEOPDJPOA JDOP
+        e.preventDefault();
         setStatus('loading');
         socket.emit('joinRoom', { roomCode, username } );
 
         socket.on('errorMessage', ({ error }) => {
+            console.log(error);
             setStatus('');
             if (error === 'roomCode') {
                 // TODO: clear roomCode input
                 setShowUsername(false);
             } else if (error === 'username') {
-                // TODO: clear username input
+                alert('Enter a valid username');
             }
         });
 
@@ -73,15 +80,20 @@ const Join = () => {
             </React.Fragment>}
             {showUsername && <React.Fragment>
                 <h1 id='raised-subtitle'>NAME</h1>
-                <Input width='22.5%' height='3.5rem' numInputs={10} outlineStyle='underscore' onSubmit={handleJoin} /> {/* TODO: use different component than InputBox */}
+                <form onSubmit={(e) => handleJoin(e, username)}>
+                    <input type='text' id='nameInput' autoFocus maxLength={20} value={username} onChange={(e) => handleChange(e)}></input>
+                </form>
             </React.Fragment>}
-
             <Corner corner='tr' className='link-box'>
                 <Link className='link-text' to='/create'>Teacher Mode</Link>
             </Corner>
         </main>
       </>
     );
+}
+
+function validUsername(username) {
+    return username.length > 0 && username.length <= 20; // can filter for obscenity later
 }
 
 export default Join;
