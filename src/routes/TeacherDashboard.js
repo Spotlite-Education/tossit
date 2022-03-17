@@ -4,15 +4,16 @@ import { SocketContext } from '../context/socket';
 import '../styles/TeacherDashboard.scss';
 import PropTypes from 'prop-types';
 
-const PlayerBox = ({ username }) => {
+const PlayerBox = ({ username, handleKick }) => {
     return (
-        <li className='player-box'>
+        <button type='button' className='player-box' onClick={() => handleKick(username)}>
             {username}
-        </li>
+        </button>
     );
 }
 PlayerBox.propTypes = {
     username: PropTypes.string.isRequired,
+    handleKick: PropTypes.func.isRequired,
 };
 
 const TeacherDashboard = () => {
@@ -24,6 +25,10 @@ const TeacherDashboard = () => {
     const handlePlayersChanged = React.useCallback(newPlayers => {
         setPlayers(newPlayers);
     });
+
+    const handleKick = (username) => {
+        socket.emit('kick', { roomCode: params.roomCode, username }); // implement in server
+    }
 
     React.useEffect(() => {
         socket.on('playersChanged', handlePlayersChanged);
@@ -38,7 +43,7 @@ const TeacherDashboard = () => {
             <nav id='nav-bar'>
                 <h1>ROOM CODE: <span id='room-code'>{params.roomCode}</span></h1>
             </nav>
-            <main>
+            <main style={{ padding: '1.5rem' }}>
                 <button
                     className='big-button'
                     style={{ bottom: '1rem', right: '1rem' }}
@@ -46,12 +51,12 @@ const TeacherDashboard = () => {
                 >
                     Start
                 </button>
-                <button onClick={() => socket.emit('tossRoom', params.roomCode)}>toss</button> {/* TMP - move this to after everyone has finished making their questions */}
-                <ul id='player-list'>
+                <button className='small-button' onClick={() => socket.emit('tossRoom', params.roomCode)}>toss</button> {/* TMP - move this to after everyone has finished making their questions */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
                     {players.map((player, index) => {
-                        return <PlayerBox key={index} username={player.username}/>;
+                        return <PlayerBox key={index} username={player.username} handleKick={handleKick} />;
                     })}
-                </ul>
+                </div>
             </main>
         </>
     );

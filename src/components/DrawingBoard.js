@@ -31,7 +31,8 @@ const DrawingBoard = ({thickness, color, style, onSubmit}) => {
 
     const handleClick = () => {
         var image = new Image();
-        image.src = canvas.toDataURL();
+        //image.src is now the data url of the picture and can be used elsewhere
+        image.src = canvasRef.current.toDataURL();
         onSubmit(image);        
     }
 
