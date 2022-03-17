@@ -16,19 +16,25 @@ PlayerNameBox.propTypes = {
     handleKick: PropTypes.func.isRequired,
 };
 
-const PlayerWorkBox = ({ username, questionStatement }) => {
+const PlayerWorkBox = ({ username, questionData, answerData, responses }) => {
     return (
         <>
-            <div style={{ width: 300, height: 200 }}>
-                <p>{questionStatement}</p>
-            </div>
             <h3>{username}</h3>
+            <div style={{ width: 300, height: 200, backgroundColor: 'red' }}>
+                <p>{questionData.statement}</p>
+                <p>{answerData}</p>
+                {responses.map((response, index) => {
+                    return <p key={index}>{response.username}: {response.isCorrect ? 'Correct' : 'Incorrect'}</p>;
+                })}
+            </div>
         </>
     );
 }
 PlayerWorkBox.propTypes = {
     username: PropTypes.string.isRequired,
-    questionStatement: PropTypes.string.isRequired,
+    questionData: PropTypes.object.isRequired,
+    answerData: PropTypes.string.isRequired,
+    responses: PropTypes.array.isRequired,
 };
 
 const TeacherDashboard = () => {
@@ -46,6 +52,8 @@ const TeacherDashboard = () => {
             return;
         });
         setLoading(false);
+
+        // TODO: use callback and do useeffect cleanup for checkFail listener
     }, []);
 
     const [status, setStatus] = React.useState('join'); // join, start, summary
@@ -77,16 +85,19 @@ const TeacherDashboard = () => {
                 <main>
                     <h2>STUDENT WORK:</h2>
                     {players.map((player, index) => {
-                        console.log('player toss ' + player.toss);
-                        if (player.toss && player.toss.question) {
+                        if (player.toss.question) {
                             return <PlayerWorkBox
                                 key={index}
                                 username={player.username}
-                                questionStatement={player.toss.question.statement}
+                                questionData={player.toss.question}
+                                answerData={player.toss.answer}
+                                responses={player.responses}
                             />;
                         }
                     })}
-                    <button className='small-button' onClick={() => socket.emit('tossRoom', params.roomCode)}>toss</button> {/* TODO: absolute positioning */}
+                    <button className='small-button' onClick={() => socket.emit('tossRoom', params.roomCode)}>TOSS</button> {/* TODO: absolute positioning */}
+                    <button className='small-button' onClick={() => socket.emit('returnTosses', params.roomCode)}>RETURN TOSSES</button> {/* TODO: absolute positioning */}
+                    {/* TODO: enter summary page */}
                 </main>
             </>
         );
@@ -101,16 +112,18 @@ const TeacherDashboard = () => {
                     <h1>ROOM CODE: <span id='room-code'>{params.roomCode}</span></h1>
                 </nav>
                 <main style={{ padding: '1.5rem' }}>
-                    <button
-                        className='big-button'
-                        style={{ bottom: '1rem', right: '1rem' }}
-                        onClick={() => {
-                            socket.emit('startSession', params.roomCode);
-                            setStatus('start');
-                        }}
-                    >
-                        Start
-                    </button>
+                    { players.length >= 2 && 
+                        <button
+                            className='big-button'
+                            style={{ bottom: '1rem', right: '1rem' }}
+                            onClick={() => {
+                                socket.emit('startSession', params.roomCode);
+                                setStatus('start');
+                            }}
+                        >
+                            Start
+                        </button>
+                    }
                     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
                         {players.map((player, index) => {
                             return <PlayerNameBox key={index} username={player.username} handleKick={() => handleKick(player.socketId)} />;

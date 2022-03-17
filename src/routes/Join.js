@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import Corner from '../components/Corner';
 import { LoadingCircle } from '../components/Loading';
@@ -14,6 +14,7 @@ const Join = () => {
     const [username, setUsername] = React.useState('');
 
     const socket = React.useContext(SocketContext);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setUsername(e.target.value);
@@ -49,32 +50,32 @@ const Join = () => {
         });
     }
 
-    if (status === 'loading') {
-        return (
-            <div id='loading'>
-                <LoadingCircle speed={1} className='loading-circle' />
-                <p className='loading-text'>Joining the room...</p>
-            </div>
-        );
-    } else if (status === 'kicked') {
-        window.location.reload();
-        return null;
-    } else if (status === 'waiting') {
-        return (
-            <div id='loading'>
-                <LoadingPlane speed={1} className='loading-plane' />
-                <p className='loading-text'>WAITING FOR START...</p>
-            </div>
-        );
-    } else if (status === 'joinTransition') {
-        setTimeout(() => {
-            setStatus('joined');
-        }, 1500);
-        return (
-            <h1 id='centered-subtitle'>CREATE A QUESTION!</h1> // TODO: make text animate by moving upwards, and then switch status to joined
-        );
-    } else if (status === 'joined') {
-        return <Navigate to={`/${roomCode}`} />;
+    switch(status) {
+        case 'loading':
+            return (
+                <div id='loading'>
+                    <LoadingCircle speed={1} className='loading-circle' />
+                    <p className='loading-text'>Joining the room...</p>
+                </div>
+            );
+        case 'kicked':
+            window.location.reload();
+            return null;
+        case 'waiting':
+            return (
+                <div id='loading'>
+                    <LoadingPlane speed={1} className='loading-plane' />
+                    <p className='loading-text'>WAITING FOR START...</p>
+                </div>
+            );
+        case 'joinTransition':
+            setTimeout(() => {
+                //setStatus('joined');
+                navigate(`/${roomCode}`);
+            }, 1500);
+            return (
+                <h1 id='centered-subtitle'>CREATE A QUESTION!</h1> // TODO: make text animate by moving upwards, and then switch status to joined
+            );
     }
 
     return (
