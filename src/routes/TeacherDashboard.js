@@ -40,7 +40,10 @@ const TeacherDashboard = () => {
 
     return (
         <>
-            <nav id='nav-bar'>
+            <nav id='nav-bar' style= {{
+                height: 100,
+                textAlign: 'center',
+            }}>
                 <h1>ROOM CODE: <span id='room-code'>{params.roomCode}</span></h1>
             </nav>
             <main style={{ padding: '1.5rem' }}>
