@@ -69,7 +69,7 @@ const Join = () => {
     } else if (status === 'joinTransition') {
         setTimeout(() => {
             setStatus('joined');
-        }, 2000);
+        }, 1500);
         return (
             <h1 id='centered-subtitle'>CREATE A QUESTION!</h1> // TODO: make text animate by moving upwards, and then switch status to joined
         );

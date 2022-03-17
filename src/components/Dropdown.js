@@ -20,7 +20,7 @@ const Dropdown = ({ labelTextComponent, valueOptions, textOptions, valueState, o
             {labelTextComponent}
             <select value={valueState} onChange={(event) => onChange(event.target.value)} style={{
                 color: 'black',
-                height: 60, 
+                height: 60,
                 width: 300,
                 textAlign: 'center',
                 fontSize: 25,

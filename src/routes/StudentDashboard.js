@@ -15,11 +15,13 @@ const StudentDashboard = () => {
     const socket = React.useContext(SocketContext);
     const params = useParams();
 
-    socket.emit('checkEnterStudentDashboard', params.roomCode);
-    socket.on('checkFail', ({ message }) => {
-        console.log('ERROR ACCESSING STUDENT DASHBOARD: ' + message);
-        return <Navigate to='/host/' />; // TODO: fix
-    });
+    React.useEffect(() => {
+        socket.emit('checkEnterStudentDashboard', params.roomCode);
+        socket.on('checkFail', ({ message }) => {
+            console.log('ERROR ACCESSING STUDENT DASHBOARD: ' + message);
+            return <Navigate to='/host/' />; // TODO: fix
+        });
+    }, []);
 
     const [questionData, setQuestionData] = React.useState({
         type: questionTypeValues[0],
@@ -30,24 +32,21 @@ const StudentDashboard = () => {
 
     const [answerData, setAnswerData] = React.useState(''); // mcq: index of correct answer choice, frq: exact correct answer string
 
-
     const handleUpdateQuestion = (key) => {
         return (newValue) => {
             let newQuestionData = { ...questionData };
             newQuestionData[key] = newValue;
             setQuestionData(newQuestionData);
-            alert('New question data: ' + newQuestionData);
         };
     };
 
     const handleSubmit = (event) => {
-        alert(questionData);
-        //socket.emit('setToss', { question: questionData, answer: answerData, roomCode: params.roomCode } );
         event.preventDefault();
+        if (event.keyCode === 13) return false; // prevent submission when pressing enter
+
+        socket.emit('setToss', { question: questionData, answer: answerData, roomCode: params.roomCode } );
     };
-
     
-
     return(
         <>
             <main>
@@ -64,6 +63,15 @@ const StudentDashboard = () => {
                         labelTextComponent={<p>Question:</p>}
                         onChange={handleUpdateQuestion('statement')}
                     />
+                    <br />
+                    <br />
+                    <FreeResponse
+                        labelTextComponent={<p>Answer:</p>}
+                        onChange={setAnswerData}
+                    />
+                    <br />
+                    <br />
+                    <br />
                     <input type='submit' value='Toss It!' />
                 </form>
                 {/*

@@ -4,28 +4,46 @@ import { SocketContext } from '../context/socket';
 import '../styles/TeacherDashboard.scss';
 import PropTypes from 'prop-types';
 
-const PlayerBox = ({ username, handleKick }) => {
+const PlayerNameBox = ({ username, handleKick }) => {
     return (
         <button type='button' className='player-box' onClick={handleKick}>
             {username}
         </button>
     );
 }
-PlayerBox.propTypes = {
+PlayerNameBox.propTypes = {
     username: PropTypes.string.isRequired,
     handleKick: PropTypes.func.isRequired,
+};
+
+const PlayerWorkBox = ({ username, questionStatement }) => {
+    return (
+        <>
+            <div style={{ width: 300, height: 200 }}>
+                <p>{questionStatement}</p>
+            </div>
+            <h3>{username}</h3>
+        </>
+    );
+}
+PlayerWorkBox.propTypes = {
+    username: PropTypes.string.isRequired,
+    questionStatement: PropTypes.string.isRequired,
 };
 
 const TeacherDashboard = () => {
     const socket = React.useContext(SocketContext);
     const params = useParams();
 
-    socket.emit('checkEnterTeacherDashboard', params.roomCode);
-    socket.on('checkFail', ({ message }) => {
-        console.log('ERROR ACCESSING TEACHER DASHBOARD: ' + message);
-        return <Navigate to='/' />; // TODO: fix
-    });
+    React.useEffect(() => {
+        socket.emit('checkEnterTeacherDashboard', params.roomCode);
+        socket.on('checkFail', ({ message }) => {
+            console.log('ERROR ACCESSING TEACHER DASHBOARD: ' + message);
+            return <Navigate to='/' />; // TODO: fix
+        });
+    }, []);
 
+    const [status, setStatus] = React.useState('join'); // join, start, summary
     const [players, setPlayers] = React.useState([]);
 
     const handlePlayersChanged = React.useCallback(newPlayers => {
@@ -44,31 +62,55 @@ const TeacherDashboard = () => {
         }
     }, [socket]);
 
-    return (
-        <>
-            <nav id='nav-bar' style= {{
-                height: 100,
-                textAlign: 'center',
-            }}>
-                <h1>ROOM CODE: <span id='room-code'>{params.roomCode}</span></h1>
-            </nav>
-            <main style={{ padding: '1.5rem' }}>
-                <button
-                    className='big-button'
-                    style={{ bottom: '1rem', right: '1rem' }}
-                    onClick={() => socket.emit('startSession', params.roomCode)}
-                >
-                    Start
-                </button>
-                <button className='small-button' onClick={() => socket.emit('tossRoom', params.roomCode)}>toss</button> {/* TMP - move this to after everyone has finished making their questions */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+    if (status === 'start') { // TODO: if doing multiple routes, make sure to socket.emit('checkEnterTeacherDashboard', params.roomCode);
+        return (
+            <>
+                <main>
+                    <h2>STUDENT WORK:</h2>
                     {players.map((player, index) => {
-                        return <PlayerBox key={index} username={player.username} handleKick={() => handleKick(player.socketId)} />;
+                        console.log('player toss ' + player.toss);
+                        if (player.toss && player.toss.question) {
+                            return <PlayerWorkBox
+                                key={index}
+                                username={player.username}
+                                questionStatement={player.toss.question.statement}
+                            />;
+                        }
                     })}
-                </div>
-            </main>
-        </>
-    );
+                    <button className='small-button' onClick={() => socket.emit('tossRoom', params.roomCode)}>toss</button> {/* TODO: absolute positioning */}
+                </main>
+            </>
+        );
+    }
+    else {
+        return (
+            <>
+                <nav id='nav-bar' style= {{
+                    height: 100,
+                    textAlign: 'center',
+                }}>
+                    <h1>ROOM CODE: <span id='room-code'>{params.roomCode}</span></h1>
+                </nav>
+                <main style={{ padding: '1.5rem' }}>
+                    <button
+                        className='big-button'
+                        style={{ bottom: '1rem', right: '1rem' }}
+                        onClick={() => {
+                            socket.emit('startSession', params.roomCode);
+                            setStatus('start');
+                        }}
+                    >
+                        Start
+                    </button>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+                        {players.map((player, index) => {
+                            return <PlayerNameBox key={index} username={player.username} handleKick={() => handleKick(player.socketId)} />;
+                        })}
+                    </div>
+                </main>
+            </>
+        );
+    }
 }
 
 export default TeacherDashboard;

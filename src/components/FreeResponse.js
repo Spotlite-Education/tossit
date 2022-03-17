@@ -3,12 +3,17 @@ import PropTypes from 'prop-types';
 
 const FreeResponse = ({ labelTextComponent, onChange }) => {
     return(
-        <label onChange>
+        <label onChange={(event) => {
+            event.preventDefault();
+            onChange(event.target.value);
+        }}>
             {labelTextComponent}
             <input
                 type="text"
                 placeholder="Type your question here..."
-                onChange={(event) => onChange(event.target.value)}
+                style={{
+                    color: 'black',
+                }}
             />
         </label>
     );
