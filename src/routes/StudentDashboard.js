@@ -3,7 +3,7 @@ import { useParams, Navigate } from 'react-router-dom';
 import { SocketContext } from '../context/socket';
 import '../styles/StudentDashboard.scss';
 import Dropdown from '../components/Dropdown';
-import TextInput from '../components/TextInput';
+import FreeResponse from '../components/FreeResponse';
 //import DrawingBoard from '../components/DrawingBoard';
 //import TextQuestion from '../components/TextQuestion';
 
@@ -60,7 +60,7 @@ const StudentDashboard = () => {
                         onChange={handleUpdateQuestion('type')}
                     />
                     <br />
-                    <TextInput
+                    <FreeResponse
                         labelTextComponent={<p>Question:</p>}
                         onChange={handleUpdateQuestion('statement')}
                     />

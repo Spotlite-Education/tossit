@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TextInput = ({ labelTextComponent, onChange }) => {
+const FreeResponse = ({ labelTextComponent, onChange }) => {
     return(
         <label onChange>
             {labelTextComponent}
@@ -13,9 +13,9 @@ const TextInput = ({ labelTextComponent, onChange }) => {
         </label>
     );
 }
-TextInput.propTypes = {
+FreeResponse.propTypes = {
     labelTextComponent: PropTypes.element.isRequired,
     onChange: PropTypes.func.isRequired,
 };
 
-export default TextInput;
+export default FreeResponse;
