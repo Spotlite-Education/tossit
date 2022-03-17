@@ -53,7 +53,7 @@ const Join = () => {
     } else if (status === 'waiting') {
         return (
             <div id='loading'>
-                <LoadingCircle speed={1} className='loading-circle' />
+                <LoadingPlane speed={1} className='loading-plane' />
                 <p className='loading-text'>WAITING FOR START...</p>
             </div>
         );
