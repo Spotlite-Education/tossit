@@ -92,8 +92,4 @@ const Join = () => {
     );
 }
 
-function validUsername(username) {
-    return username.length > 0 && username.length <= 20; // can filter for obscenity later
-}
-
 export default Join;
