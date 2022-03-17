@@ -1,12 +1,12 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { SocketContext } from '../context/socket';
 import '../styles/TeacherDashboard.scss';
 import PropTypes from 'prop-types';
 
 const PlayerBox = ({ username, handleKick }) => {
     return (
-        <button type='button' className='player-box' onClick={() => handleKick(username)}>
+        <button type='button' className='player-box' onClick={handleKick}>
             {username}
         </button>
     );
@@ -17,17 +17,23 @@ PlayerBox.propTypes = {
 };
 
 const TeacherDashboard = () => {
-    const [players, setPlayers] = React.useState([]);
-    
     const socket = React.useContext(SocketContext);
     const params = useParams();
+
+    socket.emit('checkEnterTeacherDashboard', params.roomCode);
+    socket.on('checkFail', ({ message }) => {
+        console.log('ERROR ACCESSING TEACHER DASHBOARD: ' + message);
+        return <Navigate to='/' />; // TODO: fix
+    });
+
+    const [players, setPlayers] = React.useState([]);
 
     const handlePlayersChanged = React.useCallback(newPlayers => {
         setPlayers(newPlayers);
     });
 
-    const handleKick = (username) => {
-        socket.emit('kick', { roomCode: params.roomCode, username }); // implement in server
+    const handleKick = (socketId) => {
+        socket.emit('kickPlayer', { roomCode: params.roomCode, socketId });
     }
 
     React.useEffect(() => {
@@ -54,7 +60,7 @@ const TeacherDashboard = () => {
                 <button className='small-button' onClick={() => socket.emit('tossRoom', params.roomCode)}>toss</button> {/* TMP - move this to after everyone has finished making their questions */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
                     {players.map((player, index) => {
-                        return <PlayerBox key={index} username={player.username} handleKick={handleKick} />;
+                        return <PlayerBox key={index} username={player.username} handleKick={() => handleKick(player.socketId)} />;
                     })}
                 </div>
             </main>

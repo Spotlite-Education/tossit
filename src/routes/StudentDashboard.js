@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { SocketContext } from '../context/socket';
 import '../styles/StudentDashboard.scss';
 import Dropdown from '../components/Dropdown';
@@ -12,6 +12,15 @@ const questionTypeNames = ['Free Response', 'Multiple Choice'];
 // TODO extension: question type of matching and completion
 
 const StudentDashboard = () => {
+    const socket = React.useContext(SocketContext);
+    const params = useParams();
+
+    socket.emit('checkEnterStudentDashboard', params.roomCode);
+    socket.on('checkFail', ({ message }) => {
+        console.log('ERROR ACCESSING STUDENT DASHBOARD: ' + message);
+        return <Navigate to='/host/' />; // TODO: fix
+    });
+
     const [questionData, setQuestionData] = React.useState({
         type: questionTypeValues[0],
         statement: null,
@@ -21,19 +30,6 @@ const StudentDashboard = () => {
 
     const [answerData, setAnswerData] = React.useState(''); // mcq: index of correct answer choice, frq: exact correct answer string
 
-    /*
-    const setPicture = (url) => {
-        setQuestionData(prevQuestionData => {
-            return {
-                ...prevQuestionData,
-                pictureURL: url
-            }
-        })
-    }
-    */
-
-    const socket = React.useContext(SocketContext);
-    const params = useParams();
 
     const handleUpdateQuestion = (key) => {
         return (newValue) => {
