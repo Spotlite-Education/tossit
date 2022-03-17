@@ -15,7 +15,7 @@ const Dropdown = ({ labelTextComponent, valueOptions, textOptions, valueState, o
     return (
         <label>
             {labelTextComponent}
-            <select value={valueState} onChange={onChange}>
+            <select value={valueState} onChange={(event) => onChange(event.target.value)}>
                 {valueOptions.map((value, index) => {
                     return <Option
                         key={index}

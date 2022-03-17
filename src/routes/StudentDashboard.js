@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { SocketContext } from '../context/socket';
 import '../styles/StudentDashboard.scss';
 import Dropdown from '../components/Dropdown';
+import TextInput from '../components/TextInput';
 //import DrawingBoard from '../components/DrawingBoard';
 //import TextQuestion from '../components/TextQuestion';
 
@@ -18,16 +19,23 @@ const StudentDashboard = () => {
         answerChoices: [], // if type is 'frq', keep empty
     });
 
-    const [answerData, setAnswerData] = React.useState({
-        correctValue: null, // always a string - convert to number as necessary
-        // mcq: index of correct answer choice, frq: exact correct answer string
-    });
+    const [answerData, setAnswerData] = React.useState(''); // mcq: index of correct answer choice, frq: exact correct answer string
 
     const socket = React.useContext(SocketContext);
     const params = useParams();
 
+    const handleUpdateQuestion = (key) => {
+        return (newValue) => {
+            let newQuestionData = { ...questionData };
+            newQuestionData[key] = newValue;
+            setQuestionData(newQuestionData);
+            alert('New question data: ' + newQuestionData);
+        };
+    };
+
     const handleSubmit = (event) => {
-        socket.emit('setToss', { question: questionData, answer: answerData, roomCode: params.roomCode } );
+        alert(questionData);
+        //socket.emit('setToss', { question: questionData, answer: answerData, roomCode: params.roomCode } );
         event.preventDefault();
     };
 
@@ -36,19 +44,20 @@ const StudentDashboard = () => {
             <main>
                 <form onSubmit={handleSubmit}>
                     <Dropdown
-                        labelText={<p>Select Question Type:</p>}
+                        labelTextComponent={<p>Select Question Type:</p>}
                         valueOptions={questionTypeValues}
                         textOptions={questionTypeNames}
                         valueState={questionData.type}
-                        onChange={(event) => {
-                            setQuestionData({ ...questionData, type: event.target.value });
-                        }}
+                        onChange={handleUpdateQuestion('type')}
                     />
+                    <br />
+                    <TextInput
+                        labelTextComponent={<p>Question:</p>}
+                        onChange={handleUpdateQuestion('statement')}
+                    />
+                    <input type='submit' value='Toss It!' />
                 </form>
                 {/*
-                <TextQuestion
-                    onSubmit = {handleQuestion}
-                />
                 <DrawingBoard
                     thickness={5} 
                     color = "black" 
