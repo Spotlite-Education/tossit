@@ -4,10 +4,11 @@ import '../styles/Loading.scss';
 
 export const LoadingPlane = ({ speed, className }) => {
     return (
-        <div
-            className={className + ' loading-plane'}
-            style={{ animationDuration: `${speed}s` }}
-        />
+        <div className={className + ' loading-plane'}
+            style={{ animationDuration: `${speed}s` }}>
+            
+            <img src = "/images/plane.png" alt = ""/>
+        </div>
     );
 }
 
