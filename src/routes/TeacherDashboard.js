@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { SocketContext } from '../context/socket';
 import '../styles/TeacherDashboard.scss';
 import PropTypes from 'prop-types';
@@ -34,13 +34,18 @@ PlayerWorkBox.propTypes = {
 const TeacherDashboard = () => {
     const socket = React.useContext(SocketContext);
     const params = useParams();
+    const navigate = useNavigate();
+    const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
         socket.emit('checkEnterTeacherDashboard', params.roomCode);
         socket.on('checkFail', ({ message }) => {
             console.log('ERROR ACCESSING TEACHER DASHBOARD: ' + message);
-            return <Navigate to='/' />; // TODO: fix
+            navigate('/');
+            console.log('navigated');
+            return;
         });
+        setLoading(false);
     }, []);
 
     const [status, setStatus] = React.useState('join'); // join, start, summary
@@ -61,6 +66,10 @@ const TeacherDashboard = () => {
             socket.off('playersChanged', handlePlayersChanged);
         }
     }, [socket]);
+
+    if (loading) {
+        return null;
+    }
 
     if (status === 'start') { // TODO: if doing multiple routes, make sure to socket.emit('checkEnterTeacherDashboard', params.roomCode);
         return (
