@@ -23,6 +23,17 @@ const StudentDashboard = () => {
         // mcq: index of correct answer choice, frq: exact correct answer string
     });
 
+    /*
+    const setPicture = (url) => {
+        setQuestionData(prevQuestionData => {
+            return {
+                ...prevQuestionData,
+                pictureURL: url
+            }
+        })
+    }
+    */
+
     const socket = React.useContext(SocketContext);
     const params = useParams();
 
@@ -30,6 +41,8 @@ const StudentDashboard = () => {
         socket.emit('setToss', { question: questionData, answer: answerData, roomCode: params.roomCode } );
         event.preventDefault();
     };
+
+    
 
     return(
         <>
