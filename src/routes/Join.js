@@ -5,7 +5,7 @@ import Corner from '../components/Corner';
 import { LoadingCircle } from '../components/Loading';
 import '../styles/Join.scss';
 import { SocketContext } from '../context/socket';
-import { LoadingPlane } from '../components/LoadingPlane';
+//import { LoadingPlane } from '../components/LoadingPlane';
 
 const Join = () => {
     const [roomCode, setRoomCode] = React.useState('');
@@ -64,7 +64,8 @@ const Join = () => {
         case 'waiting':
             return (
                 <div id='loading'>
-                    <LoadingPlane speed={1} className='loading-plane' />
+                    {/* <LoadingPlane speed={1} className='loading-plane' /> */}
+                    <LoadingCircle speed={1} className='loading-circle' />
                     <p className='loading-text'>WAITING FOR START...</p>
                 </div>
             );

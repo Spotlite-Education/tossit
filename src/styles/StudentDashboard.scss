@@ -23,3 +23,22 @@ main {
     padding: 1.5rem;
     font-size: 2rem;
 }
+
+.submit-button {
+    width: 15rem;
+    height: 3.5rem;
+    margin-top: 1rem;
+    background-color: App.$secondary;
+    border: none;
+    border-radius: 15px;    
+    font-family: 'Jost-Book', sans-serif;
+    font-size: 1.5rem;
+    text-align: center;
+    &:hover {
+        cursor: pointer;
+        filter: brightness(1.1);
+    }
+    &:active {
+        filter: brightness(1);
+    }
+}

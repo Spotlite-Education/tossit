@@ -17,17 +17,41 @@ PlayerNameBox.propTypes = {
 };
 
 const PlayerWorkBox = ({ username, questionData, answerData, responses }) => {
+    const [showing, setShowing] = React.useState('question');
+    const handleSwitch = () => {
+        switch (showing) {
+            case 'question':
+                setShowing('answer');
+                break;
+            case 'answer':
+                setShowing('question');
+                break;
+            default:
+                setShowing('question');
+                break;
+        }
+    }
+
     return (
-        <>
-            <h3>{username}</h3>
-            <div style={{ width: 300, height: 200, backgroundColor: 'red' }}>
-                <p>{questionData.statement}</p>
-                <p>{answerData}</p>
-                {responses.map((response, index) => {
-                    return <p key={index}>{response.username}: {response.isCorrect ? 'Correct' : 'Incorrect'}</p>;
-                })}
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: '1rem' }}>
+            <div 
+                className='player-work-box'
+                style={{ width: 500, height: 250, }}
+                onClick={() => handleSwitch()}
+            >
+                {showing === 'question' ? <p>{questionData.statement}</p> : <p>{answerData}</p>}                
+                <br />
+                {responses.length > 0 &&
+                    <>
+                        <h3>Student Responses:</h3>
+                        {responses.map((response, index) => {
+                            return <p key={index}>{response.username}: {response.isCorrect ? 'Correct' : 'Incorrect'}</p>;
+                        })}
+                    </>
+                }
             </div>
-        </>
+            <h3>{username}</h3>
+        </div>
     );
 }
 PlayerWorkBox.propTypes = {
@@ -58,6 +82,7 @@ const TeacherDashboard = () => {
 
     const [status, setStatus] = React.useState('join'); // join, start, summary
     const [players, setPlayers] = React.useState([]);
+    const [tossed, setTossed] = React.useState(false);
 
     const handlePlayersChanged = React.useCallback(newPlayers => {
         setPlayers(newPlayers);
@@ -82,21 +107,40 @@ const TeacherDashboard = () => {
     if (status === 'start') { // TODO: if doing multiple routes, make sure to socket.emit('checkEnterTeacherDashboard', params.roomCode);
         return (
             <>
+                <nav id='nav-bar' style= {{
+                    height: 100,
+                    textAlign: 'center',
+                }}>
+                    <h1>STUDENT WORK:</h1>
+                </nav>
                 <main>
-                    <h2>STUDENT WORK:</h2>
-                    {players.map((player, index) => {
-                        if (player.toss.question) {
-                            return <PlayerWorkBox
-                                key={index}
-                                username={player.username}
-                                questionData={player.toss.question}
-                                answerData={player.toss.answer}
-                                responses={player.responses}
-                            />;
-                        }
-                    })}
-                    <button className='small-button' onClick={() => socket.emit('tossRoom', params.roomCode)}>TOSS</button> {/* TODO: absolute positioning */}
-                    <button className='small-button' onClick={() => socket.emit('returnTosses', params.roomCode)}>RETURN TOSSES</button> {/* TODO: absolute positioning */}
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                            justifyContent: 'space-around'
+                        }}
+                    >
+                        {players.map((player, index) => {
+                            if (player.toss.question) {
+                                return <PlayerWorkBox
+                                    key={index}
+                                    username={player.username}
+                                    questionData={player.toss.question}
+                                    answerData={player.toss.answer}
+                                    responses={player.responses}
+                                />;
+                            }
+                        })}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <button className='small-button' style={{ margin: 15, opacity: tossed ? 0.5 : 1 }} disabled={tossed} onClick={() => {
+                            socket.emit('tossRoom', params.roomCode);
+                            setTossed(true);
+                        }}>{tossed ? 'TOSSED' : 'TOSS'}</button> {/* TODO: absolute positioning */}
+                        <button className='small-button' style={{ width: 'auto', paddingLeft: 10, paddingRight: 10 }} onClick={() => socket.emit('returnTosses', params.roomCode)}>RETURN TOSSES</button> {/* TODO: absolute positioning */}
+                    </div>
                     {/* TODO: enter summary page */}
                 </main>
             </>

@@ -50,3 +50,20 @@ main {
         opacity: 0.5;
     }
 }
+
+.player-work-box {
+    min-width: 500;
+    min-height: 250;
+    padding: 1rem;
+    text-overflow: ellipsis;
+    border: 2.5px solid white;
+    border-radius: 15px;
+    transition: all 0.15s;
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        cursor: pointer;
+    }
+    &:active {
+        opacity: 0.65;
+    }
+}
