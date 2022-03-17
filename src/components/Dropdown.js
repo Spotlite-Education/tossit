@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 
 const Option = ({ value, text }) => {
     return (
-        <option value={value}>{text}</option>
+        <option value={value} style={{
+            color: 'black',
+        }}>{text}</option>
     );
 }
+
 Option.propTypes = {
     value: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
@@ -15,7 +18,15 @@ const Dropdown = ({ labelTextComponent, valueOptions, textOptions, valueState, o
     return (
         <label>
             {labelTextComponent}
-            <select value={valueState} onChange={onChange}>
+            <select value={valueState} onChange={onChange} style={{
+                color: 'black',
+                height: 60, 
+                width: 300,
+                textAlign: 'center',
+                fontSize: 25,
+                fontFamily: 'Jost-Book',
+                padding: 5,
+            }}>
                 {valueOptions.map((value, index) => {
                     return <Option
                         key={index}
