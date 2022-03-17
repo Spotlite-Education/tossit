@@ -1,18 +1,20 @@
 import React from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import Corner from '../components/Corner';
 import { LoadingCircle } from '../components/Loading';
 import '../styles/Join.scss';
 import { SocketContext } from '../context/socket';
+import { LoadingPlane } from '../components/LoadingPlane';
 
 const Join = () => {
     const [roomCode, setRoomCode] = React.useState('');
     const [showUsername, setShowUsername] = React.useState(false);
-    const [status, setStatus] = React.useState(''); // Status can be '', 'loading', 'waiting', 'joinTransition', or 'joined'
+    const [status, setStatus] = React.useState('');
     const [username, setUsername] = React.useState('');
 
     const socket = React.useContext(SocketContext);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setUsername(e.target.value);
@@ -23,14 +25,19 @@ const Join = () => {
         setStatus('loading');
         socket.emit('joinRoom', { roomCode, username } );
 
+        socket.on('kickPlayer', () => {
+            console.log('You have been kicked by the admin of this room!');
+            setStatus('kicked');
+        });
+
         socket.on('errorMessage', ({ error }) => {
-            console.log(error);
             setStatus('');
             if (error === 'roomCode') {
                 // TODO: clear roomCode input
                 setShowUsername(false);
             } else if (error === 'username') {
-                alert('Enter a valid username');
+                //alert('Enter a valid username');
+                // do nothing is fine - otherwise, it will always alert because form submits too fast
             }
         });
 
@@ -43,29 +50,32 @@ const Join = () => {
         });
     }
 
-    if (status === 'loading') {
-        return (
-            <div id='loading'>
-                <LoadingCircle speed={1} className='loading-circle' />
-                <p className='loading-text'>Joining the room...</p>
-            </div>
-        );
-    } else if (status === 'waiting') {
-        return (
-            <div id='loading'>
-                <LoadingPlane speed={1} className='loading-plane' />
-                <p className='loading-text'>WAITING FOR START...</p>
-            </div>
-        );
-    } else if (status === 'joinTransition') {
-        setTimeout(() => {
-            setStatus('joined');
-        }, 2000);
-        return (
-            <h1 id='centered-subtitle'>CREATE A QUESTION!</h1> // TODO: make text animate by moving upwards, and then switch status to joined
-        );
-    } else if (status === 'joined') {
-        return <Navigate to={`/${roomCode}`} />
+    switch(status) {
+        case 'loading':
+            return (
+                <div id='loading'>
+                    <LoadingCircle speed={1} className='loading-circle' />
+                    <p className='loading-text'>Joining the room...</p>
+                </div>
+            );
+        case 'kicked':
+            window.location.reload();
+            return null;
+        case 'waiting':
+            return (
+                <div id='loading'>
+                    <LoadingPlane speed={1} className='loading-plane' />
+                    <p className='loading-text'>WAITING FOR START...</p>
+                </div>
+            );
+        case 'joinTransition':
+            setTimeout(() => {
+                //setStatus('joined');
+                navigate(`/${roomCode}`);
+            }, 1500);
+            return (
+                <h1 id='centered-subtitle'>CREATE A QUESTION!</h1> // TODO: make text animate by moving upwards, and then switch status to joined
+            );
     }
 
     return (

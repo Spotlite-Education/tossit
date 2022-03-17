@@ -21,6 +21,8 @@ const MultipleChoice = ({ labelTextComponent, options, optionState, onChange }) 
                 />;
             })}
         </label>
+        // TODO: allow for adding/deleting multiple choice options only for question creation
+        // TODO: each option is an input text field only for question creation
     );
 }
 MultipleChoice.propTypes = {
