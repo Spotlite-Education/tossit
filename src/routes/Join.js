@@ -102,7 +102,7 @@ const Join = () => {
                 </form>
             </React.Fragment>}
             <Corner corner='tr' className='link-box'>
-                <Link className='link-text' to='/create'>Teacher Mode</Link>
+                <Link className='link-text' to='/create'>Admin Mode</Link>
             </Corner>
         </main>
       </>

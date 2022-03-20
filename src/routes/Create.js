@@ -9,7 +9,7 @@ import '../styles/Create.scss';
 const Create = () => {
     const [loading, setLoading] = React.useState(false);
     const [roomCode, setRoomCode] = React.useState('');
-    const [toDashboard, setToDashboard] = React.useState(false);
+    const [toHome, setToHome] = React.useState(false);
 
     const socket = React.useContext(SocketContext);
 
@@ -19,7 +19,7 @@ const Create = () => {
         setRoomCode(randomCode); // ASYNC APPARENTLY ?????? there was issues with state not updating before connecting
         socket.emit('createRoom', randomCode);
         socket.on('successMessage', () => {
-            setToDashboard(true);
+            setToHome(true);
         });
         setLoading(false);
     }
@@ -33,7 +33,7 @@ const Create = () => {
         );
     }
 
-    if (toDashboard) {
+    if (toHome) {
         return <Navigate to={`/host/${roomCode}`} />
     }
 
