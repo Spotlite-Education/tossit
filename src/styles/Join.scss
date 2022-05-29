@@ -1,12 +1,9 @@
 @use '../App.scss';
 
 #title {
-    position: absolute;
     font-size: 8rem;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) translateY(-5rem);
     color: white;
+    margin-bottom: -2rem;
 }
 
 #input {
@@ -27,7 +24,14 @@
     background-color: transparent;
     &:focus {
         outline: none;
+        animation: blinking-bg 1s infinite;
     }
+}
+
+@keyframes blinking-bg {
+    0% {background-color: rgba(76,88,117,0);}
+    50% {background-color: rgba(76,88,117,0.5);}
+    100% {background-color: rgba(76,88,117,0);}
 }
 
 //TODO: find more efficient way to do both the below subtitles and integrate into App.scss

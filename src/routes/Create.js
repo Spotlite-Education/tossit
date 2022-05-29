@@ -39,15 +39,18 @@ const Create = () => {
 
     return (
         <main>
-            <h1 id='title'>CREATE - IT</h1>
-            <button
-                className='big-button'
-                onClick={() => {
-                    handleClick();
-                }}
-            >
-                Create Room
-            </button>
+            <div style={{ top: 0, left: 0, position: 'absolute', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                <h1 id='title'>CREATE - IT</h1>
+                <p style={{ fontStyle: 'italic', marginBottom: '3rem' }}>Teacher Mode</p>
+                <button
+                    className='big-button'
+                    onClick={() => {
+                        handleClick();
+                    }}
+                >
+                    Create Room
+                </button>
+            </div>
             <Corner corner='tr' className='link-box'>
                 <Link to='/' className='link-text'>Player Mode</Link>
             </Corner>

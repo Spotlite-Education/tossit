@@ -42,7 +42,6 @@ const DashedInput = ({ width, height, numInputs, outlineStyle, onSubmit }) => {
         }
         if (!(keyCode >= 48 && keyCode <= 57) 
             && !(keyCode >= 65 && keyCode <= 90)
-            || values[index].length >= 1
         ) {
             return; // not a number or letter
         }
@@ -73,6 +72,7 @@ const DashedInput = ({ width, height, numInputs, outlineStyle, onSubmit }) => {
                 index={i} value={values[i]}
                 style={{ outline: outline }}
                 handleChange={handleChange}
+                caretTransparent={true}
             />;
         }
         setNodes(newNodes);
@@ -107,7 +107,7 @@ const deriveOutline = (style) => {
     }
 }
 
-const InputBox = React.forwardRef(({ index, value, style, handleChange }, ref) => (
+const InputBox = React.forwardRef(({ index, value, style, handleChange, caretTransparent=false }, ref) => (
     <input
         ref={ref}
         type='text'
@@ -118,6 +118,7 @@ const InputBox = React.forwardRef(({ index, value, style, handleChange }, ref) =
             width: `${inputBoxWidth}rem`,
             height: '100%',
             [style.outline === 'underscore' ? 'borderBottom' : 'border']: deriveBorderStyle(style.outline),
+            caretColor: caretTransparent ? 'transparent' : '',
         }}
         onChange={(e) => e.preventDefault()}
         onKeyDown={(e) => handleChange(index, e)}
@@ -133,6 +134,7 @@ InputBox.propTypes = {
     value: PropTypes.string,
     style: PropTypes.object,
     handleChange: PropTypes.func.isRequired,
+    caretTransparent: PropTypes.bool,
 };
 
 const deriveBorderStyle = (style) => {
