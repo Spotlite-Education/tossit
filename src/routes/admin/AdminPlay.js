@@ -96,32 +96,31 @@ const AdminPlay = ({ players }) => {
                         }
                     })}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <button
-                        className='small-button'
-                        style={{ margin: 15, opacity: tossed ? 0.5 : 1 }}
-                        disabled={tossed}
-                        onClick={() => {
-                            socket.emit('tossRoom', params.roomCode);
-                            setTossed(true);
-                        }}
-                    >
-                        {tossed ? 'TOSSED' : 'TOSS'}
-                    </button> {/* TODO: absolute positioning */}
-                    <button
-                        className='small-button'
-                        style={{ width: 'auto', paddingLeft: 10, paddingRight: 10, opacity: returned ? 0.5 : 1 }}
-                        disabled={returned}
-                        onClick={() => {
-                            socket.emit('returnTosses', params.roomCode);
-                            setReturned(true);
-                        }}
-                    >
-                        RETURN TOSSES
-                    </button> {/* TODO: absolute positioning */}
-                </div>
-                {/* TODO: enter summary page */}
             </main>
+            <div id='footer' style={{ gap: '1.5rem', paddingTop: '1.3rem', paddingBottom: '1.3rem' }}>
+                <button
+                    className='small-button'
+                    style={{ margin: 15 }}
+                    onClick={() => {
+                        socket.emit('tossRoom', params.roomCode);
+                        setTossed(true);
+                    }}
+                >
+                    TOSS
+                </button>
+                <button
+                    className='small-button'
+                    style={{ width: 'auto', paddingLeft: 10, paddingRight: 10, opacity: (returned || !tossed) ? 0.5 : 1 }}
+                    disabled={returned || !tossed}
+                    onClick={() => {
+                        socket.emit('returnTosses', params.roomCode);
+                        setReturned(true);
+                        {/* TODO: enter summary page */}
+                    }}
+                >
+                    RETURN TOSSES
+                </button>
+            </div>
         </>
     );
 }

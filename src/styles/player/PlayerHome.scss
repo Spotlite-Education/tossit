@@ -34,11 +34,12 @@ main {
     font-family: 'Jost-Book', sans-serif;
     font-size: 1.5rem;
     text-align: center;
-    &:hover {
+    &:hover:enabled {
         cursor: pointer;
         filter: brightness(1.1);
+        animation: pulse-shadow 0.5s;
     }
-    &:active {
+    &:active:enabled {
         filter: brightness(1);
     }
 }

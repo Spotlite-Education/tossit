@@ -45,7 +45,7 @@ const PlayerCreate = () => {
                 height: 100,
                 textAlign: 'center',
             }}>
-                <h1>Create:</h1>
+                <h1>CREATE:</h1>
             </nav>
             <main>
                 <form onSubmit={(e) => handleCreate(e)}>

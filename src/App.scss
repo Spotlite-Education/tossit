@@ -25,6 +25,10 @@ body {
     background-color: $bg-color;
 }
 
+main {
+    margin-bottom: 6rem;
+}
+
 .link-box {
     display: flex;
     justify-content: center;
@@ -62,6 +66,11 @@ body {
     margin-top: 3rem;
 }
 
+@keyframes pulse-shadow {
+    from {box-shadow: 0px 0px 0px 0px $secondary;}
+    to {box-shadow: 0px 0px 5px 20px rgba(0, 0, 0, 0);}
+}
+
 .big-button {
     position: relative;
     width: 15rem;
@@ -71,11 +80,12 @@ body {
     background-color: $secondary;
     font-family: 'Jost-Book', sans-serif;
     font-size: 1.5rem;
-    &:hover {
+    &:hover:enabled {
         cursor: pointer;
         filter: brightness(1.1);
+        animation: pulse-shadow 0.5s;
     }
-    &:active {
+    &:active:enabled {
         filter: brightness(1);
     }
 }
@@ -90,11 +100,12 @@ body {
     font-family: 'Jost-Book', sans-serif;
     font-size: 1.5rem;
     text-align: center;
-    &:hover {
+    &:hover:enabled {
         cursor: pointer;
         filter: brightness(1.1);
+        animation: pulse-shadow 0.5s;
     }
-    &:active {
+    &:active:enabled {
         filter: brightness(1);
     }
 }
@@ -104,7 +115,7 @@ body {
     padding-top: 2rem;
     padding-bottom: 2rem;
     background-color: rgba(76,88,117,0.4);
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     display: flex;

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 const ReturnedResponse = ({ username, isCorrect }) => {
     return (
-        <div style={{ width: 200, height: 50, flexDirection: 'row' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', width: 200, height: 50 }}>
             <h3 style={{ marginRight: 20 }}>{username}:</h3>
-            <h4>{isCorrect ? 'Correct' : 'Incorrect'}</h4>
+            <h3>{isCorrect ? 'Correct' : 'Incorrect'}</h3>
         </div>
     );
 }
@@ -16,17 +16,24 @@ ReturnedResponse.propTypes = {
 
 const PlayerReturn = ({ returnedResponses }) => {
     let correctPlayers = 0;
-    for (let returnedResponse in returnedResponses) {
-        if (returnedResponse.isCorrect) correctPlayers++;
+    for (let i = 0; i < returnedResponses.length; i++) {
+        correctPlayers += returnedResponses[i].isCorrect;
     }
-    const correctRate = correctPlayers / returnedResponses.length; // TODO
+    const correctPercentage = correctPlayers / returnedResponses.length * 100; // TODO
     
     return (
         <>
+            <nav id='nav-bar' style= {{
+                height: 100,
+                textAlign: 'center',
+            }}>
+                <h1>TOSSES RETURNED:</h1>
+            </nav>
             <main>
-                <h1>Toss Returned:</h1> {/* TODO: PUT IN NAVBAR */}
-                <br /> {/* TODO: make sure this works */}
-                <h2>In total, {correctPlayers} players answered correctly out of {returnedResponses.length} total questions. The correct answer rate is {correctRate}.</h2>
+                {returnedResponses.length === 1 ?
+                    <h2>The 1 player who responded got it {correctPlayers === 1 ? 'correct' : 'incorrect'}.</h2> :
+                    <h2>Out of {returnedResponses.length} players who responded, {correctPercentage}% of them were correct.</h2>
+                }
                 <br />
                 <h3>Player Responses:</h3>
                 {returnedResponses.map((returnedResponse, index) => {

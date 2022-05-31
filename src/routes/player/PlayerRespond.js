@@ -8,7 +8,7 @@ const PlayerRespond = ({ receivedQuestion, response, setResponse, handleRespond 
                 height: 100,
                 textAlign: 'center',
             }}>
-                <h1>Question: {receivedQuestion}</h1>
+                <h1>QUESTION: {receivedQuestion}</h1>
             </nav>
             <main>
                 <form
