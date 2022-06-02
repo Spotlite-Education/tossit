@@ -9,15 +9,18 @@
     width: 100%;
     height: 10rem;
     background-color: App.$secondary;
-    font-family: 'Jost-Book', sans-serif;
+    font-family: 'Sans-Regular', sans-serif;
     h1 {
         font-size: 2.5rem;
     }
 }
 
-#room-code {
-    font-family: 'Jost-Thin', sans-serif;
-    letter-spacing: 0.2rem;
+.room-code {
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 180%)
 }
 
 main {
@@ -37,13 +40,14 @@ main {
     padding-right: 1rem;
     border: transparent solid 2.5px;
     border-radius: 10px;
-    font-family: 'Jost-Book', sans-serif;
+    font-family: 'Sans-Regular', sans-serif;
     font-size: 1.5rem;
     background-color: transparent;
-    transition: all 0.15s;
+    transition: all 0.5s;
     &:hover {
         cursor: pointer;
-        border: $highlight-color solid 2.5px;
+        //border: $highlight-color solid 2.5px;
+        //color: scale-color(change-color($highlight-color, $alpha: 0.75), $lightness: +15%);
         background-color: scale-color(change-color($highlight-color, $alpha: 0.75), $lightness: +15%);
     }
     &:active {

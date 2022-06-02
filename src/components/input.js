@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
  * middleDash: whether or not to display a middle dash
  * outlineStyle: style of the inputBoxes. 'solid', 'dashed' or 'underscore' (default: 'underscore')
  */
-const inputBoxWidth = 3;
+const inputBoxWidth = 2.5;
 const DashedInput = ({ width, height, numInputs, outlineStyle, onSubmit }) => {
     const outline = deriveOutline(outlineStyle);
     const handleChange = (index, e) => {

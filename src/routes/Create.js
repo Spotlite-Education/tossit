@@ -39,6 +39,30 @@ const Create = () => {
 
     return (
         <main>
+            
+            <img src={require('../pictures/logocombined.svg').default} className='logo' />
+            <p style={{
+                position: 'absolute',
+                fontSize: '1.2rem',
+                fontFamily: 'Sans-Regular',
+                top: '52%',
+                left: '48%',
+                transform: 'translate(-30%, 0%)',
+            }}>Teacher Mode</p>
+            <button
+                style= {{
+                    left: '50%',
+                    top: '50%',
+                }}
+                className='big-button'
+                onClick={() => {
+                    handleClick();
+                }}
+            >
+                Create Room
+            </button>
+            <Corner corner='tr'>
+                <Link to='/' className='link-text'>To Player Mode</Link>
             <div style={{ top: 0, left: 0, position: 'absolute', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                 <h1 id='title'>CREATE - IT</h1>
                 <p style={{ fontStyle: 'italic', marginBottom: '3rem' }}>Teacher Mode</p>

@@ -82,27 +82,27 @@ const Join = () => {
     return (
       <>
         <main>
+            {/* Title */}
             {!showUsername && <React.Fragment>
-                {/*<h1 id='title'>TOSS - IT</h1>*/}
-                <img src={require('../logoforrealsies.svg').default} style= {{
-                    position: 'absolute',
-                    top: '33%',
-                    left: '26%',
-                    height: 175,
-                }} />
-                <Input width='22.5%' height='3.5rem' numInputs={6} outlineStyle='underscore' onSubmit={newRoomCode => {
+
+                <img src={require('../pictures/logocombined.svg').default} className='logo' />
+                
+                <Input width='30%' height='2.5rem' numInputs={6} outlineStyle='underscore' onSubmit={newRoomCode => {
                     setRoomCode(newRoomCode);
                     setShowUsername(true);
                 }} />
             </React.Fragment>}
+            
+            {/* Enter name */}
             {showUsername && <React.Fragment>
                 <h1 id='raised-subtitle'>NAME</h1>
                 <form onSubmit={(e) => handleJoin(e, username)}>
                     <input type='text' id='nameInput' autoFocus maxLength={20} value={username} onChange={(e) => handleChange(e)}></input>
                 </form>
             </React.Fragment>}
-            <Corner corner='tr' className='link-box'>
-                <Link className='link-text' to='/create'>Admin Mode</Link>
+
+            <Corner corner='tr'>
+                <Link className='link-text' to='/create'>To Teacher Mode</Link>
             </Corner>
         </main>
       </>
