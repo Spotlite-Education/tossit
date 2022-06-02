@@ -1,7 +1,7 @@
 import React from 'react';
 import { SocketContext, socket } from './context/socket';
 import './App.scss'; 
-import AnimatedRoutes from './components/AnimatedRoutes';
+import AnimatedRoutes from './AnimatedRoutes';
 
 function App() {
   return (

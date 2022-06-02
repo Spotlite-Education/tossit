@@ -1,9 +1,9 @@
 import React from 'react'
 import { Routes, Route, useLocation} from 'react-router-dom';
-import Join from '../routes/Join';
-import Create from '../routes/Create';
-import AdminHome from '../routes/admin/AdminHome';
-import PlayerHome from '../routes/player/PlayerHome';
+import Join from './routes/Join';
+import Create from './routes/Create';
+import AdminHome from './routes/admin/AdminHome';
+import PlayerHome from './routes/player/PlayerHome';
 
 import { AnimatePresence } from 'framer-motion'
 function AnimatedRoutes() {

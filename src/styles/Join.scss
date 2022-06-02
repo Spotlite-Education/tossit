@@ -24,14 +24,14 @@
     background-color: transparent;
     &:focus {
         outline: none;
-        animation: blinking-bg 1s infinite;
+        animation: blinking-bg 1.2s infinite;
     }
 }
 
 @keyframes blinking-bg {
-    0% {background-color: rgba(76,88,117,0);}
+    0% {background-color: rgba(105, 119, 153, 0);}
     50% {background-color: rgba(76,88,117,0.5);}
-    100% {background-color: rgba(76,88,117,0);}
+    100% {background-color: rgba(105, 119, 153, 0);}
 }
 
 //TODO: find more efficient way to do both the below subtitles and integrate into App.scss

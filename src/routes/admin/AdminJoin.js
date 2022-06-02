@@ -34,8 +34,7 @@ const AdminJoin = ({ players, handleStart }) => {
             transition= {{
                 duration: 3,
                 times: [0, 0.4, 0.6, 1]
-            }}
- 
+            }} 
             >
             
             <div className='room-code'>
@@ -52,59 +51,56 @@ const AdminJoin = ({ players, handleStart }) => {
 
         </motion.div>
 
-            <main style={{ padding: '1.5rem' }}>
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
-                    {players.map((player, index) => {
-                        return <PlayerNameBox key={index} username={player.username} handleKick={() => handleKick(player.socketId)} />;
-                    })}
-                </div>
-            </main>
-            <div id='footer'>
-                <p style={{ fontSize: '1.8rem' }}>Players joined: {players.length}</p>
-                { players.length >= 2 && 
-                    <button
-                        className='big-button'
-                        style={{ 
-                            bottom: '1rem',
-                            right: '1rem',                            
-                        }}
-                        onClick={() => {
-                            socket.emit('startSession', params.roomCode);
-                            handleStart();
-                        }}
-                    >
-                        Start
-                    </button>
-                }
-            </div>
-                { players.length >= 1 &&
-                    <div style={{
-                        animation: 'fadeIn 1s',
-                        fontFamily: 'Sans-Regular',
-                        left: '90%',
-                        top: '75%',
-                        fontSize: '1.5rem'
-                    }}>
-                        {players.length} players
-                    </div>
-                }
-                <div style={{ 
-                    display: 'flex',
-                    flexWrap: 'wrap', 
-                    justifyContent: 'start',
-                    marginTop: 140
-                    }}>
-                    {players.map((player, index) => {
-                        return <PlayerNameBox key={index} username={player.username} handleKick={() => handleKick(player.socketId)} />;
-                    })}
-                </div>
-                
-            </main>
+        <motion.div
+            animate={{
+                opacity: [0, 0, 1],
+            }}
+            transition= {{
+                duration: 4,
+                times: [0, 0.8, 1]
+            }} 
+            id='footer'
+            >
+            <p style={{ 
+                fontSize: '1.5rem',
+                }}>
+            Players joined: {players.length}</p>
 
-            </div>
-        </>
+            { players.length >= 2 && 
+                <button
+                    className='big-button'
+                    style={{ 
+                        backgroundColor: 'rgba(76,88,117,255)',
+                        top: '54%',
+                        left: '89%',     
+                                             
+                    }}
+                    onClick={() => {
+                        socket.emit('startSession', params.roomCode);
+                        handleStart();
+                    }}
+                >
+                    Start
+                </button>
+            }
+        </motion.div>
+    
+
+        <div style={{ 
+            position: 'absolute',
+            display: 'flex',
+            flexWrap: 'wrap', 
+            justifyContent: 'start',
+            marginTop: 190
+            }}>
+            {players.map((player, index) => {
+                return <PlayerNameBox key={index} username={player.username} handleKick={() => handleKick(player.socketId)} />;
+            })}
+        </div>
+        </>                
     );
 };
+
 AdminJoin.propTypes = {
     players: PropTypes.array.isRequired,
     handleStart: PropTypes.func.isRequired,
