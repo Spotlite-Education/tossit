@@ -2,10 +2,11 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import Corner from '../components/Corner';
-import { LoadingCircle } from '../components/Loading';
+// import { LoadingCircle } from '../components/Loading';
 import '../styles/Join.scss';
 import { SocketContext } from '../context/socket';
-//import { LoadingPlane } from '../components/LoadingPlane';
+import { LoadingPlane } from '../components/LoadingPlane';
+import { TossPlanes } from '../components/TossPlanes';
 import CombinedLogo from '../assets/images/logocombined.svg';
 
 const Join = () => {
@@ -55,7 +56,7 @@ const Join = () => {
         case 'loading':
             return (
                 <div id='loading'>
-                    <LoadingCircle speed={1} className='loading-circle' />
+                    <TossPlanes/>
                     <p className='loading-text'>Joining the room...</p>
                 </div>
             );
@@ -65,9 +66,8 @@ const Join = () => {
         case 'waiting':
             return (
                 <div id='loading'>
-                    {/* <LoadingPlane speed={1} className='loading-plane' /> */}
-                    <LoadingCircle speed={1} className='loading-circle' />
-                    <p className='loading-text'>Waiting for Start...</p>
+                    <LoadingPlane/>
+                    <p className='loading-text'>Waiting for start...</p>                    
                 </div>
             );
         case 'joinTransition':
@@ -76,7 +76,7 @@ const Join = () => {
                 navigate(`/${roomCode}`);
             }, 1500);
             return (
-                <h1 id='centered-subtitle'>Create a Question!</h1> // TODO: make text animate by moving upwards, and then switch status to joined
+                <h1 id='centered-subtitle'>Create a question!</h1> // TODO: make text animate by moving upwards, and then switch status to joined
             );
     }
 
