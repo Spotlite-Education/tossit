@@ -43,7 +43,7 @@ const PlayerCreate = () => {
         const id = generateId();
         const index = questionData.answerChoices.length + 1;
         setQuestionData({ ...questionData, answerChoices: [...questionData.answerChoices, { id, statement: 'Answer #' + index, correct: false }] });
-        if (questionData.answerChoices.length === 1) setAnswerData(0);
+        if (questionData.answerChoices.length === 1 || questionData.answerChoices.length === 0) setAnswerData('0');
     }, [questionData]);
 
     const handleChangeMcqAnswer = React.useCallback((id) => {
@@ -54,7 +54,7 @@ const PlayerCreate = () => {
         });
         questionData.answerChoices[indexOf].correct = true;
         handleUpdateMcqChoice(id, 'correct', !questionData.answerChoices[indexOf].correct);
-        setAnswerData(indexOf);
+        setAnswerData(indexOf.toString());
     }, [questionData]);
 
     const handleUpdateMcqChoice = React.useCallback((id, property, value) => {
@@ -71,7 +71,7 @@ const PlayerCreate = () => {
     }, [questionData]);
 
     const formTypeBoxes = React.useCallback(() => {
-        return questionTypeNames.map((name, index) => {
+        return questionTypeNames.slice(1).map((name, index) => { // temporarily only allow mcq
             const selected = index === questionTypeValues.indexOf(questionData.type); 
 
             return (
@@ -80,7 +80,7 @@ const PlayerCreate = () => {
                     style={selected ? { borderColor: 'white' } : {}}
                     onClick={(e) => {
                         e.preventDefault();
-                        handleUpdateQuestion('type', questionTypeValues[index])
+                        handleUpdateQuestion('type', questionTypeValues[index + 1])
                     }}
                 >
                     {name}
@@ -131,7 +131,7 @@ const PlayerCreate = () => {
                                 <Answer
                                     type={questionData.type}
                                     questionData={questionData}
-                                    correctAnswer={answerData}
+                                    correctAnswer={parseInt(answerData)}
                                     handleChangeAnswer={handleChangeMcqAnswer}
                                     handleUpdateChoice={handleUpdateMcqChoice}
                                     handleRemoveChoice={handleRemoveMcqChoice}

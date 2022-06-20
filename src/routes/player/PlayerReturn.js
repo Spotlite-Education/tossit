@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 const ReturnedResponse = ({ username, isCorrect }) => {
     return (
         <div style={{ display: 'flex', flexDirection: 'row', width: 200, height: 50 }}>
-            <h3 style={{ marginRight: 20 }}>{username}:</h3>
-            <h3>{isCorrect ? 'Correct' : 'Incorrect'}</h3>
+            <h4 style={{ marginRight: 20 }}>{username}:</h4>
+            <span>{isCorrect ? 'Correct' : 'Incorrect'}</span>
         </div>
     );
 }
@@ -27,14 +27,13 @@ const PlayerReturn = ({ returnedResponses }) => {
                 height: 100,
                 textAlign: 'center',
             }}>
-                <h1>TOSSES RETURNED:</h1>
+                <h1>Tosses Returned!</h1>
             </nav>
-            <main>
+            <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '1.5rem' }}>
                 {returnedResponses.length === 1 ?
-                    <h2>The 1 player who responded got it {correctPlayers === 1 ? 'correct' : 'incorrect'}.</h2> :
-                    <h2>Out of {returnedResponses.length} players who responded, {correctPercentage}% of them were correct.</h2>
+                    <h4 style={{ marginBottom: '1.5rem' }}>The 1 player who responded got it {correctPlayers === 1 ? 'correct' : 'incorrect'}.</h4> :
+                    <h4 style={{ marginBottom: '1.5rem' }}>Out of {returnedResponses.length} players who responded, {correctPercentage}% of them were correct.</h4>
                 }
-                <br />
                 <h3>Player Responses:</h3>
                 {returnedResponses.map((returnedResponse, index) => {
                     return <ReturnedResponse

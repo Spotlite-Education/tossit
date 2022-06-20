@@ -4,9 +4,9 @@ import { FRQ, MCQ } from './PlayerCreate';
 import { generateId } from '../../util/random';
 
 const PlayerRespond = ({ questionData, response, setResponse, handleRespond }) => {
-    const handleSelectChoice = React.useCallback((index) => {
-        setResponse(index);
-    }, [questionData, response]);
+    const handleSelectChoice = (index) => {
+        setResponse(index.toString());
+    };
 
     return (
         <>
@@ -25,7 +25,7 @@ const PlayerRespond = ({ questionData, response, setResponse, handleRespond }) =
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}
                     onSubmit={(e) => handleRespond(e)}
                 >
-                    <Answer selectedIndex={response} questionData={questionData} handleClick={handleSelectChoice} />
+                    <Answer selectedIndex={parseInt(response)} questionData={questionData} handleClick={handleSelectChoice} />
                     <input className='submit-button' type='submit' value='Submit Answer' />
                 </form>
             </main>

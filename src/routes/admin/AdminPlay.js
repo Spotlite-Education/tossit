@@ -33,14 +33,16 @@ const PlayerWorkBox = ({ username, questionData, answerData }) => {
     */
 
     const formAnswers = React.useCallback(() => {
+        const intAnswer = parseInt(answerData);
+
         switch (questionData.type) {
             case MCQ:
                 return questionData.answerChoices.map((choice, index) => {
                     const id = generateId();
-                    return <Choice key={id} statement={choice.statement} correct={index === answerData} />
+                    return <Choice key={id} statement={choice.statement} correct={index === intAnswer} />
                 });
             case FRQ:
-                return <p>{answerData}</p>
+                return <p style={{ marginBottom: '1rem', color: 'rgb(54, 54, 54)' }}>{answerData}</p>
             default:
                 return null;
         }
@@ -116,6 +118,9 @@ const AdminPlay = ({ players }) => {
     
     const [tossed, setTossed] = React.useState(false);
     const [returned, setReturned] = React.useState(false);
+    
+    const tossedPlayers = players.filter(player => player.toss.question);
+    const canToss = tossedPlayers.length === players.length;
 
     return (
         <>
@@ -147,7 +152,7 @@ const AdminPlay = ({ players }) => {
                     })}
                 </div>
             </main>
-            <div id='footer' style={{ gap: '1.5rem', paddingTop: '1.3rem', paddingBottom: '1.3rem' }}>
+            <div id='footer' style={{ gap: '1.5rem', paddingTop: '1.3rem', paddingBottom: '1.3rem', opacity: canToss ? 1 : 0.5 }}>
                 <button
                     className='small-button'
                     style={{ margin: 15 }}
@@ -155,6 +160,7 @@ const AdminPlay = ({ players }) => {
                         socket.emit('tossRoom', params.roomCode);
                         setTossed(true);
                     }}
+                    disabled={!canToss}
                 >
                     TOSS
                 </button>

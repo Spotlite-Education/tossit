@@ -6,6 +6,7 @@ import PlayerCreate from './PlayerCreate';
 import PlayerRespond from './PlayerRespond';
 import PlayerResults from './PlayerResults';
 import PlayerReturn from './PlayerReturn';
+import { FRQ } from './PlayerCreate';
 
 const PlayerHome = () => {
     const socket = React.useContext(SocketContext);
@@ -54,7 +55,8 @@ const PlayerHome = () => {
         socket.emit('respondToss', { response, roomCode: params.roomCode } );
         socket.once('tossAnswer', ({ isCorrect, answer }) => { // memory leak TODO
             setIsCorrect(isCorrect);
-            setCorrectAnswer(answer);
+            const answerAsInt = parseInt(answer);
+            receivedQuestion.type === FRQ ? setCorrectAnswer(answer) : setCorrectAnswer({...receivedQuestion.answerChoices[answer], index: answerAsInt});
             setStatus('result');
         });
     }
@@ -72,6 +74,7 @@ const PlayerHome = () => {
         case 'result':
             return <PlayerResults
                 showCorrect={receivedQuestion.type !== 'frq'}
+                questionData={receivedQuestion}
                 response={response}
                 isCorrect={isCorrect}
                 correctAnswer={correctAnswer}
