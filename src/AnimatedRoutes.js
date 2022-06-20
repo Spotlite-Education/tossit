@@ -18,7 +18,7 @@ function AnimatedRoutes() {
             <Route path=':roomCode' element={<PlayerHome/>} />
             {/* <Route path='*' element={<ErrorPage />} */}
             </Routes>
-      </AnimatePresence>
+        </AnimatePresence>
     )
 }
 

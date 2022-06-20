@@ -6,6 +6,7 @@ import { LoadingCircle } from '../components/Loading';
 import '../styles/Join.scss';
 import { SocketContext } from '../context/socket';
 //import { LoadingPlane } from '../components/LoadingPlane';
+import CombinedLogo from '../assets/images/logocombined.svg';
 
 const Join = () => {
     const [roomCode, setRoomCode] = React.useState('');
@@ -66,7 +67,7 @@ const Join = () => {
                 <div id='loading'>
                     {/* <LoadingPlane speed={1} className='loading-plane' /> */}
                     <LoadingCircle speed={1} className='loading-circle' />
-                    <p className='loading-text'>WAITING FOR START...</p>
+                    <p className='loading-text'>Waiting for Start...</p>
                 </div>
             );
         case 'joinTransition':
@@ -75,7 +76,7 @@ const Join = () => {
                 navigate(`/${roomCode}`);
             }, 1500);
             return (
-                <h1 id='centered-subtitle'>CREATE A QUESTION!</h1> // TODO: make text animate by moving upwards, and then switch status to joined
+                <h1 id='centered-subtitle'>Create a Question!</h1> // TODO: make text animate by moving upwards, and then switch status to joined
             );
     }
 
@@ -85,7 +86,7 @@ const Join = () => {
             {/* Title */}
             {!showUsername && <React.Fragment>
 
-                <img src={require('../pictures/logocombined.svg').default} className='logo' />
+                <img src={CombinedLogo} className='logo' />
                 
                 <Input width='30%' height='2.5rem' numInputs={6} outlineStyle='underscore' onSubmit={newRoomCode => {
                     setRoomCode(newRoomCode);

@@ -20,8 +20,159 @@
 }
 
 main {
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
     padding: 1.5rem;
+    padding-top: 0;
     font-size: 2rem;
+}
+
+#menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 50%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 1.5rem;
+    border-left: 2px solid App.$secondary;
+    border-right: 2px solid App.$secondary;
+
+    button {
+        width: auto;
+        height: 2.5rem;
+        border: none;
+        box-sizing: border-box;
+        margin-right: 1.5rem;
+        padding: .75rem;
+        border-style: solid;
+        border-radius: 15px;
+        border-width: 1.5px;
+        border-color: App.$secondary;
+        background-color: App.$secondary;
+        transition: all 0.25s;
+    
+        &:hover {
+            opacity: 0.75;
+        }
+    }
+
+    .form-section {
+        flex: 1;
+        display: inline-block;
+        box-sizing: border-box;
+        width: 100%;
+        margin-bottom: 1rem;
+
+        div {
+            pointer-events: none;
+        }
+        
+        h4 {
+            margin-bottom: 0.25rem;
+        }
+        
+        input {
+            width: '100%';
+            height: 40px;
+            box-sizing: border-box;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+            outline: none;
+            border: none;
+            border-radius: 15px;
+            font-family: 'Sans-Medium', sans-serif;
+        }
+        
+        input[type=text] {
+            min-width: 100%;
+            color: black;
+        }
+    
+        #mcq-bar {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            
+            margin-bottom: 1rem;
+    
+            button {
+                margin-left: auto;
+                margin-right: 0;
+            }
+        }
+    
+        .choice {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 4rem;
+            box-sizing: border-box;
+            margin-bottom: 0.5rem;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+            border-style: solid;
+            border-radius: 15px;
+            border-width: 1.5px;
+            border-color: App.$secondary;
+            background-color: App.$secondary;
+            pointer-events: all;
+        
+            label {
+                flex: 1;
+                margin-right: 0.75rem;
+                font-size: 0; // https://css-tricks.com/fighting-the-space-between-inline-block-elements/
+            }
+        
+            input[type=text] {
+                border-style: dashed;
+                border-radius: 10px;
+                border-width: 1px;
+                border-color: transparent;
+                overflow-wrap: break-word;
+                color: white;
+                background-color: transparent;
+                transition: all 0.25s;
+            }
+        
+            .circle-button-check {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 1.75rem;
+                height: 1.75rem;
+                margin-right: 0.75rem;
+                padding: 0.25rem;
+                border-radius: 5000px;
+            }
+        
+            .circle-button-delete {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 2.5rem;
+                height: 2.5rem;
+                margin-right: 0;
+                border-radius: 5000px;
+                font-family: 'Sans-Medium';
+                font-size: 1.5rem;
+                color: scale-color(change-color(red, $alpha: 0.75), $lightness: +15%);
+            }
+            button {
+                &:hover {
+                    opacity: 1;
+                    filter: brightness(200%);
+                }
+                &:active {
+                    opacity: 0.5;
+                    filter: brightness(200%);
+                }
+            }
+        }    
+    }
 }
 
 .submit-button {
@@ -41,5 +192,29 @@ main {
     }
     &:active:enabled {
         filter: brightness(1);
+    }
+}
+
+.respond-choice {
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    padding: 1rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    text-align: left;
+    color: rgb(54, 54, 54);
+    border: none;
+    background-color: gainsboro;
+    transition: all 0.25s;
+
+    &:hover {
+        filter: brightness(0.85);
+    }
+
+    &:active {
+        filter: brightness(0.95);
     }
 }

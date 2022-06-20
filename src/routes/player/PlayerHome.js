@@ -52,7 +52,7 @@ const PlayerHome = () => {
         if (e.keyCode === 13) return false;
 
         socket.emit('respondToss', { response, roomCode: params.roomCode } );
-        socket.on('tossAnswer', ({ isCorrect, answer }) => { // memory leak TODO
+        socket.once('tossAnswer', ({ isCorrect, answer }) => { // memory leak TODO
             setIsCorrect(isCorrect);
             setCorrectAnswer(answer);
             setStatus('result');
@@ -64,7 +64,7 @@ const PlayerHome = () => {
             return <PlayerCreate />;
         case 'respond':
             return <PlayerRespond
-                receivedQuestion={receivedQuestion.statement}
+                questionData={receivedQuestion}
                 response={response}
                 setResponse={setResponse}
                 handleRespond={handleRespond}

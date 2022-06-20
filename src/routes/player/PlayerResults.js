@@ -13,7 +13,7 @@ const PlayerResults = ({ showCorrect, response, isCorrect=false, correctAnswer }
                 height: 100,
                 textAlign: 'center',
             }}>
-                <h1>RESULT: {resultText}</h1>
+                <h1>Result: {resultText}</h1>
             </nav>
             <main>
                 <h4>Your Answer:</h4>

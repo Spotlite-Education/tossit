@@ -6,11 +6,11 @@
         font-style: normal;
     }
 }
-@include font('Sans-Thin', 'ProductSans-Thin');
-@include font('Sans-Light', 'ProductSans-Light');
-@include font('Sans-Regular', 'ProductSans-Regular');
-@include font('Sans-Medium', 'ProductSans-Medium');
-@include font('Sans-Bold', 'ProductSans-Bold');
+@include font('Sans-Thin', 'Inter-Thin');
+@include font('Sans-Light', 'Inter-Light');
+@include font('Sans-Regular', 'Inter-Regular');
+@include font('Sans-Medium', 'Inter-Medium');
+@include font('Sans-Bold', 'Inter-Bold');
 
 $bg-color: rgba(74,186,255,255);
 $secondary: rgba(76,88,117,0.4);

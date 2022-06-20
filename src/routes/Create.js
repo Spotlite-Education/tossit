@@ -5,6 +5,7 @@ import { generateCode } from '../util/random';
 import { LoadingCircle } from '../components/Loading';
 import { SocketContext } from '../context/socket';
 import '../styles/Create.scss';
+import CombinedLogo from '../assets/images/logocombined.svg';
 
 const Create = () => {
     const [loading, setLoading] = React.useState(false);
@@ -40,7 +41,7 @@ const Create = () => {
     return (
         <main>
             
-            <img src={require('../pictures/logocombined.svg').default} className='logo' />
+            <img src={CombinedLogo} className='logo' />
             <p style={{
                 position: 'absolute',
                 fontSize: '1.2rem',
