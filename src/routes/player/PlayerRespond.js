@@ -10,7 +10,7 @@ const PlayerRespond = ({ questionData, response, setResponse, handleRespond }) =
 
     return (
         <>
-            <nav id='nav-bar' style= {{
+            <nav id='nav-bar' style={{
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -18,7 +18,8 @@ const PlayerRespond = ({ questionData, response, setResponse, handleRespond }) =
                 height: 100,
                 textAlign: 'center',
             }}>
-                <h1 style={{ fontSize: '2rem' }}>Question: {questionData.statement}</h1>
+                <h1 style={{ position: 'absolute', left: '1.5rem' }}>Question:</h1>
+                <h1 style={{ fontSize: '2rem' }}>{questionData.statement}</h1>
             </nav>
             <main>
                 <form

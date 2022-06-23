@@ -7,6 +7,7 @@ import PlayerRespond from './PlayerRespond';
 import PlayerResult from './PlayerResult';
 import PlayerReturn from './PlayerReturn';
 import { FRQ } from './PlayerCreate';
+import Corner from '../../components/Corner';
 
 const PlayerHome = () => {
     const socket = React.useContext(SocketContext);
@@ -64,31 +65,44 @@ const PlayerHome = () => {
         });
     }
     
+    let PlayerPage = null;
     switch(status) {
         case 'create':
-            return <PlayerCreate />;
+            PlayerPage = <PlayerCreate />;
+            break;
         case 'respond':
-            return <PlayerRespond
+            PlayerPage = <PlayerRespond
                 questionData={receivedQuestion}
                 response={response}
                 setResponse={setResponse}
                 handleRespond={handleRespond}
             />;
+            break;
         case 'result':
-            return <PlayerResult
+            PlayerPage = <PlayerResult
                 showCorrect={receivedQuestion.type !== 'frq'}
                 questionData={receivedQuestion}
                 response={response}
                 isCorrect={isCorrect}
                 correctAnswer={correctAnswer}
             />;
+            break;
         case 'return':
-            return <PlayerReturn
+            PlayerPage = <PlayerReturn
                 responses={responses}
                 othersResponses={othersResponses}
             />;
-        default: return null;
+            break;
     }
+
+    return (
+        <>
+            {PlayerPage}
+            <Corner corner='tr' className='link-box'>
+                <p>TODO: Username | Score</p> {/* TODO: get username and score (in one function) from backend using socket.on - backend emit only when updateScore() called! */}
+            </Corner>
+        </>
+    );
 }
 
 export default PlayerHome;

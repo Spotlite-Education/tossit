@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { calculateScore } from '../../util/score';
 
 const PlayerResult = ({ player, index }) => {
     let backgroundColor;
@@ -17,7 +16,7 @@ const PlayerResult = ({ player, index }) => {
         <div style={{ width: '100%', backgroundColor, borderRadius: '1rem', display: 'flex', flexDirection: 'row', gap: '3rem', alignItems: 'center', justifyContent: 'center' }}>
             <h2>{player.username}</h2>
             <p>|</p>
-            <p>{calculateScore(player)}</p>
+            <p>{player.score}</p>
         </div>
     );
 }
@@ -28,7 +27,7 @@ PlayerResult.propTypes = {
 
 const AdminResults = ({ players }) => {
     const sortedPlayers = players.sort((a, b) => {
-        return calculateScore(b) - calculateScore(a);
+        return b.score - a.score;
     });
 
     return (
