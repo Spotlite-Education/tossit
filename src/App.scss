@@ -11,6 +11,7 @@
 @include font('Sans-Regular', 'Inter-Regular');
 @include font('Sans-Medium', 'Inter-Medium');
 @include font('Sans-Bold', 'Inter-Bold');
+@include font('Mono-Medium', 'RobotoMono-Medium');
 
 $bg-color: rgba(74,186,255,255);
 $secondary: rgba(76,88,117,0.4);
@@ -82,9 +83,8 @@ main {
     margin-top: 3rem;
 }
 
-@keyframes pulse-shadow {
-    from {box-shadow: 0px 0px 0px 0px $secondary;}
-    to {box-shadow: 0px 0px 5px 20px rgba(0, 0, 0, 0);}
+#room-code-text {
+    font-family: 'Mono-Medium', sans-serif;
 }
 
 .big-button {

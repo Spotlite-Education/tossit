@@ -6,6 +6,7 @@ import { LoadingCircle } from '../components/Loading';
 import { SocketContext } from '../context/socket';
 import '../styles/Create.scss';
 import CombinedLogo from '../assets/images/logocombined.svg';
+import * as constants from '../util/constants';
 
 const Create = () => {
     const [loading, setLoading] = React.useState(false);
@@ -16,7 +17,7 @@ const Create = () => {
 
     const handleClick = () => {
         setLoading(true);
-        const randomCode = generateCode(6);
+        const randomCode = generateCode(constants.ROOM_CODE_LEFT_LENGTH, constants.ROOM_CODE_RIGHT_LENGTH);
         setRoomCode(randomCode); // ASYNC APPARENTLY ?????? there was issues with state not updating before connecting
         socket.emit('createRoom', randomCode);
         socket.on('successMessage', () => {

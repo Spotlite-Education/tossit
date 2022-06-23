@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { SocketContext } from '../../context/socket';
-import { motion } from 'framer-motion'
+import { motion } from 'framer-motion';
+import * as constants from '../../util/constants';
 
 const PlayerNameBox = ({ username, handleKick }) => {
     return (
@@ -29,7 +30,7 @@ const AdminJoin = ({ players, handleStart }) => {
         <motion.div
             animate={{
                 opacity: [0, 1, 1, 1],
-                y: [null, -20, -20, -280],
+                y: [null, -20, -20, -300],
             }}
             transition= {{
                 duration: 3,
@@ -43,10 +44,10 @@ const AdminJoin = ({ players, handleStart }) => {
                     textAlign: 'center',
                     fontSize: '2rem',
                 }}>Your room code is:</p>
-                <h1 style={{
+                <h1 id='room-code-text' style={{
                     fontSize: '5rem',
                     textAlign: 'center',
-                }}>{params.roomCode}</h1>
+                }}>{params.roomCode.substring(0, constants.ROOM_CODE_LEFT_LENGTH) + '-' + params.roomCode.substring(constants.ROOM_CODE_RIGHT_LENGTH, params.roomCode.length)}</h1>
             </div>
 
         </motion.div>

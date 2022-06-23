@@ -1,19 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { calculateScore } from '../../util/score';
 
-const PlayerResult = ({ player }) => {
+const PlayerResult = ({ player, index }) => {
+    let backgroundColor;
+    if (index === 0) { // first place
+        backgroundColor = 'rgb(255, 215, 0)';
+    } else if (index === 1) {
+        backgroundColor = 'rgb(192, 192, 192)';
+    } else if (index === 2) {
+        backgroundColor = 'rgb(205, 127, 50)';
+    } else {
+        backgroundColor = 'rgb(159, 173, 181)';
+    }
     return (
-        <div style={{ width: '100%', backgroundColor: 'rgb(159, 173, 181)', borderRadius: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <h1>{player.username}</h1>
+        <div style={{ width: '100%', backgroundColor, borderRadius: '1rem', display: 'flex', flexDirection: 'row', gap: '3rem', alignItems: 'center', justifyContent: 'center' }}>
+            <h2>{player.username}</h2>
+            <p>|</p>
+            <p>{calculateScore(player)}</p>
         </div>
     );
 }
 PlayerResult.propTypes = {
     player: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
 };
 
 const AdminResults = ({ players }) => {
-    const sortedPlayers = players; // TODO: sort players by score, percentage each player got right
+    const sortedPlayers = players.sort((a, b) => {
+        return calculateScore(b) - calculateScore(a);
+    });
 
     return (
         <>
@@ -29,6 +45,7 @@ const AdminResults = ({ players }) => {
                         <PlayerResult
                             key={index}
                             player={player}
+                            index={index}
                         />
                     )}
                 </div>

@@ -37,6 +37,7 @@ const PlayerHome = () => {
 
     React.useEffect(() => {
         socket.on('tossQuestion', questionObject => {
+            setResponse('');
             setReceivedQuestion(questionObject);
             setStatus('respond');
         });

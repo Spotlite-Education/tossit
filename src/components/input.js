@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
  * outlineStyle: style of the inputBoxes. 'solid', 'dashed' or 'underscore' (default: 'underscore')
  */
 const inputBoxWidth = 2.5;
-const DashedInput = ({ width, height, numInputs, outlineStyle, onSubmit }) => {
+const DashedInput = ({ width, height, numInputs, outlineStyle, onSubmit, idxSplit=-1, textId=null }) => {
     const outline = deriveOutline(outlineStyle);
     const handleChange = (index, e) => {
         const keyCode = e.keyCode;
@@ -64,16 +64,20 @@ const DashedInput = ({ width, height, numInputs, outlineStyle, onSubmit }) => {
     const inputEl = React.useRef([]);
 
     React.useEffect(() => {
-        const newNodes = new Array(numInputs);
+        const newNodes = new Array(numInputs + (idxSplit !== -1));
         for (let i = 0; i < values.length; i++) {
             newNodes[i] = <InputBox
                 key={i}
                 ref={ref => inputEl.current.push(ref)}
                 index={i} value={values[i]}
                 style={{ outline: outline }}
+                textId={textId}
                 handleChange={handleChange}
                 caretTransparent={true}
             />;
+        }
+        if (idxSplit !== -1) {
+            newNodes.splice(idxSplit, 0, <p className='input-box' id={textId}>-</p>);
         }
         setNodes(newNodes);
     }, [values]);
@@ -92,6 +96,8 @@ DashedInput.propTypes = {
     numInputs: PropTypes.number.isRequired,
     outlineStyle: PropTypes.string,
     onSubmit: PropTypes.func.isRequired,
+    idxSplit: PropTypes.number,
+    textId: PropTypes.string,
 };
 
 const deriveOutline = (style) => {
@@ -107,12 +113,13 @@ const deriveOutline = (style) => {
     }
 }
 
-const InputBox = React.forwardRef(({ index, value, style, handleChange, caretTransparent=false }, ref) => (
+const InputBox = React.forwardRef(({ index, value, style, handleChange, caretTransparent=false, textId=null }, ref) => (
     <input
         ref={ref}
         type='text'
         value={value}
         className='input-box'
+        id={textId}
         autoFocus={index === 0}
         style={{
             width: `${inputBoxWidth}rem`,
@@ -135,6 +142,7 @@ InputBox.propTypes = {
     style: PropTypes.object,
     handleChange: PropTypes.func.isRequired,
     caretTransparent: PropTypes.bool,
+    textId: PropTypes.string,
 };
 
 const deriveBorderStyle = (style) => {

@@ -88,7 +88,7 @@ const Join = () => {
 
                 <img src={CombinedLogo} className='logo' />
                 
-                <Input width='30%' height='2.5rem' numInputs={6} outlineStyle='underscore' onSubmit={newRoomCode => {
+                <Input width='30%' height='2.5rem' numInputs={6} outlineStyle='underscore' idxSplit={3} textId='room-code-text' onSubmit={newRoomCode => {
                     setRoomCode(newRoomCode);
                     setShowUsername(true);
                 }} />
