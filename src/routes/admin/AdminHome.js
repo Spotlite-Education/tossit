@@ -4,6 +4,7 @@ import { SocketContext } from '../../context/socket';
 import '../../styles/admin/AdminHome.scss';
 import AdminJoin from './AdminJoin';
 import AdminPlay from './AdminPlay';
+import AdminResults from './AdminResults';
 
 const AdminHome = () => {
     const socket = React.useContext(SocketContext);
@@ -25,7 +26,9 @@ const AdminHome = () => {
     const [players, setPlayers] = React.useState([]);
 
     const handlePlayersChanged = React.useCallback(newPlayers => {
-        setPlayers(newPlayers);
+        const sortedPlayers = newPlayers.sort((a, b) => a.username.localeCompare(b.username)); // NOTE: sort to maintain order, otherwise toss shuffles order
+        // TODO: sort by time joined instead of username
+        setPlayers(sortedPlayers);
     });
 
     React.useEffect(() => {
@@ -46,6 +49,11 @@ const AdminHome = () => {
             />;
         case 'play':
             return <AdminPlay
+                players={players}
+                handleEnd={() => setStatus('results')}
+            />;
+        case 'results':
+            return <AdminResults
                 players={players}
             />;
     }

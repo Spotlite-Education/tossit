@@ -4,7 +4,7 @@ import { SocketContext } from '../../context/socket';
 import '../../styles/player/PlayerHome.scss';
 import PlayerCreate from './PlayerCreate';
 import PlayerRespond from './PlayerRespond';
-import PlayerResults from './PlayerResults';
+import PlayerResult from './PlayerResult';
 import PlayerReturn from './PlayerReturn';
 import { FRQ } from './PlayerCreate';
 
@@ -27,12 +27,13 @@ const PlayerHome = () => {
     const [receivedQuestion, setReceivedQuestion] = React.useState({});
     const [response, setResponse] = React.useState('');
 
-    // results
+    // result
     const [isCorrect, setIsCorrect] = React.useState(null);
     const [correctAnswer, setCorrectAnswer] = React.useState('');
 
     // return
-    const [returnedResponses, setReturnedResponses] = React.useState([]);
+    const [responses, setResponses] = React.useState([]);
+    const [othersResponses, setOthersResponses] = React.useState([]);
 
     React.useEffect(() => {
         socket.on('tossQuestion', questionObject => {
@@ -40,8 +41,9 @@ const PlayerHome = () => {
             setStatus('respond');
         });
 
-        socket.on('returnToss', responses => {
-            setReturnedResponses(responses);
+        socket.on('returnToss', ({ responses, othersResponses }) => {
+            setResponses(responses);
+            setOthersResponses(othersResponses);
             setStatus('return');
         });
 
@@ -72,7 +74,7 @@ const PlayerHome = () => {
                 handleRespond={handleRespond}
             />;
         case 'result':
-            return <PlayerResults
+            return <PlayerResult
                 showCorrect={receivedQuestion.type !== 'frq'}
                 questionData={receivedQuestion}
                 response={response}
@@ -81,7 +83,8 @@ const PlayerHome = () => {
             />;
         case 'return':
             return <PlayerReturn
-                returnedResponses={returnedResponses}
+                responses={responses}
+                othersResponses={othersResponses}
             />;
         default: return null;
     }

@@ -5,7 +5,7 @@ import { SocketContext } from '../../context/socket';
 import { FRQ, MCQ } from '../player/PlayerCreate';
 import { generateId } from '../../util/random';
 
-const PlayerWorkBox = ({ username, questionData, answerData }) => {
+const PlayerWorkBox = ({ username, questionData, answerData, responded }) => {
     // const [showing, setShowing] = React.useState('question');
     // const handleSwitch = () => {
     //     switch (showing) {
@@ -31,7 +31,6 @@ const PlayerWorkBox = ({ username, questionData, answerData }) => {
     
     
     */
-
     const formAnswers = React.useCallback(() => {
         const intAnswer = parseInt(answerData);
 
@@ -62,7 +61,7 @@ const PlayerWorkBox = ({ username, questionData, answerData }) => {
                 padding: '1.5rem',
                 paddingTop: '1rem',
                 paddingBottom: '0.5rem',
-                backgroundColor: 'white',
+                backgroundColor: responded ? 'white' : 'rgb(235, 192, 52)',
             }}
         >
             <p style={{ fontSize: '1.25rem', color: 'slategray' }}>{username}&apos;s plane</p>
@@ -75,7 +74,7 @@ PlayerWorkBox.propTypes = {
     username: PropTypes.string.isRequired,
     questionData: PropTypes.object.isRequired,
     answerData: PropTypes.string.isRequired,
-    responses: PropTypes.array.isRequired,
+    responded: PropTypes.bool.isRequired,
 };
 
 const Choice = ({ correct, statement }) => {
@@ -112,15 +111,17 @@ Choice.propTypes = {
     statement: PropTypes.string.isRequired,
 };
 
-const AdminPlay = ({ players }) => {
+const AdminPlay = ({ players, handleEnd }) => {
     const socket = React.useContext(SocketContext);
     const params = useParams();
     
-    const [tossed, setTossed] = React.useState(false);
+    const [tossIteration, setTossIteration] = React.useState(0);
     const [returned, setReturned] = React.useState(false);
     
     const tossedPlayers = players.filter(player => player.toss.question);
-    const canToss = tossedPlayers.length === players.length;
+    const canToss = (tossedPlayers.length === players.length) && (tossIteration < players.length - 1);
+    const canReturn = !returned && tossIteration > 0;
+    const canSummary = returned;
 
     return (
         <>
@@ -146,42 +147,56 @@ const AdminPlay = ({ players }) => {
                                 username={player.username}
                                 questionData={player.toss.question}
                                 answerData={player.toss.answer}
-                                responses={player.responses}
+                                responded={player.responded}
                             />;
                         }
                     })}
                 </div>
             </main>
-            <div id='footer' style={{ gap: '1.5rem', paddingTop: '1.3rem', paddingBottom: '1.3rem', opacity: canToss ? 1 : 0.5 }}>
+            <div id='footer' style={{ display: 'flex', gap: '1.5rem', paddingTop: '1.3rem', paddingBottom: '1.3rem' }}>
                 <button
                     className='small-button'
-                    style={{ margin: 15 }}
+                    style={{ margin: '1rem', opacity: canToss ? 1 : 0.5 }}
+                    disabled={!canToss}
                     onClick={() => {
                         socket.emit('tossRoom', params.roomCode);
-                        setTossed(true);
+                        setTossIteration(tossIteration + 1);
+                        // TODO: add animation after clicking the toss button
                     }}
-                    disabled={!canToss}
                 >
                     TOSS
                 </button>
                 <button
                     className='small-button'
-                    style={{ width: 'auto', paddingLeft: 10, paddingRight: 10, opacity: (returned || !tossed) ? 0.5 : 1 }}
-                    disabled={returned || !tossed}
+                    style={{ width: 'auto', paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canReturn ? 1 : 0.5 }}
+                    disabled={!canReturn}
                     onClick={() => {
                         socket.emit('returnTosses', params.roomCode);
                         setReturned(true);
-                        {/* TODO: enter summary page */}
                     }}
                 >
                     RETURN TOSSES
                 </button>
+                <button
+                    className='small-button'
+                    style={{ width: 'auto', paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canSummary ? 1 : 0.5 }}
+                    disabled={!canSummary}
+                    onClick={handleEnd}
+                >
+                    SUMMARY
+                </button>
+                {tossIteration > 0 &&
+                    <div style={{ width: '24rem', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 'auto', marginRight: '3rem' }}>
+                        <h2>Everyone has tossed {tossIteration} time{tossIteration === 1 ? '' : 's'}.</h2>
+                    </div>
+                }
             </div>
         </>
     );
 }
 AdminPlay.propTypes = {
     players: PropTypes.array.isRequired,
+    handleEnd: PropTypes.func.isRequired,
 };
 
 export default AdminPlay;

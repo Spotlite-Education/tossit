@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ReturnedResponse = ({ username, isCorrect }) => {
+const OtherResponse = ({ username, isCorrect }) => {
     return (
         <div style={{ display: 'flex', flexDirection: 'row', width: 200, height: 50 }}>
             <h4 style={{ marginRight: 20 }}>{username}:</h4>
@@ -9,17 +9,23 @@ const ReturnedResponse = ({ username, isCorrect }) => {
         </div>
     );
 }
-ReturnedResponse.propTypes = {
+OtherResponse.propTypes = {
     username: PropTypes.string.isRequired,
     isCorrect: PropTypes.bool.isRequired,
 };
 
-const PlayerReturn = ({ returnedResponses }) => {
-    let correctPlayers = 0;
-    for (let i = 0; i < returnedResponses.length; i++) {
-        correctPlayers += returnedResponses[i].isCorrect;
+const PlayerReturn = ({ responses, othersResponses }) => {
+    let correctResponses = 0;
+    for (let i = 0; i < responses.length; i++) {
+        correctResponses += responses[i].isCorrect;
     }
-    const correctPercentage = correctPlayers / returnedResponses.length * 100; // TODO
+    const correctPercentage = correctResponses / responses.length * 100;
+
+    let correctOtherPlayers = 0;
+    for (let i = 0; i < othersResponses.length; i++) {
+        correctOtherPlayers += othersResponses[i].isCorrect;
+    }
+    const othersCorrectPercentage = correctOtherPlayers / othersResponses.length * 100;
     
     return (
         <>
@@ -30,16 +36,22 @@ const PlayerReturn = ({ returnedResponses }) => {
                 <h1>Tosses Returned!</h1>
             </nav>
             <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '1.5rem' }}>
-                {returnedResponses.length === 1 ?
-                    <h4 style={{ marginBottom: '1.5rem' }}>The 1 player who responded got it {correctPlayers === 1 ? 'correct' : 'incorrect'}.</h4> :
-                    <h4 style={{ marginBottom: '1.5rem' }}>Out of {returnedResponses.length} players who responded, {correctPercentage}% of them were correct.</h4>
+                <h3>Your Responses:</h3>
+                {responses.length === 1 ?
+                    <h4 style={{ marginBottom: '1.5rem' }}>Your one response was {correctResponses === 1 ? 'correct' : 'incorrect'}.</h4> :
+                    <h4 style={{ marginBottom: '1.5rem' }}>Out of {responses.length} total responses, you got {correctPercentage}% of them correctly.</h4>
                 }
-                <h3>Player Responses:</h3>
-                {returnedResponses.map((returnedResponse, index) => {
-                    return <ReturnedResponse
+                <br />
+                <h3>Responses from Other Players:</h3>
+                {othersResponses.length === 1 ?
+                    <h4 style={{ marginBottom: '1.5rem' }}>The one player who responded got it {correctOtherPlayers === 1 ? 'correct' : 'incorrect'}.</h4> :
+                    <h4 style={{ marginBottom: '1.5rem' }}>Out of {othersResponses.length} players who responded, {othersCorrectPercentage}% of them were correct.</h4>
+                }
+                {othersResponses.map((otherResponse, index) => {
+                    return <OtherResponse
                         key={index}
-                        username={returnedResponse.username}
-                        isCorrect={returnedResponse.isCorrect}
+                        username={otherResponse.username}
+                        isCorrect={otherResponse.isCorrect}
                     />;
                 })}
             </main>
@@ -47,7 +59,8 @@ const PlayerReturn = ({ returnedResponses }) => {
     );
 }
 PlayerReturn.propTypes = {
-    returnedResponses: PropTypes.array.isRequired,
+    responses: PropTypes.array.isRequired,
+    othersResponses: PropTypes.array.isRequired,
 };
 
 export default PlayerReturn;

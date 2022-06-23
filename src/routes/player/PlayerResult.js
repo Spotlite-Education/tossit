@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FRQ, MCQ } from './PlayerCreate';
 import { generateId } from '../../util/random';
 
-const PlayerResults = ({ showCorrect, response, isCorrect=false, questionData, correctAnswer }) => {
+const PlayerResult = ({ showCorrect, response, isCorrect=false, questionData, correctAnswer }) => {
     let resultText = '';
     if (showCorrect) {
         resultText = isCorrect ? 'Correct!' : 'Incorrect...';
@@ -24,7 +24,7 @@ const PlayerResults = ({ showCorrect, response, isCorrect=false, questionData, c
     );
 }
 
-PlayerResults.propTypes = {
+PlayerResult.propTypes = {
     showCorrect: PropTypes.bool.isRequired,
     response: PropTypes.string.isRequired,
     isCorrect: PropTypes.bool,
@@ -153,4 +153,4 @@ Choice.propTypes = {
     //correctAnswer: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 };
 
-export default PlayerResults;
+export default PlayerResult;
