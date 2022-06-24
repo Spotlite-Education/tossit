@@ -5,6 +5,8 @@ import Create from './routes/Create';
 import AdminHome from './routes/admin/AdminHome';
 import PlayerHome from './routes/player/PlayerHome';
 
+//import PlayerCreate from './routes/player/PlayerCreate';
+
 import { AnimatePresence } from 'framer-motion'
 function AnimatedRoutes() {
     const location = useLocation();

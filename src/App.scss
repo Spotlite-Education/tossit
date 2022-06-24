@@ -12,6 +12,7 @@
 @include font('Sans-Medium', 'Inter-Medium');
 @include font('Sans-Bold', 'Inter-Bold');
 @include font('Mono-Medium', 'RobotoMono-Medium');
+@include font('Sans-Italic', 'ProductSans-ThinItalic');
 
 $bg-color: rgba(74,186,255,255);
 $secondary: rgba(76,88,117,0.4);
@@ -21,6 +22,11 @@ $third-color: rgba(76,88,117,255);
     padding: 0;
     margin: 0;
     color: white;
+}
+
+.dark-text {
+    color: $third-color;
+    font-family: 'Sans-Bold';
 }
 
 body {
