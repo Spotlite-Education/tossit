@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/956f7076-4bee-47dd-b8dc-a5f47d001017/microsoft.web/sites/subscriptions/956f7076-4bee-47dd-b8dc-a5f47d001017/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/tossit",
+  "appService.deploySubpath": "."
+}
