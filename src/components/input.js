@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { generateId } from '../util/random';
 
 /*
  * width: width of the input box (should be 0 - 100%)
@@ -66,8 +67,9 @@ const DashedInput = ({ width, height, numInputs, outlineStyle, onSubmit, idxSpli
     React.useEffect(() => {
         const newNodes = new Array(numInputs + (idxSplit !== -1));
         for (let i = 0; i < values.length; i++) {
+            const id = generateId();
             newNodes[i] = <InputBox
-                key={i}
+                key={id}
                 ref={ref => inputEl.current.push(ref)}
                 index={i} value={values[i]}
                 style={{ outline: outline }}
