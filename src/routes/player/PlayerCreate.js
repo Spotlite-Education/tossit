@@ -4,12 +4,13 @@ import { useParams } from 'react-router-dom';
 import { SocketContext } from '../../context/socket';
 import { generateId } from '../../util/random';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
-//import DrawingBoard from '../components/DrawingBoard';
+import Paper from '../../components/Paper';
 
 export const FRQ = 'frq';
 export const MCQ = 'mcq'
+
 const questionTypeValues = [FRQ, MCQ]; // mcq includes t/f questions
-const questionTypeNames = ['Free Response', 'Multiple Choice'];
+//const questionTypeNames = ['Free Response', 'Multiple Choice'];
 // TODO extension: question type of matching and completion
 
 const PlayerCreate = () => {
@@ -18,7 +19,7 @@ const PlayerCreate = () => {
     
     const [questionData, setQuestionData] = React.useState({
         type: questionTypeValues[1],
-        statement: null,
+        statement: "",
         pictureURL: null, // supplementary picture diagram for question statement
         answerChoices: [], // if type is 'frq', keep empty
     });
@@ -70,88 +71,100 @@ const PlayerCreate = () => {
         setQuestionData({ ...questionData, answerChoices: questionData.answerChoices });
     }, [questionData]);
 
-    const formTypeBoxes = React.useCallback(() => {
-        return questionTypeNames.slice(1).map((name, index) => { // temporarily only allow mcq
-            const selected = index === questionTypeValues.indexOf(questionData.type); 
+    const Front = () => {
+        return ( <>
+            <div className='form-section'>
+                <div className='dark-text'>This will be the formatting bar</div>
+            </div>
 
-            return (
-                <button
-                    key={name + index.toString()}
-                    style={selected ? { borderColor: 'white' } : {}}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        handleUpdateQuestion('type', questionTypeValues[index + 1])
-                    }}
-                >
-                    {name}
-                </button>
-            );
-        });
-    }, [questionData]);
+            <div className='form-section' >
+                <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
+                    <input type='text' placeholder='Type your quiz question here...' value={questionData.statement}/>
+                </label>
+            </div>
+            </>
+        );
+    };
 
-    const typeBoxes = formTypeBoxes();
+    const Back = () => {
+        return (<>
+            <div className='form-section'>
+            <div id='mcq-bar' style={questionData.type !== MCQ ? { marginBottom: 0 } : {}}>
+                <h4>Answer:</h4>
+                {questionData.type === MCQ && <button className="button" style={{ pointerEvents: 'all' }} onClick={(e) => handleAddBlankMcqChoice(e)}>Add choice</button>}
+            </div>
+            {questionData.type === FRQ ? (
+                <label onChange={(e) => { e.preventDefault(); setAnswerData(e.target.value) }}>
+                    <Answer
+                        type={questionData.type}
+                        questionData={questionData}
+                        handleChangeAnswer={handleChangeMcqAnswer}
+                        handleUpdateChoice={handleUpdateMcqChoice}
+                        handleRemoveChoice={handleRemoveMcqChoice}
+                    />
+                </label>                            
+                ) : (
+                <Answer
+                    type={questionData.type}
+                    questionData={questionData}
+                    correctAnswer={parseInt(answerData)}
+                    handleChangeAnswer={handleChangeMcqAnswer}
+                    handleUpdateChoice={handleUpdateMcqChoice}
+                    handleRemoveChoice={handleRemoveMcqChoice}
+            /> )}
+            </div>
+            <div className='form-section'>
+                <input className='submit-button' style={{ width: '6rem', height: '3rem', fontSize: '1.25rem' }} type='submit' value='Toss It!' />
+            </div>
+            {tossed && <p>Tossed!</p>}
+            </>        
+        );
+    };
+
+    // FOR FRQ: 
+    // const formTypeBoxes = React.useCallback(() => {
+    //     return questionTypeNames.slice(1).map((name, index) => { // temporarily only allow mcq
+    //         const selected = index === questionTypeValues.indexOf(questionData.type); 
+
+    //         return (
+    //             <button
+    //                 key={name + index.toString()}
+    //                 style={selected ? { borderColor: 'white' } : {}}
+    //                 onClick={(e) => {
+    //                     e.preventDefault();
+    //                     handleUpdateQuestion('type', questionTypeValues[index + 1])
+    //                 }}
+    //             >
+    //                 {name}
+    //             </button>
+    //         );
+    //     });
+    // }, [questionData]);
+
+    // const typeBoxes = formTypeBoxes();
 
     return (
-        <>
-            <nav id='nav-bar' style= {{
-                height: 100,
-                textAlign: 'center',
-            }}>
-                <h1>Create!</h1>
-            </nav>
-            <main>
-                <div id='menu'>
-                    <form onSubmit={(e) => handleCreate(e)}>
+        <>            
+        <main>
+            <div id='paper'>
+                <form onSubmit={(e) => handleCreate(e)}>
+                    {/* FOR FRQ OPTION
                         <div className='form-section'>
-                            <h4>Type:</h4>
-                            {typeBoxes}
-                        </div>
-                        <div className='form-section'>
-                            <h4>Question:</h4>
-                            <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
-                                <input type='text' placeholder='Why did the chicken cross the road?' value={questionData.statement}/>
-                            </label>
-                        </div>
-                        <div className='form-section'>
-                            <div id='mcq-bar' style={questionData.type !== MCQ ? { marginBottom: 0 } : {}}>
-                                <h4>Answer:</h4>
-                                {questionData.type === MCQ && <button style={{ pointerEvents: 'all' }} onClick={(e) => handleAddBlankMcqChoice(e)}>Add choice</button>}
-                            </div>
-                            {questionData.type === FRQ ? (
-                                <label onChange={(e) => { e.preventDefault(); setAnswerData(e.target.value) }}>
-                                    <Answer
-                                        type={questionData.type}
-                                        questionData={questionData}
-                                        handleChangeAnswer={handleChangeMcqAnswer}
-                                        handleUpdateChoice={handleUpdateMcqChoice}
-                                        handleRemoveChoice={handleRemoveMcqChoice}
-                                    />
-                                </label>
-                            ) : (
-                                <Answer
-                                    type={questionData.type}
-                                    questionData={questionData}
-                                    correctAnswer={parseInt(answerData)}
-                                    handleChangeAnswer={handleChangeMcqAnswer}
-                                    handleUpdateChoice={handleUpdateMcqChoice}
-                                    handleRemoveChoice={handleRemoveMcqChoice}
-                                />
-                            )}
-                        </div>
-                        <div className='form-section'>
-                            <input className='submit-button' style={{ width: '6rem', height: '3rem', fontSize: '1.25rem' }} type='submit' value='Toss It!' />
-                        </div>
-                        {tossed && <p>Tossed!</p>}
-                    </form>
-                    {/*
-                    <DrawingBoard
-                        thickness={5} 
-                        color = "black" 
-                        style = "round" 
-                        onSubmit={setPicture}
-                    /> */}
-                    </div>
-            </main>
+                        <h4>Type:</h4>
+                        {typeBoxes}
+                    </div> */}
+                    <Paper frontComponent={<Front/>} backComponent={<Back/>} size={1000}></Paper>
+
+                </form>                    
+                {/*
+                <DrawingBoard
+                    thickness={5} 
+                    color = "black" 
+                    style = "round" 
+                    onSubmit={setPicture}
+                /> */}
+                </div>
+        </main>
         </>
     );
 }
