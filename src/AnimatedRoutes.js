@@ -1,5 +1,5 @@
 import React from 'react'
-import { Routes, Route, useLocation} from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Join from './routes/Join';
 import Create from './routes/Create';
 import AdminHome from './routes/admin/AdminHome';
