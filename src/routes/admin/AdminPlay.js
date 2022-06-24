@@ -111,7 +111,7 @@ Choice.propTypes = {
     statement: PropTypes.string.isRequired,
 };
 
-const AdminPlay = ({ players, handleEnd }) => {
+const AdminPlay = ({ players, openLeaderboard }) => {
     const socket = React.useContext(SocketContext);
     const params = useParams();
     
@@ -181,7 +181,7 @@ const AdminPlay = ({ players, handleEnd }) => {
                     className='small-button'
                     style={{ width: 'auto', paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canSummary ? 1 : 0.5 }}
                     disabled={!canSummary}
-                    onClick={handleEnd}
+                    onClick={openLeaderboard}
                 >
                     SUMMARY
                 </button>
@@ -196,7 +196,7 @@ const AdminPlay = ({ players, handleEnd }) => {
 }
 AdminPlay.propTypes = {
     players: PropTypes.array.isRequired,
-    handleEnd: PropTypes.func.isRequired,
+    openLeaderboard: PropTypes.func.isRequired,
 };
 
 export default AdminPlay;

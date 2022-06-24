@@ -25,7 +25,7 @@ PlayerResult.propTypes = {
     index: PropTypes.number.isRequired,
 };
 
-const AdminResults = ({ players }) => {
+const Leaderboard = ({ players }) => {
     const sortedPlayers = players.sort((a, b) => {
         return b.score - a.score;
     });
@@ -52,8 +52,8 @@ const AdminResults = ({ players }) => {
         </>
     );
 }
-AdminResults.propTypes = {
+Leaderboard.propTypes = {
     players: PropTypes.array.isRequired,
 };
 
-export default AdminResults;
+export default Leaderboard;

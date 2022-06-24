@@ -73,7 +73,7 @@ const Join = () => {
         case 'joinTransition':
             setTimeout(() => {
                 //setStatus('joined');
-                navigate(`/${roomCode}`);
+                navigate(`/${roomCode}`, { state: { username } });
             }, 1500);
             return (
                 <h1 id='centered-subtitle'>Create a question!</h1> // TODO: make text animate by moving upwards, and then switch status to joined

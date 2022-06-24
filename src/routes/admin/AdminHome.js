@@ -4,7 +4,7 @@ import { SocketContext } from '../../context/socket';
 import '../../styles/admin/AdminHome.scss';
 import AdminJoin from './AdminJoin';
 import AdminPlay from './AdminPlay';
-import AdminResults from './AdminResults';
+import Leaderboard from '../Leaderboard';
 
 const AdminHome = () => {
     const socket = React.useContext(SocketContext);
@@ -50,10 +50,10 @@ const AdminHome = () => {
         case 'play':
             return <AdminPlay
                 players={players}
-                handleEnd={() => setStatus('results')}
+                openLeaderboard={() => setStatus('leaderboard')}
             />;
-        case 'results':
-            return <AdminResults
+        case 'leaderboard':
+            return <Leaderboard
                 players={players}
             />;
     }

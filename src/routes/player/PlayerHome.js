@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { SocketContext } from '../../context/socket';
 import '../../styles/player/PlayerHome.scss';
 import PlayerCreate from './PlayerCreate';
@@ -21,8 +21,11 @@ const PlayerHome = () => {
             return;
         });
     }, []);
+    const { state } = useLocation();
+    const username = state.username;
 
     const [status, setStatus] = React.useState('create');
+    const [score, setScore] = React.useState(0);
     
     // respond
     const [receivedQuestion, setReceivedQuestion] = React.useState({});
@@ -47,6 +50,10 @@ const PlayerHome = () => {
             setResponses(responses);
             setOthersResponses(othersResponses);
             setStatus('return');
+        });
+
+        socket.on('updateScore', score => {
+            setScore(score);
         });
 
         // todo: unmount, add socket to below []
@@ -99,7 +106,7 @@ const PlayerHome = () => {
         <>
             {PlayerPage}
             <Corner corner='tr' className='link-box'>
-                <p>TODO: Username | Score</p> {/* TODO: get username and score (in one function) from backend using socket.on - backend emit only when updateScore() called! */}
+                <p>{username} | {score}</p> {/* TODO: get username and score (in one function) from backend using socket.on - backend emit only when updateScore() called! */}
             </Corner>
         </>
     );
