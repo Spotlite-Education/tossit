@@ -1,12 +1,10 @@
 import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import Corner from '../components/Corner';
-import { generateCode } from '../util/random';
 import { SocketContext } from '../context/socket';
 import '../styles/Create.scss';
 import CombinedLogo from '../assets/images/logocombined.svg';
 import { TossPlanes } from '../components/TossPlanes';
-import * as constants from '../util/constants';
 
 const Create = () => {
     const [loading, setLoading] = React.useState(false);
@@ -17,10 +15,9 @@ const Create = () => {
 
     const handleClick = () => {
         setLoading(true);
-        const randomCode = generateCode(constants.ROOM_CODE_LEFT_LENGTH, constants.ROOM_CODE_RIGHT_LENGTH);
-        setRoomCode(randomCode); // ASYNC APPARENTLY ?????? there was issues with state not updating before connecting
-        socket.emit('createRoom', randomCode);
-        socket.once('successMessage', () => {
+        socket.emit('createRoom');
+        socket.once('successMessage', roomCode => {
+            setRoomCode(roomCode);
             setLoading(false);
             setToHome(true);
         });

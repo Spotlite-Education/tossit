@@ -7,6 +7,7 @@ import { SocketContext } from '../context/socket';
 import { LoadingPlane } from '../components/LoadingPlane';
 import { TossPlanes } from '../components/TossPlanes';
 import CombinedLogo from '../assets/images/logocombined.svg';
+import * as constants from '../util/constants';
 
 const Join = () => {
     const [roomCode, setRoomCode] = React.useState('');
@@ -93,7 +94,7 @@ const Join = () => {
 
                 <img src={CombinedLogo} className='logo' />
                 
-                <Input width='30%' height='2.5rem' numInputs={6} outlineStyle='underscore' idxSplit={3} textId='room-code-text' onSubmit={newRoomCode => {
+                <Input width='30%' height='2.5rem' numInputs={constants.ROOM_CODE_LEFT_LENGTH + constants.ROOM_CODE_RIGHT_LENGTH} outlineStyle='underscore' idxSplit={constants.ROOM_CODE_LEFT_LENGTH} textId='room-code-text' onSubmit={newRoomCode => {
                     setRoomCode(newRoomCode);
                     setShowUsername(true);
                 }} />

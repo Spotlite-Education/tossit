@@ -4,6 +4,7 @@ import { SocketContext } from '../../context/socket';
 import '../../styles/admin/AdminHome.scss';
 import AdminJoin from './AdminJoin';
 import AdminPlay from './AdminPlay';
+import AdminSummary from './AdminSummary';
 import Leaderboard from '../Leaderboard';
 
 const AdminHome = () => {
@@ -47,11 +48,16 @@ const AdminHome = () => {
         case 'play':
             return <AdminPlay
                 players={players}
-                openLeaderboard={() => setStatus('leaderboard')}
+                handleOpenSummary={() => setStatus('summary')}
+            />;
+        case 'summary':
+            return <AdminSummary
+                players={players}
+                handleOpenLeaderboard={() => setStatus('leaderboard')}
             />;
         case 'leaderboard':
             return <Leaderboard
-                players={players}
+                handleExit={() => setStatus('summary')}
             />;
     }
 }
