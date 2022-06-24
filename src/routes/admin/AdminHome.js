@@ -13,13 +13,11 @@ const AdminHome = () => {
 
     React.useEffect(() => {
         socket.emit('checkEnterAdminHome', params.roomCode);
-        socket.on('checkFail', ({ message }) => {
+        socket.once('checkFail', ({ message }) => {
             console.log('ERROR ACCESSING ADMIN HOME: ' + message);
             navigate('/');
             return;
         });
-
-        // TODO: use callback and do useeffect cleanup for checkFail listener
     }, []);
 
     const [status, setStatus] = React.useState('join');
@@ -30,7 +28,6 @@ const AdminHome = () => {
         // TODO: sort by time joined instead of username
         setPlayers(sortedPlayers);
     });
-
     React.useEffect(() => {
         socket.on('playersChanged', handlePlayersChanged);
 

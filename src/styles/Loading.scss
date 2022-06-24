@@ -1,17 +1,3 @@
-.loading-circle {
-    width: 7.5rem;
-    height: 7.5rem;
-    border-width: 20px;
-    border-style: solid;
-    border-color: rgba(255, 255, 255, 0.5);
-    border-left-color: white;
-    border-radius: 50%;
-    animation-name: spin;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-}
-
 .loading-plane-big {
     width: 7.5rem;
     height: 7.5rem;    

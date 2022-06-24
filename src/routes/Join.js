@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../components/Input';
 import Corner from '../components/Corner';
-// import { LoadingCircle } from '../components/Loading';
 import '../styles/Join.scss';
 import { SocketContext } from '../context/socket';
 import { LoadingPlane } from '../components/LoadingPlane';
@@ -17,6 +16,23 @@ const Join = () => {
 
     const socket = React.useContext(SocketContext);
     const navigate = useNavigate();
+    
+    const handleError = React.useCallback(({ error }) => {
+        setStatus('');
+        if (error === 'roomCode') {
+            setShowUsername(false);
+        } else if (error === 'username') {
+            //alert('Enter a valid username');
+            // do nothing is fine - otherwise, it will always alert because form submits too fast
+        }
+    }, []);
+    React.useEffect(() => {
+        socket.on('errorMessage', handleError);
+
+        return () => {
+            socket.off('errorMessage', handleError);
+        };
+    }, [socket]);
 
     const handleChange = (e) => {
         setUsername(e.target.value);
@@ -27,27 +43,16 @@ const Join = () => {
         setStatus('loading');
         socket.emit('joinRoom', { roomCode, username } );
 
-        socket.on('kickPlayer', () => {
+        socket.once('kickPlayer', () => {
             console.log('You have been kicked by the admin of this room!');
             setStatus('kicked');
         });
 
-        socket.on('errorMessage', ({ error }) => {
-            setStatus('');
-            if (error === 'roomCode') {
-                // TODO: clear roomCode input
-                setShowUsername(false);
-            } else if (error === 'username') {
-                //alert('Enter a valid username');
-                // do nothing is fine - otherwise, it will always alert because form submits too fast
-            }
-        });
-
-        socket.on('joined', () => {
+        socket.once('joined', () => {
             setStatus('waiting');
         })
 
-        socket.on('startSession', () => {
+        socket.once('startSession', () => {
             setStatus('joinTransition');
         });
     }
@@ -56,7 +61,7 @@ const Join = () => {
         case 'loading':
             return (
                 <div id='loading'>
-                    <TossPlanes/>
+                    <TossPlanes />
                     <p className='loading-text'>Joining the room...</p>
                 </div>
             );
@@ -66,7 +71,7 @@ const Join = () => {
         case 'waiting':
             return (
                 <div id='loading'>
-                    <LoadingPlane/>
+                    <LoadingPlane />
                     <p className='loading-text'>Waiting for start...</p>                    
                 </div>
             );

@@ -2,10 +2,10 @@ import React from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import Corner from '../components/Corner';
 import { generateCode } from '../util/random';
-import { LoadingCircle } from '../components/Loading';
 import { SocketContext } from '../context/socket';
 import '../styles/Create.scss';
 import CombinedLogo from '../assets/images/logocombined.svg';
+import { TossPlanes } from '../components/TossPlanes';
 import * as constants from '../util/constants';
 
 const Create = () => {
@@ -20,16 +20,16 @@ const Create = () => {
         const randomCode = generateCode(constants.ROOM_CODE_LEFT_LENGTH, constants.ROOM_CODE_RIGHT_LENGTH);
         setRoomCode(randomCode); // ASYNC APPARENTLY ?????? there was issues with state not updating before connecting
         socket.emit('createRoom', randomCode);
-        socket.on('successMessage', () => {
+        socket.once('successMessage', () => {
+            setLoading(false);
             setToHome(true);
         });
-        setLoading(false);
     }
 
     if (loading) {
         return (
             <div id='loading'>
-                <LoadingCircle speed={1} className='loading-circle' />
+                <TossPlanes />
                 <p className='loading-text'>Hold on tight, we&apos;re creating a room!</p>
             </div>
         );

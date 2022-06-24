@@ -20,17 +20,7 @@ const PlayerWorkBox = ({ username, questionData, answerData, responded }) => {
     //             break;
     //     }
     // }
-
-
-    /*
     
-    
-    TODO: make players updating work...
-    Refactor playerhome more, then commit.
-    Check server checkUsername.
-    
-    
-    */
     const formAnswers = React.useCallback(() => {
         const intAnswer = parseInt(answerData);
 

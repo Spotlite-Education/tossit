@@ -15,7 +15,7 @@ const PlayerHome = () => {
     const navigate = useNavigate();
     React.useEffect(() => {
         socket.emit('checkEnterPlayerHome', params.roomCode);
-        socket.on('checkFail', ({ message }) => {
+        socket.once('checkFail', ({ message }) => {
             console.log('ERROR ACCESSING PLAYER HOME: ' + message);
             navigate('/');
             return;
@@ -26,52 +26,62 @@ const PlayerHome = () => {
 
     const [status, setStatus] = React.useState('create');
     const [score, setScore] = React.useState(0);
+    const handleUpdateScore = React.useCallback(score => {
+        setScore(score);
+    });
     
+
     // respond
     const [receivedQuestion, setReceivedQuestion] = React.useState({});
     const [response, setResponse] = React.useState('');
+    const handleTossQuestion = React.useCallback(questionObject => {
+        setResponse('');
+        setReceivedQuestion(questionObject);
+        setStatus('respond');
+    });
+
+    React.useEffect(() => {
+        socket.on('tossQuestion', handleTossQuestion);
+        socket.on('updateScore', handleUpdateScore);
+
+        return () => {
+            socket.off('tossQuestion', handleTossQuestion);
+            socket.off('updateScore', handleUpdateScore);
+        };
+    }, [socket]);
+
 
     // result
     const [isCorrect, setIsCorrect] = React.useState(null);
     const [correctAnswer, setCorrectAnswer] = React.useState('');
-
-    // return
-    const [responses, setResponses] = React.useState([]);
-    const [othersResponses, setOthersResponses] = React.useState([]);
-
-    React.useEffect(() => {
-        socket.on('tossQuestion', questionObject => {
-            setResponse('');
-            setReceivedQuestion(questionObject);
-            setStatus('respond');
-        });
-
-        socket.on('returnToss', ({ responses, othersResponses }) => {
-            setResponses(responses);
-            setOthersResponses(othersResponses);
-            setStatus('return');
-        });
-
-        socket.on('updateScore', score => {
-            setScore(score);
-        });
-
-        // todo: unmount, add socket to below []
-    }, []);
 
     const handleRespond = (e) => {
         e.preventDefault();
         if (e.keyCode === 13) return false;
 
         socket.emit('respondToss', { response, roomCode: params.roomCode } );
-        socket.once('tossAnswer', ({ isCorrect, answer }) => { // memory leak TODO
+        socket.once('tossAnswer', ({ isCorrect, answer }) => {
             setIsCorrect(isCorrect);
             const answerAsInt = parseInt(answer);
             receivedQuestion.type === FRQ ? setCorrectAnswer(answer) : setCorrectAnswer({...receivedQuestion.answerChoices[answer], index: answerAsInt});
             setStatus('result');
         });
     }
+
+
+    // return
+    const [responses, setResponses] = React.useState([]);
+    const [othersResponses, setOthersResponses] = React.useState([]);
+
+    React.useEffect(() => {
+        socket.once('returnToss', ({ responses, othersResponses }) => {
+            setResponses(responses);
+            setOthersResponses(othersResponses);
+            setStatus('return');
+        });
+    }, []);
     
+
     let PlayerPage = null;
     switch(status) {
         case 'create':
@@ -106,7 +116,7 @@ const PlayerHome = () => {
         <>
             {PlayerPage}
             <Corner corner='tr' className='link-box'>
-                <p>{username} | {score}</p> {/* TODO: get username and score (in one function) from backend using socket.on - backend emit only when updateScore() called! */}
+                <p>{username} | {score}</p>
             </Corner>
         </>
     );
