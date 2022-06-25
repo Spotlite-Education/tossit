@@ -103,7 +103,6 @@ main {
             color: App.$third-color;
             font-size: 1.5rem;
         }
-        
 
         input[type=text]::placeholder {
             color: App.$secondary;
@@ -129,6 +128,7 @@ main {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            width: 100%;
             min-height: 4rem;
             box-sizing: border-box;
             margin-bottom: 0.5rem;

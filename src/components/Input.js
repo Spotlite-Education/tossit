@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { generateId } from '../util/random';
 
 /*
  * width: width of the input box (should be 0 - 100%)
@@ -62,31 +61,32 @@ const DashedInput = ({ width, height, numInputs, outlineStyle, onSubmit, idxSpli
 
     const [values, setValues] = React.useState(new Array(numInputs).fill(''));
     const [nodes, setNodes] = React.useState([]);
-    const inputEl = React.useRef([]);
+    const inputEl = React.useRef(new Array());
 
     React.useEffect(() => {
         const newNodes = new Array(numInputs + (idxSplit !== -1));
         for (let i = 0; i < values.length; i++) {
-            const id = generateId();
             newNodes[i] = <InputBox
-                key={id}
+                key={i}
                 ref={ref => inputEl.current.push(ref)}
-                index={i} value={values[i]}
+                index={i}
+                value={values[i]}
                 style={{ outline: outline }}
                 textId={textId}
                 handleChange={handleChange}
                 caretTransparent={true}
             />;
         }
+        
         if (idxSplit !== -1) {
-            newNodes.splice(idxSplit, 0, <p className='input-box' id={textId}>-</p>);
+            newNodes.splice(idxSplit, 0, <p key='e' className='input-box' id={textId}>-</p>);
         }
         setNodes(newNodes);
     }, [values]);
 
     return (
         <div id='input' style={{ width: width, height: height, }}>
-            {nodes.map(node => { return node; })}
+            {nodes}
         </div>
     );
 }

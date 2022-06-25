@@ -19,7 +19,7 @@ const PlayerCreate = () => {
     
     const [questionData, setQuestionData] = React.useState({
         type: questionTypeValues[1],
-        statement: "",
+        statement: '',
         pictureURL: null, // supplementary picture diagram for question statement
         answerChoices: [], // if type is 'frq', keep empty
     });
@@ -71,55 +71,59 @@ const PlayerCreate = () => {
         setQuestionData({ ...questionData, answerChoices: questionData.answerChoices });
     }, [questionData]);
 
-    const Front = () => {
-        return ( <>
+    const paperFront = (
+        <>
             <div className='form-section'>
                 <div className='dark-text'>This will be the formatting bar</div>
             </div>
-
             <div className='form-section' >
                 <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
                     <input type='text' placeholder='Type your quiz question here...' value={questionData.statement}/>
                 </label>
             </div>
-            </>
-        );
-    };
+        </>
+    );
 
-    const Back = () => {
-        return (<>
+    const paperBack = (
+        <>
             <div className='form-section'>
-            <div id='mcq-bar' style={questionData.type !== MCQ ? { marginBottom: 0 } : {}}>
-                <h4>Answer:</h4>
-                {questionData.type === MCQ && <button className="button" style={{ pointerEvents: 'all' }} onClick={(e) => handleAddBlankMcqChoice(e)}>Add choice</button>}
-            </div>
-            {questionData.type === FRQ ? (
-                <label onChange={(e) => { e.preventDefault(); setAnswerData(e.target.value) }}>
+                <div id='mcq-bar' style={questionData.type !== MCQ ? { marginBottom: 0 } : {}}>
+                    <h4>Answer:</h4>
+                    {questionData.type === MCQ && <button className="button" style={{ pointerEvents: 'all' }} onClick={(e) => handleAddBlankMcqChoice(e)}>Add choice</button>}
+                </div>
+                {questionData.type === FRQ ? (
+                        <label onChange={(e) => { e.preventDefault(); setAnswerData(e.target.value) }}>
+                            <Answer
+                                type={questionData.type}
+                                questionData={questionData}
+                                handleChangeAnswer={handleChangeMcqAnswer}
+                                handleUpdateChoice={handleUpdateMcqChoice}
+                                handleRemoveChoice={handleRemoveMcqChoice}
+                            />
+                        </label>                            
+                    ) : (
                     <Answer
                         type={questionData.type}
                         questionData={questionData}
+                        correctAnswer={parseInt(answerData)}
                         handleChangeAnswer={handleChangeMcqAnswer}
                         handleUpdateChoice={handleUpdateMcqChoice}
                         handleRemoveChoice={handleRemoveMcqChoice}
                     />
-                </label>                            
-                ) : (
-                <Answer
-                    type={questionData.type}
-                    questionData={questionData}
-                    correctAnswer={parseInt(answerData)}
-                    handleChangeAnswer={handleChangeMcqAnswer}
-                    handleUpdateChoice={handleUpdateMcqChoice}
-                    handleRemoveChoice={handleRemoveMcqChoice}
-            /> )}
+                )}
             </div>
             <div className='form-section'>
-                <input className='submit-button' style={{ width: '6rem', height: '3rem', fontSize: '1.25rem' }} type='submit' value='Toss It!' />
+                <input
+                    disabled={questionData.answerChoices.length <= 0}
+                    className='submit-button'
+                    style={{ width: '6rem', height: '3rem', fontSize: '1.25rem' }}
+                    type='submit'
+                    value='Toss It!' 
+                />
             </div>
             {tossed && <p>Tossed!</p>}
-            </>        
-        );
-    };
+        </>        
+    );
 
     // FOR FRQ: 
     // const formTypeBoxes = React.useCallback(() => {
@@ -153,7 +157,7 @@ const PlayerCreate = () => {
                         <h4>Type:</h4>
                         {typeBoxes}
                     </div> */}
-                    <Paper frontComponent={<Front/>} backComponent={<Back/>} size={1000}></Paper>
+                    <Paper frontComponent={paperFront} backComponent={paperBack} size={1000}></Paper>
 
                 </form>                    
                 {/*

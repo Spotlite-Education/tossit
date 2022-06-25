@@ -5,32 +5,30 @@ import PropTypes from 'prop-types';
 
 
 const FlipButton = ({flipped, setFlipped}) => (
-    <div className='form-section' >
-    <button 
-        className='flip-button'
-        onClick={(e) => { e.preventDefault(); setFlipped(!flipped)}}
-    >
-    </button>
+    <div>
+        <button 
+            className='flip-button'
+            onClick={(e) => { e.preventDefault(); setFlipped(!flipped)}}
+        >
+        </button>
     </div>
-)
+);
 
 FlipButton.propTypes = {
     flipped: PropTypes.bool.isRequired,
     setFlipped: PropTypes.func.isRequired,
-}
+};
 
 const Paper = ({ frontComponent, backComponent, size }) => {
 
     const [flipped, setFlipped] = React.useState(false);
 
     return (
-        <div className='paper' style={{width: size}}>
+        <div className='paper' style={{ width: size }}>
             <div>
-                <div>
-                    {flipped ? backComponent : frontComponent}
-                </div>
-                <FlipButton flipped={flipped} setFlipped={setFlipped} onClick={() => setFlipped(!flipped)} />
+                {flipped ? backComponent : frontComponent}
             </div>
+            <FlipButton flipped={flipped} setFlipped={setFlipped} onClick={() => setFlipped(!flipped)} />
         </div>
     );
 };
