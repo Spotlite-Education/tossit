@@ -3,22 +3,38 @@ import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { SocketContext } from '../context/socket';
 import Corner from '../components/Corner';
+import PlayerWorkBox from '../components/PlayerWorkBox';
+import '../App.scss';
 
 const PlayerResult = ({ data }) => {
-    let backgroundColor;
+    const [showToss, setShowToss] = React.useState(false);
+
+    let placeColor;
     if (data.place === 1) {
-        backgroundColor = 'rgb(255, 215, 0)';
+        placeColor = 'rgb(255, 215, 0)';
     } else if (data.place === 2) {
-        backgroundColor = 'rgb(192, 192, 192)';
+        placeColor = 'rgb(220, 220, 220)';
     } else if (data.place === 3) {
-        backgroundColor = 'rgb(205, 127, 50)';
+        placeColor = 'rgb(205, 127, 50)';
     } else {
-        backgroundColor = 'rgb(159, 173, 181)';
+        placeColor = 'white';
     }
     return (
-        <div style={{ width: '50%', backgroundColor, borderRadius: '1rem', display: 'flex', flexDirection: 'row', gap: '3rem', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-            <p>{data.place}. {data.username} | {data.score}</p>
-        </div>
+        <button className='leaderboard-result' style={{ height: showToss ? '21rem' : '4.5rem' }} onClick={() => setShowToss(!showToss)}>
+            <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+                <p style={{ width: '33.33333%', textAlign: 'left', color: placeColor }}>{data.place}.</p>
+                <b style={{ width: '33.33333%', textAlign: 'center' }}>{data.username}</b>
+                <p style={{ width: '33.33333%', textAlign: 'right', color: '#DFDFDF' }}>{data.score}</p>
+            </div>{/* TODO: display data.correctPercentage and data.toss....? */}
+            <div style={{ width: '100%' }}>
+                <PlayerWorkBox
+                    username={data.username}
+                    questionData={data.toss.question}
+                    answerData={data.toss.answer}
+                    responded={true}
+                />
+            </div>
+        </button>
     );
 }
 PlayerResult.propTypes = {
@@ -58,7 +74,7 @@ const Leaderboard = ({ handleExit }) => {
                 </div>
             </main>
             <Corner corner='tl' className='link-box'>
-                <p className='link-text' style={{ color: '#FBFBFB' }} onClick={handleExit}>Go Back</p>
+                <p className='link-text' style={{ color: '#FBFBFB', margin: '-0.5rem'  }} onClick={handleExit}>Go Back</p>
             </Corner>
         </>
     );

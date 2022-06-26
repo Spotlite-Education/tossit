@@ -6,6 +6,7 @@ import PlayerCreate from './PlayerCreate';
 import PlayerRespond from './PlayerRespond';
 import PlayerResult from './PlayerResult';
 import PlayerReturn from './PlayerReturn';
+import Leaderboard from '../Leaderboard';
 import { FRQ } from './PlayerCreate';
 import Corner from '../../components/Corner';
 
@@ -108,6 +109,12 @@ const PlayerHome = () => {
             PlayerPage = <PlayerReturn
                 responses={responses}
                 othersResponses={othersResponses}
+                handleOpenLeaderboard={() => setStatus('leaderboard')}
+            />;
+            break;
+        case 'leaderboard':
+            PlayerPage = <Leaderboard
+                handleExit={() => setStatus('return')}
             />;
             break;
     }

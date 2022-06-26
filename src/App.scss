@@ -145,3 +145,20 @@ main {
     bottom: 0;
     width: 100%;
 }
+
+.leaderboard-result {
+    width: 50%;
+    background-color: inherit;
+    font: inherit;
+    padding: 1rem;
+    border-radius: 1rem;
+    border-style: dashed;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: height 0.2s ease-in-out;
+}
+
+.leaderboard-result:hover {
+    background-color: rgba(76,88,117,0.1);
+}

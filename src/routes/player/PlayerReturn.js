@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Corner from '../../components/Corner';
 
 const OtherResponse = ({ username, isCorrect }) => {
     return (
@@ -14,7 +15,7 @@ OtherResponse.propTypes = {
     isCorrect: PropTypes.bool.isRequired,
 };
 
-const PlayerReturn = ({ responses, othersResponses }) => {
+const PlayerReturn = ({ responses, othersResponses, handleOpenLeaderboard }) => {
     let correctResponses = 0;
     for (let i = 0; i < responses.length; i++) {
         correctResponses += responses[i].isCorrect;
@@ -32,6 +33,7 @@ const PlayerReturn = ({ responses, othersResponses }) => {
             <nav id='nav-bar' style= {{
                 height: 100,
                 textAlign: 'center',
+                justifyContent: 'center',
             }}>
                 <h1>Tosses Returned!</h1>
             </nav>
@@ -55,12 +57,16 @@ const PlayerReturn = ({ responses, othersResponses }) => {
                     />;
                 })}
             </main>
+            <Corner corner='tl' className='link-box'>
+                <p className='link-text' style={{ color: '#FBFBFB', margin: '-0.5rem' }} onClick={handleOpenLeaderboard}>Leaderboard</p>
+            </Corner>
         </>
     );
 }
 PlayerReturn.propTypes = {
     responses: PropTypes.array.isRequired,
     othersResponses: PropTypes.array.isRequired,
+    handleOpenLeaderboard: PropTypes.func.isRequired,
 };
 
 export default PlayerReturn;

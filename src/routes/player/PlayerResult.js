@@ -3,33 +3,46 @@ import PropTypes from 'prop-types';
 import { FRQ, MCQ } from './PlayerCreate';
 import { generateId } from '../../util/random';
 
-const PlayerResult = ({ showCorrect, response, isCorrect=false, questionData, correctAnswer }) => {
-    let resultText = '';
-    if (showCorrect) {
-        resultText = isCorrect ? 'Correct!' : 'Incorrect...';
-    }
-    
+const Choice = ({ type, highlight, statement, isCorrect=false }) => {
     return (
-        <>
-            <nav id='nav-bar' style= {{
-                height: 100,
-                textAlign: 'center',
-            }}>
-                <h1>Result: {resultText}</h1>
-            </nav>
-            <main>
-                <Answer response={parseInt(response)} isCorrect={isCorrect} questionData={questionData} correctAnswer={correctAnswer} />
-            </main>
-        </>
+        <div style={{
+            width: '100%',
+            height: 'auto',
+            boxSizing: 'border-box',
+            padding: '1rem',
+            paddingTop: '0.75rem',
+            paddingBottom: '0.75rem',
+            marginBottom: '1rem',
+            fontSize: '1.25rem',
+            backgroundColor: highlight
+            ? type === 'answer'
+                ? 'rgba(14, 166, 11, 0.75)'
+                    : isCorrect
+                        ? 'rgba(14, 166, 11, 0.75)'
+                            : 'rgba(207, 27, 51, 0.75)'
+                                : 'gainsboro'
+        }}>
+            <p style={{ display: 'inline-block', color: highlight ? 'white' : 'rgb(54, 54, 54)' }}>{statement}</p>
+            {highlight && <p style={{
+                display: 'inline-block',
+                marginRight: '0.5rem',
+                float: 'right',
+                fontSize: '1rem',
+                color: 'white',
+                fontStyle: 'italic',
+                opacity: 0.75 }}
+            >
+                {type === 'answer' ? 'Correct Answer' : 'Your Answer'}
+            </p>}
+        </div>
     );
-}
-
-PlayerResult.propTypes = {
-    showCorrect: PropTypes.bool.isRequired,
-    response: PropTypes.string.isRequired,
+};
+Choice.propTypes = {
+    type: PropTypes.oneOf(['answer', 'response']).isRequired,
+    highlight: PropTypes.bool,
+    statement: PropTypes.string.isRequired,
     isCorrect: PropTypes.bool,
-    questionData: PropTypes.object.isRequired,
-    correctAnswer: PropTypes.string.isRequired,
+    //correctAnswer: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 };
 
 const Answer = ({ response, isCorrect, questionData, correctAnswer }) => {
@@ -102,7 +115,6 @@ const Answer = ({ response, isCorrect, questionData, correctAnswer }) => {
             return null;
     }
 };
-
 Answer.propTypes = {
     response: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     isCorrect: PropTypes.bool,
@@ -110,47 +122,32 @@ Answer.propTypes = {
     correctAnswer: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 };
 
-const Choice = ({ type, highlight, statement, isCorrect=false }) => {
+const PlayerResult = ({ showCorrect, response, isCorrect=false, questionData, correctAnswer }) => {
+    let resultText = '';
+    if (showCorrect) {
+        resultText = isCorrect ? 'Correct!' : 'Incorrect...';
+    }
+    
     return (
-        <div style={{
-            width: '100%',
-            height: 'auto',
-            boxSizing: 'border-box',
-            padding: '1rem',
-            paddingTop: '0.75rem',
-            paddingBottom: '0.75rem',
-            marginBottom: '1rem',
-            fontSize: '1.25rem',
-            backgroundColor: highlight
-            ? type === 'answer'
-                ? 'rgba(14, 166, 11, 0.75)'
-                    : isCorrect
-                        ? 'rgba(14, 166, 11, 0.75)'
-                            : 'rgba(207, 27, 51, 0.75)'
-                                : 'gainsboro'
-        }}>
-            <p style={{ display: 'inline-block', color: highlight ? 'white' : 'rgb(54, 54, 54)' }}>{statement}</p>
-            {highlight && <p style={{
-                display: 'inline-block',
-                marginRight: '0.5rem',
-                float: 'right',
-                fontSize: '1rem',
-                color: 'white',
-                fontStyle: 'italic',
-                opacity: 0.75 }}
-            >
-                {type === 'answer' ? 'Correct Answer' : 'Your Answer'}
-            </p>}
-        </div>
+        <>
+            <nav id='nav-bar' style= {{
+                height: 100,
+                textAlign: 'center',
+            }}>
+                <h1>Result: {resultText}</h1>
+            </nav>
+            <main>
+                <Answer response={parseInt(response)} isCorrect={isCorrect} questionData={questionData} correctAnswer={correctAnswer} />
+            </main>
+        </>
     );
-};
-
-Choice.propTypes = {
-    type: PropTypes.oneOf(['answer', 'response']).isRequired,
-    highlight: PropTypes.bool,
-    statement: PropTypes.string.isRequired,
+}
+PlayerResult.propTypes = {
+    showCorrect: PropTypes.bool.isRequired,
+    response: PropTypes.string.isRequired,
     isCorrect: PropTypes.bool,
-    //correctAnswer: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+    questionData: PropTypes.object.isRequired,
+    correctAnswer: PropTypes.string.isRequired,
 };
 
 export default PlayerResult;

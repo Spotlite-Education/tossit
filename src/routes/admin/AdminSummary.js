@@ -61,7 +61,7 @@ const AdminSummary = ({ players, handleOpenLeaderboard }) => {
                 })}
             </main>
             <Corner corner='tl' className='link-box'>
-                <p className='link-text' style={{ color: '#FBFBFB' }} onClick={handleOpenLeaderboard}>Leaderboard</p>
+                <p className='link-text' style={{ color: '#FBFBFB', margin: '-0.5rem' }} onClick={handleOpenLeaderboard}>Leaderboard</p>
             </Corner>
         </>
     );
