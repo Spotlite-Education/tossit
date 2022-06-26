@@ -26,17 +26,30 @@ const PlayerCreate = () => {
     const [answerData, setAnswerData] = React.useState(''); // mcq: index of correct answer choice, frq: exact correct answer string
     const [tossed, setTossed] = React.useState(false);
 
-    const handleUpdateQuestion = (key, value) => {
-        setQuestionData({ ...questionData, [key]: value });
-        setTossed(false);
+    const tossData = () => {
+        console.log('tossed data: ' + questionData.statement);
+        setTossed(true);
+        socket.emit('setToss', { question: questionData, answer: answerData, roomCode: params.roomCode });
     };
+
+    React.useEffect(() => {
+        socket.on('forceSetToss', tossData);
+
+        return () => {
+            socket.off('forceSetToss', tossData);
+        };
+    }, [socket, questionData, answerData]);
 
     const handleCreate = (e) => {
         e.preventDefault();
         if (e.keyCode === 13) return false; // prevent submission when pressing enter TODO: fix
 
-        setTossed(true);
-        socket.emit('setToss', { question: questionData, answer: answerData, roomCode: params.roomCode } );
+        tossData();
+    };
+
+    const handleUpdateQuestion = (key, value) => {
+        setQuestionData({ ...questionData, [key]: value });
+        setTossed(false);
     };
 
     const handleAddBlankMcqChoice = React.useCallback((e) => {

@@ -12,6 +12,7 @@ const AdminPlay = ({ players, handleOpenSummary }) => {
     const [returned, setReturned] = React.useState(false);
     
     const tossedPlayers = players.filter(player => player.toss.question);
+    const canForceSetTosses = tossIteration === 0;
     const canToss = (tossedPlayers.length === players.length) && (tossIteration < players.length - 1);
     const canReturn = !returned && tossIteration > 0;
     const canSummary = returned;
@@ -47,6 +48,16 @@ const AdminPlay = ({ players, handleOpenSummary }) => {
                 </div>
             </main>
             <div id='footer' style={{ display: 'flex', gap: '1.5rem', paddingTop: '1.3rem', paddingBottom: '1.3rem' }}>
+                <button
+                    className='small-button'
+                    style={{ width: 'auto', paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canForceSetTosses ? 1 : 0.5 }}
+                    disabled={!canForceSetTosses}
+                    onClick={() => {
+                        socket.emit('forceSetRoomTosses', params.roomCode);
+                    }}
+                >
+                    FORCE SET TOSSES
+                </button>
                 <button
                     className='small-button'
                     style={{ margin: '1rem', opacity: canToss ? 1 : 0.5 }}

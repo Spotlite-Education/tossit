@@ -20,20 +20,20 @@ const PlayerResult = ({ data }) => {
         placeColor = 'white';
     }
     return (
-        <button className='leaderboard-result' style={{ height: showToss ? '21rem' : '4.5rem' }} onClick={() => setShowToss(!showToss)}>
+        <button className='leaderboard-result' onClick={() => setShowToss(!showToss)}>
             <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
                 <p style={{ width: '33.33333%', textAlign: 'left', color: placeColor }}>{data.place}.</p>
                 <b style={{ width: '33.33333%', textAlign: 'center' }}>{data.username}</b>
                 <p style={{ width: '33.33333%', textAlign: 'right', color: '#DFDFDF' }}>{data.score}</p>
-            </div>{/* TODO: display data.correctPercentage and data.toss....? */}
-            <div style={{ width: '100%' }}>
+            </div>
+            {showToss && <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <PlayerWorkBox
                     username={data.username}
                     questionData={data.toss.question}
                     answerData={data.toss.answer}
                     responded={true}
                 />
-            </div>
+            </div>}
         </button>
     );
 }

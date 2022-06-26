@@ -76,6 +76,7 @@ const PlayerWorkBox = ({ username, questionData, answerData, responded }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 minWidth: '35rem',
+                maxWidth: '50rem',
                 height: 'fit-content',
                 boxSizing: 'border-box',
                 margin: '1.5rem',
