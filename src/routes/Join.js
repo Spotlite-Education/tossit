@@ -14,6 +14,7 @@ const Join = () => {
     const [showUsername, setShowUsername] = React.useState(false);
     const [status, setStatus] = React.useState('');
     const [username, setUsername] = React.useState('');
+    const [timerData, setTimerData] = React.useState({});
 
     const socket = React.useContext(SocketContext);
     const navigate = useNavigate();
@@ -53,7 +54,8 @@ const Join = () => {
             setStatus('waiting');
         })
 
-        socket.once('startSession', () => {
+        socket.once('startSession', ({ startTime, durationSeconds }) => {
+            setTimerData({ start: new Date(startTime), durationSeconds });
             setStatus('joinTransition');
         });
     }
@@ -79,7 +81,7 @@ const Join = () => {
         case 'joinTransition':
             setTimeout(() => {
                 //setStatus('joined');
-                navigate(`/${roomCode}`, { state: { username } });
+                navigate(`/${roomCode}`, { state: { username, timerData } });
             }, 1500);
             return (
                 <h1 id='centered-subtitle'>Create a question!</h1> // TODO: make text animate by moving upwards, and then switch status to joined
@@ -91,13 +93,20 @@ const Join = () => {
         <main>
             {/* Title */}
             {!showUsername && <React.Fragment>
-
                 <img src={CombinedLogo} className='logo' />
-                
-                <Input width='30%' height='2.5rem' numInputs={constants.ROOM_CODE_LEFT_LENGTH + constants.ROOM_CODE_RIGHT_LENGTH} outlineStyle='underscore' idxSplit={constants.ROOM_CODE_LEFT_LENGTH} textId='room-code-text' onSubmit={newRoomCode => {
-                    setRoomCode(newRoomCode);
-                    setShowUsername(true);
-                }} />
+                <Input
+                    width='30%'
+                    height='2.5rem'
+                    numInputs={constants.ROOM_CODE_LEFT_LENGTH + constants.ROOM_CODE_RIGHT_LENGTH}
+                    outlineStyle='underscore'
+                    idxSplit={constants.ROOM_CODE_LEFT_LENGTH}
+                    splitString='-'
+                    textId='room-code-text'
+                    onSubmit={newRoomCode => {
+                        setRoomCode(newRoomCode);
+                        setShowUsername(true);
+                    }}
+                />
             </React.Fragment>}
             
             {/* Enter name */}

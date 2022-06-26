@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { SocketContext } from '../../context/socket';
 import PlayerWorkBox from '../../components/PlayerWorkBox';
+import TimerDisplay from '../../components/TimerDisplay';
 
-const AdminPlay = ({ players, handleOpenSummary }) => {
+const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
     const socket = React.useContext(SocketContext);
     const params = useParams();
     
@@ -16,6 +17,18 @@ const AdminPlay = ({ players, handleOpenSummary }) => {
     const canToss = (tossedPlayers.length === players.length) && (tossIteration < players.length - 1);
     const canReturn = !returned && tossIteration > 0;
     const canSummary = returned;
+
+    const handleTossRoom = React.useCallback(() => {
+        setTossIteration(tossIteration + 1);
+        // TODO: add animation after clicking the toss button
+    }, []);
+
+    React.useEffect(() => {
+        socket.once('forceTossRoom', () => {
+            handleTossRoom();
+            // TODO: change state to hide timer
+        });
+    }, []);
 
     return (
         <>
@@ -64,8 +77,7 @@ const AdminPlay = ({ players, handleOpenSummary }) => {
                     disabled={!canToss}
                     onClick={() => {
                         socket.emit('tossRoom', params.roomCode);
-                        setTossIteration(tossIteration + 1);
-                        // TODO: add animation after clicking the toss button
+                        handleTossRoom();
                     }}
                 >
                     TOSS
@@ -95,11 +107,18 @@ const AdminPlay = ({ players, handleOpenSummary }) => {
                     </div>
                 }
             </div>
+            {tossIteration === 0 && <div style={{ position: 'absolute', top: 0, right: 0, padding: '1rem' }}>
+                <TimerDisplay
+                    startTime={timerData.start}
+                    durationSeconds={timerData.durationSeconds}
+                />
+            </div>}
         </>
     );
 }
 AdminPlay.propTypes = {
     players: PropTypes.array.isRequired,
+    timerData: PropTypes.object.isRequired,
     handleOpenSummary: PropTypes.func.isRequired,
 };
 

@@ -4,13 +4,12 @@ import PropTypes from 'prop-types';
 /*
  * width: width of the input box (should be 0 - 100%)
  * height: height of the input box (should be 0 - 100%)
- * marginBetween: the margin between the input boxes
  * numInputs: number of boxes to display
  * middleDash: whether or not to display a middle dash
  * outlineStyle: style of the inputBoxes. 'solid', 'dashed' or 'underscore' (default: 'underscore')
  */
 const inputBoxWidth = 2.5;
-const DashedInput = ({ width, height, numInputs, outlineStyle, onSubmit, idxSplit=-1, textId=null }) => {
+const DashedInput = ({ width, height, numInputs, idxSplit=-1, splitString=null, outlineStyle, textId=null, onlyNumbers=false, onSubmit }) => {
     const outline = deriveOutline(outlineStyle);
     const handleChange = (index, e) => {
         const keyCode = e.keyCode;
@@ -40,11 +39,9 @@ const DashedInput = ({ width, height, numInputs, outlineStyle, onSubmit, idxSpli
             inputEl.current[Math.max(0, index - 1)].focus();
             return;
         }
-        if (!(keyCode >= 48 && keyCode <= 57) 
-            && !(keyCode >= 65 && keyCode <= 90)
-        ) {
-            return; // not a number or letter
-        }
+        if (!(keyCode >= 48 && keyCode <= 57) &&
+            (onlyNumbers || !(keyCode >= 65 && keyCode <= 90))) return;
+        
         const newChar = String.fromCharCode(keyCode);
         const newValues = values.slice();
         newValues[index] = newChar;
@@ -79,13 +76,13 @@ const DashedInput = ({ width, height, numInputs, outlineStyle, onSubmit, idxSpli
         }
         
         if (idxSplit !== -1) {
-            newNodes.splice(idxSplit, 0, <p key='e' className='input-box' id={textId}>-</p>);
+            newNodes.splice(idxSplit, 0, <p key='e' className='input-box' id={textId}>{splitString}</p>);
         }
         setNodes(newNodes);
     }, [values]);
 
     return (
-        <div id='input' style={{ width: width, height: height, }}>
+        <div id='input' style={{ width, height }}>
             {nodes}
         </div>
     );
@@ -94,12 +91,13 @@ const DashedInput = ({ width, height, numInputs, outlineStyle, onSubmit, idxSpli
 DashedInput.propTypes = {
     width: PropTypes.string.isRequired,
     height: PropTypes.string.isRequired,
-    marginBetween: PropTypes.string,
     numInputs: PropTypes.number.isRequired,
-    outlineStyle: PropTypes.string,
-    onSubmit: PropTypes.func.isRequired,
     idxSplit: PropTypes.number,
+    splitString: PropTypes.string,
+    outlineStyle: PropTypes.string,
     textId: PropTypes.string,
+    onlyNumbers: PropTypes.bool,
+    onSubmit: PropTypes.func.isRequired,
 };
 
 const deriveOutline = (style) => {

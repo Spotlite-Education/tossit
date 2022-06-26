@@ -12,12 +12,17 @@ const AdminHome = () => {
     const params = useParams();
     const navigate = useNavigate();
 
+    const [timerData, setTimerData] = React.useState({ start: null, durationSeconds: 0 });
     React.useEffect(() => {
         socket.emit('checkEnterAdminHome', params.roomCode);
         socket.once('checkFail', ({ message }) => {
             console.log('ERROR ACCESSING ADMIN HOME: ' + message);
             navigate('/');
             return;
+        });
+        socket.once('startSession', ({ startTime, durationSeconds }) => {
+            setTimerData({ start: new Date(startTime), durationSeconds });
+            setStatus('play');
         });
     }, []);
 
@@ -43,11 +48,11 @@ const AdminHome = () => {
             return <AdminJoin
                 players={players}
                 setPlayers={setPlayers}
-                handleStart={() => setStatus('play')}
             />;
         case 'play':
             return <AdminPlay
                 players={players}
+                timerData={timerData}
                 handleOpenSummary={() => setStatus('summary')}
             />;
         case 'summary':

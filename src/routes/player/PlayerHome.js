@@ -9,11 +9,16 @@ import PlayerReturn from './PlayerReturn';
 import Leaderboard from '../Leaderboard';
 import { FRQ } from './PlayerCreate';
 import Corner from '../../components/Corner';
+import TimerDisplay from '../../components/TimerDisplay';
 
 const PlayerHome = () => {
     const socket = React.useContext(SocketContext);
     const params = useParams();
     const navigate = useNavigate();
+
+    const { state } = useLocation();
+    const username = state.username;
+    const [timerData, setTimerData] = React.useState({ start: null, durationSeconds: 0 });
     React.useEffect(() => {
         socket.emit('checkEnterPlayerHome', params.roomCode);
         socket.once('checkFail', ({ message }) => {
@@ -21,9 +26,8 @@ const PlayerHome = () => {
             navigate('/');
             return;
         });
+        setTimerData(state.timerData);
     }, []);
-    const { state } = useLocation();
-    const username = state.username;
 
     const [status, setStatus] = React.useState('create');
     const [score, setScore] = React.useState(0);
@@ -125,6 +129,12 @@ const PlayerHome = () => {
             <Corner corner='tr' className='link-box'>
                 <p>{username} | {score}</p>
             </Corner>
+            {status === 'create' && <div style={{ position: 'absolute', top: '3rem', right: 0, padding: '1rem' }}> {/* TODO: timer not showing up (sometimes?) */}
+                <TimerDisplay
+                    startTime={timerData.start}
+                    durationSeconds={timerData.durationSeconds}
+                />
+            </div>}
         </>
     );
 }
