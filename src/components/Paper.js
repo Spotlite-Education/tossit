@@ -24,7 +24,7 @@ const Paper = ({ frontComponent, backComponent, size }) => {
     const [flipped, setFlipped] = React.useState(false);
 
     return (
-        <div className='paper' style={{ width: size }}>
+        <div id='paper' style={{ width: size }}>
             <div>
                 {flipped ? backComponent : frontComponent}
             </div>
