@@ -15,7 +15,7 @@ OtherResponse.propTypes = {
     isCorrect: PropTypes.bool.isRequired,
 };
 
-const PlayerReturn = ({ responses, othersResponses, handleOpenLeaderboard }) => {
+const PlayerReturn = ({ likes, responses, othersResponses, handleOpenLeaderboard }) => {
     let correctResponses = 0;
     for (let i = 0; i < responses.length; i++) {
         correctResponses += responses[i].isCorrect;
@@ -38,6 +38,8 @@ const PlayerReturn = ({ responses, othersResponses, handleOpenLeaderboard }) => 
                 <h1>Tosses Returned!</h1>
             </nav>
             <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '1.5rem' }}>
+                <h3>Likes your toss got: {likes}</h3>
+                <br />
                 <h3>Your Responses:</h3>
                 {responses.length === 1 ?
                     <h4 style={{ marginBottom: '1.5rem' }}>Your one response was {correctResponses === 1 ? 'correct' : 'incorrect'}.</h4> :
@@ -64,6 +66,7 @@ const PlayerReturn = ({ responses, othersResponses, handleOpenLeaderboard }) => 
     );
 }
 PlayerReturn.propTypes = {
+    likes: PropTypes.number.isRequired,
     responses: PropTypes.array.isRequired,
     othersResponses: PropTypes.array.isRequired,
     handleOpenLeaderboard: PropTypes.func.isRequired,

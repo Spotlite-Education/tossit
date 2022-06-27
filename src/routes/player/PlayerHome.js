@@ -18,7 +18,7 @@ const PlayerHome = () => {
 
     const { state } = useLocation();
     const username = state.username;
-    const [timerData, setTimerData] = React.useState({ start: null, durationSeconds: 0 });
+    const timerData = state.timerData;
     React.useEffect(() => {
         socket.emit('checkEnterPlayerHome', params.roomCode);
         socket.once('checkFail', ({ message }) => {
@@ -26,7 +26,6 @@ const PlayerHome = () => {
             navigate('/');
             return;
         });
-        setTimerData(state.timerData);
     }, []);
 
     const [status, setStatus] = React.useState('create');
@@ -39,8 +38,11 @@ const PlayerHome = () => {
     // respond
     const [receivedQuestion, setReceivedQuestion] = React.useState({});
     const [response, setResponse] = React.useState('');
+    const [liked, setLiked] = React.useState(false);
+
     const handleTossQuestion = React.useCallback(questionObject => {
         setResponse('');
+        setLiked(false);
         setReceivedQuestion(questionObject);
         setStatus('respond');
     });
@@ -64,7 +66,7 @@ const PlayerHome = () => {
         e.preventDefault();
         if (e.keyCode === 13) return false;
 
-        socket.emit('respondToss', { response, roomCode: params.roomCode } );
+        socket.emit('respondToss', { response, liked, roomCode: params.roomCode } );
         socket.once('tossAnswer', ({ isCorrect, answer }) => {
             setIsCorrect(isCorrect);
             const answerAsInt = parseInt(answer);
@@ -75,11 +77,13 @@ const PlayerHome = () => {
 
 
     // return
+    const [likes, setLikes] = React.useState(0);
     const [responses, setResponses] = React.useState([]);
     const [othersResponses, setOthersResponses] = React.useState([]);
 
     React.useEffect(() => {
-        socket.once('returnToss', ({ responses, othersResponses }) => {
+        socket.once('returnToss', ({ likes, responses, othersResponses }) => {
+            setLikes(likes);
             setResponses(responses);
             setOthersResponses(othersResponses);
             setStatus('return');
@@ -97,6 +101,8 @@ const PlayerHome = () => {
                 questionData={receivedQuestion}
                 response={response}
                 setResponse={setResponse}
+                liked={liked}
+                setLiked={setLiked}
                 handleRespond={handleRespond}
             />;
             break;
@@ -111,6 +117,7 @@ const PlayerHome = () => {
             break;
         case 'return':
             PlayerPage = <PlayerReturn
+                likes={likes}
                 responses={responses}
                 othersResponses={othersResponses}
                 handleOpenLeaderboard={() => setStatus('leaderboard')}

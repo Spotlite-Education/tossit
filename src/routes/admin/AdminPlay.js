@@ -54,6 +54,7 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                                 username={player.username}
                                 questionData={player.toss.question}
                                 answerData={player.toss.answer}
+                                likes={player.toss.likes}
                                 responded={player.responded}
                             />;
                         }

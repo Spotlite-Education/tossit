@@ -14,7 +14,6 @@ const Join = () => {
     const [showUsername, setShowUsername] = React.useState(false);
     const [status, setStatus] = React.useState('');
     const [username, setUsername] = React.useState('');
-    const [timerData, setTimerData] = React.useState({});
 
     const socket = React.useContext(SocketContext);
     const navigate = useNavigate();
@@ -55,7 +54,16 @@ const Join = () => {
         })
 
         socket.once('startSession', ({ startTime, durationSeconds }) => {
-            setTimerData({ start: new Date(startTime), durationSeconds });
+            setTimeout(() => {
+                //setStatus('joined');
+                navigate(`/${roomCode}`, { state: {
+                    username,
+                    timerData: {
+                        start: new Date(startTime),
+                        durationSeconds
+                    }
+                } });
+            }, 1500);
             setStatus('joinTransition');
         });
     }
@@ -79,10 +87,6 @@ const Join = () => {
                 </div>
             );
         case 'joinTransition':
-            setTimeout(() => {
-                //setStatus('joined');
-                navigate(`/${roomCode}`, { state: { username, timerData } });
-            }, 1500);
             return (
                 <h1 id='centered-subtitle'>Create a question!</h1> // TODO: make text animate by moving upwards, and then switch status to joined
             );

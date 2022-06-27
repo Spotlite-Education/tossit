@@ -22,15 +22,16 @@ const PlayerResult = ({ data }) => {
     return (
         <button className='leaderboard-result' onClick={() => setShowToss(!showToss)}>
             <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-                <p style={{ width: '33.33333%', textAlign: 'left', color: placeColor }}>{data.place}.</p>
-                <b style={{ width: '33.33333%', textAlign: 'center' }}>{data.username}</b>
-                <p style={{ width: '33.33333%', textAlign: 'right', color: '#DFDFDF' }}>{data.score}</p>
+                <p style={{ flex: 1, textAlign: 'left', color: placeColor }}>{data.place}.</p>
+                <b style={{ flex: 4, textAlign: 'center' }}>{data.username}</b>
+                <p style={{ flex: 1, textAlign: 'right', color: '#DFDFDF' }}>{data.score}</p>
             </div>
             {showToss && <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <PlayerWorkBox
                     username={data.username}
                     questionData={data.toss.question}
                     answerData={data.toss.answer}
+                    likes={data.toss.likes}
                     responded={true}
                 />
             </div>}
