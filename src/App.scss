@@ -17,6 +17,7 @@
 $bg-color: rgba(74,186,255,255);
 $secondary: rgba(76,88,117,0.4);
 $third-color: rgba(76,88,117,255);
+$light-gray: #F2F2F2;
 
 * {
     padding: 0;
@@ -135,6 +136,7 @@ main {
         filter: brightness(1);
     }
 }
+
 
 #footer {
     border-top: dashed $third-color;

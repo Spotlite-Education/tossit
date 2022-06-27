@@ -48,7 +48,8 @@ main {
 #paper {
     display: flex;
     flex-wrap: nowrap;
-    margin: 0;
+    justify-content: center;
+    margin: auto;
     position: absolute;
     width: 70%;
     height: 80%;
@@ -82,6 +83,7 @@ main {
         box-sizing: border-box;
         margin-bottom: 2rem;
 
+
         div {
             pointer-events: none;
         }
@@ -107,7 +109,8 @@ main {
         }
 
         input[type=text]::placeholder {
-            color: App.$secondary;
+            color: rgb(80, 80, 80);
+            font-style: italic;
         }
 
         textarea {
@@ -133,14 +136,11 @@ main {
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            box-sizing: border-box;
-            
-            margin-bottom: 1rem;
-    
+            box-sizing: border-box;            
+            position: absolute;
+            width: 50px;
             button {
-                margin-left: auto;
-                margin-right: 0;
-                
+                right: 100%;
             }
         }
     
@@ -148,17 +148,14 @@ main {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 100%;
+            width: 98%;
             min-height: 4rem;
             box-sizing: border-box;
             margin-bottom: 0.5rem;
             padding-left: 0.75rem;
             padding-right: 0.75rem;
-            border-style: solid;
-            border-radius: 15px;
-            border-width: 1.5px;
-            border-color: App.$secondary;
-            background-color: App.$secondary;
+            border:none;
+            background-color: App.$light-gray;
             pointer-events: all;
         
             label {
@@ -173,42 +170,49 @@ main {
                 border-width: 1px;
                 border-color: transparent;
                 overflow-wrap: break-word;
-                color: App.$secondary;
                 background-color: transparent;
                 transition: all 0.25s;
+                font-size: 1.25rem;
+                color: rgb(80, 80, 80);
+                font-style: italic;
             }
         
             .circle-button-check {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 1.75rem;
-                height: 1.75rem;
+                width:40px;
+                height: 40px;
+                font-size: 1.5rem;
                 margin-right: 0.75rem;
                 padding: 0.25rem;
-                border-radius: 5000px;
+                border-radius: 50%;
+                border:none;
+                background-color: rgb(230, 230, 230);
             }
         
             .circle-button-delete {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 2.5rem;
-                height: 2.5rem;
+                width: 40px;
+                height: 40px;
                 margin-right: 0;
-                border-radius: 5000px;
+                border-radius: 50%;
                 font-family: 'Sans-Medium';
                 font-size: 1.5rem;
-                color: scale-color(change-color(red, $alpha: 0.75), $lightness: +15%);
+                border: none;
+                background-color: transparent;
             }
+
             button {
                 &:hover {
                     opacity: 1;
-                    filter: brightness(200%);
+                    filter: brightness(110%);
                 }
                 &:active {
                     opacity: 0.5;
-                    filter: brightness(200%);
+                    filter: brightness(110%);
                 }
             }
         }    
