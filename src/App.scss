@@ -168,6 +168,11 @@ main {
 }
 
 #timer-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: 'Mono-Medium', sans-serif;
     font-size: 2rem;
+    vertical-align: middle;
+    text-align: center;
 }

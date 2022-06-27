@@ -35,33 +35,10 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
             <nav id='nav-bar' style={{
                 height: 100,
                 textAlign: 'center',
+                alignItems: 'center',
+                justifyContent: 'space-between'
             }}>
-                <h1>Planes:</h1>
-            </nav>
-            <main>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        justifyContent: 'space-around'
-                    }}
-                >
-                    {players.map((player, index) => {
-                        if (player.toss.question) {
-                            return <PlayerWorkBox
-                                key={index}
-                                username={player.username}
-                                questionData={player.toss.question}
-                                answerData={player.toss.answer}
-                                likes={player.toss.likes}
-                                responded={player.responded}
-                            />;
-                        }
-                    })}
-                </div>
-            </main>
-            <div id='footer' style={{ display: 'flex', gap: '1.5rem', paddingTop: '1.3rem', paddingBottom: '1.3rem' }}>
+                <h1 style={{verticalAlign: 'middle', textAlign: 'middle'}}>Planes:</h1>
                 <button
                     className='small-button'
                     style={{ width: '8.5rem',paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canForceSetTosses ? 1 : 0.5, fontSize: '1.5vw' }}
@@ -102,18 +79,42 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                 >
                     Summary
                 </button>
+                {tossIteration === 0 && 
+                <TimerDisplay
+                    startTime={timerData.start}
+                    durationSeconds={timerData.durationSeconds}
+                />}
+            </nav>
+            <main>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        justifyContent: 'space-around'
+                    }}
+                >
+                    {players.map((player, index) => {
+                        if (player.toss.question) {
+                            return <PlayerWorkBox
+                                key={index}
+                                username={player.username}
+                                questionData={player.toss.question}
+                                answerData={player.toss.answer}
+                                likes={player.toss.likes}
+                                responded={player.responded}
+                            />;
+                        }
+                    })}
+                </div>
+            </main>
+            <div id='footer' style={{ display: 'flex', gap: '1.5rem', paddingTop: '1.3rem', paddingBottom: '1.3rem' }}>
                 {tossIteration > 0 &&
                     <div style={{ width: '24rem', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 'auto', marginRight: '3rem', fontSize: '1.25vw' }}>
                         <h2>Everyone has tossed {tossIteration} time{tossIteration === 1 ? '' : 's'}.</h2>
                     </div>
                 }
             </div>
-            {tossIteration === 0 && <div style={{ position: 'absolute', top: 0, right: 0, padding: '1rem' }}>
-                <TimerDisplay
-                    startTime={timerData.start}
-                    durationSeconds={timerData.durationSeconds}
-                />
-            </div>}
         </>
     );
 }
