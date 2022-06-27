@@ -24,7 +24,7 @@ const PlayerSummaryBox = ({ username, questionData, likes, correctResponses, tot
                 </div>
                 <div style={{ flex: 1, height: '100%', display: 'flex', flexdirection: 'row', justifyContent: 'right', alignItems: 'center', gap: '5px' }}>
                     <p style={{ color: 'rgb(3, 34, 84)', fontSize: '1.5rem' }}>{likes}</p>
-                    <AiFillHeart style={{ backgroundColor: 'rgb(3, 34, 84)', fontSize: '1.5rem' }} />
+                    <AiFillHeart fill='#ff3d51' size='1.5rem' />
                 </div>
             </div>
             <p style={{ fontSize: '1.25rem', color: 'slategray' }}>{correctOthersResponses}/{totalOthersResponses} players answered correctly.</p>

@@ -29,10 +29,10 @@ const PlayerRespond = ({ questionData, response, setResponse, liked, setLiked, h
                 >
                     <Answer selectedIndex={parseInt(response)} questionData={questionData} handleClick={handleSelectChoice} />
                     <div style={{ display: 'flex', flexDirection: 'row', gap: '3rem' }}>
-                        <button type='button' onClick={() => setLiked(!liked)} style={{ border: 'none', backgroundColor: 'red' }}>
-                            {liked ? <AiFillHeart style={{ fontSize: '3rem' }} />: <AiOutlineHeart style={{ fontSize: '3rem' }}  />}
+                        <button type='button' id='like-button' onClick={() => setLiked(!liked)}>
+                            {liked ? <AiFillHeart fill='#ff3d51' size={30} /> : <AiOutlineHeart color='#dcdcdc' size={30} />}
                         </button>
-                        <input className='submit-button' type='submit' value='Submit Answer' />
+                        <input className='submit-button' style={{ margin: 0 }} type='submit' value='Submit Answer' />
                     </div>
                 </form>
             </main>

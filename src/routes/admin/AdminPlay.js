@@ -64,46 +64,46 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
             <div id='footer' style={{ display: 'flex', gap: '1.5rem', paddingTop: '1.3rem', paddingBottom: '1.3rem' }}>
                 <button
                     className='small-button'
-                    style={{ width: 'auto', paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canForceSetTosses ? 1 : 0.5 }}
+                    style={{ width: '8.5rem',paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canForceSetTosses ? 1 : 0.5, fontSize: '1.5vw' }}
                     disabled={!canForceSetTosses}
                     onClick={() => {
                         socket.emit('forceSetRoomTosses', params.roomCode);
                     }}
                 >
-                    FORCE SET TOSSES
+                    Force Toss
                 </button>
                 <button
                     className='small-button'
-                    style={{ margin: '1rem', opacity: canToss ? 1 : 0.5 }}
+                    style={{ margin: '1rem', opacity: canToss ? 1 : 0.5, fontSize: '1.5vw' }}
                     disabled={!canToss}
                     onClick={() => {
                         socket.emit('tossRoom', params.roomCode);
                         handleTossRoom();
                     }}
                 >
-                    TOSS
+                    Toss
                 </button>
                 <button
                     className='small-button'
-                    style={{ width: 'auto', paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canReturn ? 1 : 0.5 }}
+                    style={{ width: 'auto', paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canReturn ? 1 : 0.5, fontSize: '1.5vw' }}
                     disabled={!canReturn}
                     onClick={() => {
                         socket.emit('returnTosses', params.roomCode);
                         setReturned(true);
                     }}
                 >
-                    RETURN TOSSES
+                    Return Tosses
                 </button>
                 <button
                     className='small-button'
-                    style={{ width: 'auto', paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canSummary ? 1 : 0.5 }}
+                    style={{ width: 'auto', paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canSummary ? 1 : 0.5, fontSize: '1.5vw' }}
                     disabled={!canSummary}
                     onClick={handleOpenSummary}
                 >
-                    SUMMARY
+                    Summary
                 </button>
                 {tossIteration > 0 &&
-                    <div style={{ width: '24rem', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 'auto', marginRight: '3rem' }}>
+                    <div style={{ width: '24rem', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 'auto', marginRight: '3rem', fontSize: '1.25vw' }}>
                         <h2>Everyone has tossed {tossIteration} time{tossIteration === 1 ? '' : 's'}.</h2>
                     </div>
                 }

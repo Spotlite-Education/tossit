@@ -120,7 +120,6 @@ const Join = () => {
                     <input type='text' id='nameInput' autoFocus maxLength={20} value={username} onChange={(e) => handleChange(e)}></input>
                 </form>
             </React.Fragment>}
-
             <Corner corner='tr'>
                 <Link className='link-text' to='/create'>To Teacher Mode</Link>
             </Corner>

@@ -93,13 +93,14 @@ const PlayerWorkBox = ({ username, questionData, answerData, likes, responded })
                     <p style={{ fontSize: '1.25rem', color: 'slategray' }}>{username}&apos;s plane</p>
                     <p style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Q: {questionData.statement}</p>
                 </div>
-                <div style={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'row', gap: '1.5rem', justifyContent: 'right' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <div style={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'row', gap: '1.5rem', justifyContent: 'right', color: 'red' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: 'red' }}>
                         <p style={{ color: 'rgb(3, 34, 84)', fontSize: '1.5rem' }}>{likes}</p>
-                        <AiFillHeart style={{ backgroundColor: 'rgb(3, 34, 84)', fontSize: '1.5rem' }} />
+                        
                     </div>
                     {/* TODO: add flagging here */}
                 </div>
+                <AiFillHeart fill='#ff3d51' size='1.5rem' />
             </div>
             {choicesOrAnswer}
         </div>
