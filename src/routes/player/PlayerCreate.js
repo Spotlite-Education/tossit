@@ -6,7 +6,9 @@ import { generateId } from '../../util/random';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 import Paper from '../../components/Paper';
 import TextEditor from '../../components/TextEditor';
-
+//import TextEditor from '../../components/TextEditor';
+import { TossPlanes } from '../../components/TossPlanes';
+// import { IconContext } from "react-icons";
 
 export const FRQ = 'frq';
 export const MCQ = 'mcq'
@@ -87,15 +89,15 @@ const PlayerCreate = () => {
     }, [questionData]);
 
     const paperFront = (
-        <div>
+        <>
+        {/* <div>
             <TextEditor />
-            <div className='form-section'>
-                <h4 className='dark-text section-title'>Type a question here</h4>
-                <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
-                    <textarea autoFocus maxLength={450}>{questionData.statement}</textarea>
-                </label>
-            </div>
+        <div className='form-section'>
+            <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
+                <textarea placeholder={'Write a question here...'} autoFocus maxLength={450}>{questionData.statement}</textarea>
+            </label>
         </div>
+        </>
     );
 
     const paperBack = (
@@ -125,17 +127,34 @@ const PlayerCreate = () => {
                         handleRemoveChoice={handleRemoveMcqChoice}
                     />
                 )}
+                <div id='mcq-bar' style={questionData.type !== MCQ ? { marginBottom: 0,                
+                } : {}}>
+                    {questionData.type === MCQ && <button disabled={questionData.answerChoices.length >= 4} style={{ 
+                        pointerEvents: 'all',
+                        fontSize: '2rem',
+                        fontStyle: 'bold',
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '50%',
+                        border: 'none',
+                        }} onClick={(e) => handleAddBlankMcqChoice(e)}>
+                        +
+                    </button>}
+                </div>
             </div>
             <div className='form-section'>
                 <input
                     disabled={questionData.answerChoices.length <= 0}
                     className='submit-button'
-                    style={{ width: '6rem', height: '3rem', fontSize: '1.25rem' }}
+                    style={{ width: '6rem', height: '3rem', fontSize: '1.25rem' ,
+                    marginTop: 'auto',
+                    opacity: '100%',
+                    color: 'rgba(76,88,117,255)',
+                }}
                     type='submit'
                     value='Toss It!' 
                 />
             </div>
-            {tossed && <p>Tossed!</p>}
         </>        
     );
 
@@ -163,14 +182,31 @@ const PlayerCreate = () => {
 
     return (           
         <main>
-            <form onSubmit={(e) => handleCreate(e)}>
-                {/* FOR FRQ OPTION
-                    <div className='form-section'>
-                    <h4>Type:</h4>
-                    {typeBoxes}
-                </div> */}
-                <Paper frontComponent={paperFront} backComponent={paperBack} size={800}></Paper>
-            </form>                    
+            {tossed ? 
+            <>
+                <div id='loading'>
+                    <TossPlanes />
+                </div>
+                <div className='loading-text' style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',   
+                    transform: 'translate(-50%, 0%)',                 
+                }}>
+                    Tossing...
+                </div>
+                </>
+            :
+                    <form onSubmit={(e) => handleCreate(e)}>
+                    {/* FOR FRQ OPTION
+                        <div className='form-section'>
+                        <h4>Type:</h4>
+                        {typeBoxes}
+                    </div> */}
+                    <Paper frontComponent={paperFront} backComponent={paperBack} size={'70%'}></Paper>
+                </form>  
+            }
+                              
             {/*
             <DrawingBoard
                 thickness={5} 
@@ -261,7 +297,7 @@ const Choice = ({ correct, statement, id, handleChangeAnswer, handleUpdateChoice
                     handleChangeAnswer(id);
                 }}
             >
-                {correct && <AiOutlineCheck />}
+                {correct && <AiOutlineCheck fill='rgb(150, 150, 150)' />}
             </button>
             <label>
                 <input

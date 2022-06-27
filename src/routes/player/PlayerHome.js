@@ -136,7 +136,7 @@ const PlayerHome = () => {
             <Corner corner='tr' className='link-box'>
                 <p>{username} | {score}</p>
             </Corner>
-            {status === 'create' && <div style={{ position: 'absolute', top: '3rem', right: 0, padding: '1rem' }}> {/* TODO: timer not showing up (sometimes?) */}
+            {status === 'create' && <div style={{ position: 'absolute', top: 0, left: 0, padding: '0.5rem' }}> {/* TODO: timer not showing up (sometimes?) */}
                 <TimerDisplay
                     startTime={timerData.start}
                     durationSeconds={timerData.durationSeconds}
