@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
  * outlineStyle: style of the inputBoxes. 'solid', 'dashed' or 'underscore' (default: 'underscore')
  */
 const inputBoxWidth = 2.5;
-const DashedInput = ({ width, height, numInputs, idxSplit=-1, splitString=null, outlineStyle, textId=null, onlyNumbers=false, onSubmit }) => {
+const DashedInput = ({ width, height, numInputs, idxSplit=-1, splitString=null, outlineStyle, textId=null, onlyNumbers=false, onSubmit, inputNumberLimit=[9,9,5,9]}) => {
     const outline = deriveOutline(outlineStyle);
     const handleChange = (index, e) => {
         const keyCode = e.keyCode;
@@ -39,8 +39,12 @@ const DashedInput = ({ width, height, numInputs, idxSplit=-1, splitString=null, 
             inputEl.current[Math.max(0, index - 1)].focus();
             return;
         }
-        if (!(keyCode >= 48 && keyCode <= 57) &&
-            (onlyNumbers || !(keyCode >= 65 && keyCode <= 90))) return;
+
+        //Timer input restrictions
+        if (onlyNumbers && !(keyCode >= 48 && keyCode <= 48 + inputNumberLimit[index])) return;
+
+        //Code input restrictions
+        if(!onlyNumbers && (keyCode <= 46 || keyCode >= 91)) return;
         
         const newChar = String.fromCharCode(keyCode);
         const newValues = values.slice();
@@ -98,6 +102,7 @@ DashedInput.propTypes = {
     textId: PropTypes.string,
     onlyNumbers: PropTypes.bool,
     onSubmit: PropTypes.func.isRequired,
+    inputNumberLimit: PropTypes.array,
 };
 
 const deriveOutline = (style) => {

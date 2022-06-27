@@ -111,8 +111,7 @@ const PlayerCreate = () => {
         <>
             <div className='form-section'>
                 <div id='mcq-bar' style={questionData.type !== MCQ ? { marginBottom: 0 } : {}}>
-                    <h4>Answer:</h4>
-                    {questionData.type === MCQ && <button className="button" style={{ pointerEvents: 'all' }} onClick={(e) => handleAddBlankMcqChoice(e)}>Add choice</button>}
+                    <h4 style={{ color: 'slategray' }}>Answer:</h4>
                 </div>
                 {questionData.type === FRQ ? (
                         <label onChange={(e) => { e.preventDefault(); setAnswerData(e.target.value) }}>
