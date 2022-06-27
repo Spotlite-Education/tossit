@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Corner from '../../components/Corner';
+import { AiFillHeart } from 'react-icons/ai';
 
-const PlayerSummaryBox = ({ username, questionData, correctResponses, totalResponses, correctOthersResponses, totalOthersResponses }) => {
+const PlayerSummaryBox = ({ username, questionData, likes, correctResponses, totalResponses, correctOthersResponses, totalOthersResponses }) => {
     return (
         <div 
             style={{
@@ -16,8 +17,16 @@ const PlayerSummaryBox = ({ username, questionData, correctResponses, totalRespo
                 backgroundColor: 'white',
             }}
         >
-            <p style={{ fontSize: '1.25rem', color: 'slategray' }}>{username} answered {correctResponses}/{totalResponses} planes correctly.</p>
-            <p style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Q: {questionData.statement}</p>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ flex: 6, display: 'flex', flexDirection: 'column' }}>
+                    <p style={{ fontSize: '1.25rem', color: 'slategray' }}>{username} answered {correctResponses}/{totalResponses} planes correctly.</p>
+                    <p style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Q: {questionData.statement}</p>
+                </div>
+                <div style={{ flex: 1, height: '100%', display: 'flex', flexdirection: 'row', justifyContent: 'right', alignItems: 'center', gap: '5px' }}>
+                    <p style={{ color: 'rgb(3, 34, 84)', fontSize: '1.5rem' }}>{likes}</p>
+                    <AiFillHeart style={{ backgroundColor: 'rgb(3, 34, 84)', fontSize: '1.5rem' }} />
+                </div>
+            </div>
             <p style={{ fontSize: '1.25rem', color: 'slategray' }}>{correctOthersResponses}/{totalOthersResponses} players answered correctly.</p>
         </div>
     );
@@ -25,6 +34,7 @@ const PlayerSummaryBox = ({ username, questionData, correctResponses, totalRespo
 PlayerSummaryBox.propTypes = {
     username: PropTypes.string.isRequired,
     questionData: PropTypes.object.isRequired,
+    likes: PropTypes.number.isRequired,
     correctResponses: PropTypes.number.isRequired,
     totalResponses: PropTypes.number.isRequired,
     correctOthersResponses: PropTypes.number.isRequired,
@@ -53,6 +63,7 @@ const AdminSummary = ({ players, handleOpenLeaderboard }) => {
                         key={index}
                         username={player.username}
                         questionData={player.toss.question}
+                        likes={player.toss.likes}
                         correctResponses={correctResponses}
                         totalResponses={player.responses.length}
                         correctOthersResponses={correctOthersResponses}

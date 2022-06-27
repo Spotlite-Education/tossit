@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FRQ, MCQ } from '../routes/player/PlayerCreate';
 import { generateId } from '../util/random';
+import { AiFillHeart } from 'react-icons/ai';
 
 const Choice = ({ correct, statement }) => {
     return (
@@ -36,7 +37,7 @@ Choice.propTypes = {
     statement: PropTypes.string.isRequired,
 };
 
-const PlayerWorkBox = ({ username, questionData, answerData, responded }) => {
+const PlayerWorkBox = ({ username, questionData, answerData, likes, responded }) => {
     // const [showing, setShowing] = React.useState('question');
     // const handleSwitch = () => {
     //     switch (showing) {
@@ -87,8 +88,19 @@ const PlayerWorkBox = ({ username, questionData, answerData, responded }) => {
                 textAlign: 'left',
             }}
         >
-            <p style={{ fontSize: '1.25rem', color: 'slategray' }}>{username}&apos;s plane</p>
-            <p style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Q: {questionData.statement}</p>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ flex: 6, display: 'flex', flexDirection: 'column' }}>
+                    <p style={{ fontSize: '1.25rem', color: 'slategray' }}>{username}&apos;s plane</p>
+                    <p style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Q: {questionData.statement}</p>
+                </div>
+                <div style={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'row', gap: '1.5rem', justifyContent: 'right' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        <p style={{ color: 'rgb(3, 34, 84)', fontSize: '1.5rem' }}>{likes}</p>
+                        <AiFillHeart style={{ backgroundColor: 'rgb(3, 34, 84)', fontSize: '1.5rem' }} />
+                    </div>
+                    {/* TODO: add flagging here */}
+                </div>
+            </div>
             {choicesOrAnswer}
         </div>
     );
@@ -97,6 +109,7 @@ PlayerWorkBox.propTypes = {
     username: PropTypes.string.isRequired,
     questionData: PropTypes.object.isRequired,
     answerData: PropTypes.string.isRequired,
+    likes: PropTypes.number.isRequired,
     responded: PropTypes.bool.isRequired,
 };
 

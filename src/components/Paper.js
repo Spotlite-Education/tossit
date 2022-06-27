@@ -25,9 +25,7 @@ const Paper = ({ frontComponent, backComponent, size }) => {
 
     return (
         <div id='paper' style={{ width: size }}>
-            <div>
-                {flipped ? backComponent : frontComponent}
-            </div>
+            {flipped ? backComponent : frontComponent}
             <FlipButton flipped={flipped} setFlipped={setFlipped} onClick={() => setFlipped(!flipped)} />
         </div>
     );

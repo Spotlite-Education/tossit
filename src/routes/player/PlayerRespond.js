@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FRQ, MCQ } from './PlayerCreate';
 import { generateId } from '../../util/random';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
-const PlayerRespond = ({ questionData, response, setResponse, handleRespond }) => {
+const PlayerRespond = ({ questionData, response, setResponse, liked, setLiked, handleRespond }) => {
     const handleSelectChoice = (index) => {
         setResponse(index.toString());
     };
@@ -27,7 +28,12 @@ const PlayerRespond = ({ questionData, response, setResponse, handleRespond }) =
                     onSubmit={(e) => handleRespond(e)}
                 >
                     <Answer selectedIndex={parseInt(response)} questionData={questionData} handleClick={handleSelectChoice} />
-                    <input className='submit-button' type='submit' value='Submit Answer' />
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '3rem' }}>
+                        <button type='button' onClick={() => setLiked(!liked)} style={{ border: 'none', backgroundColor: 'red' }}>
+                            {liked ? <AiFillHeart style={{ fontSize: '3rem' }} />: <AiOutlineHeart style={{ fontSize: '3rem' }}  />}
+                        </button>
+                        <input className='submit-button' type='submit' value='Submit Answer' />
+                    </div>
                 </form>
             </main>
         </>
@@ -38,6 +44,8 @@ PlayerRespond.propTypes = {
     questionData: PropTypes.object.isRequired,
     response: PropTypes.string.isRequired,
     setResponse: PropTypes.func.isRequired,
+    liked: PropTypes.bool.isRequired,
+    setLiked: PropTypes.func.isRequired,
     handleRespond: PropTypes.func.isRequired,
 };
 

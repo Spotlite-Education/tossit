@@ -46,7 +46,7 @@ main {
 
 
 #paper {
-    display: block;
+    display: flex;
     flex-wrap: nowrap;
     justify-content: center;
     margin: auto;
@@ -75,8 +75,11 @@ main {
     }
 
     .form-section {
-        flex: 1;
-        display: block;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        max-width: 100%;
         box-sizing: border-box;
         margin-bottom: 2rem;
 
@@ -90,7 +93,7 @@ main {
         }
         
         input {
-            width: '100%';
+            width: 100%;
             box-sizing: border-box;
             outline: none;
             border: none;
@@ -108,6 +111,24 @@ main {
         input[type=text]::placeholder {
             color: rgb(80, 80, 80);
             font-style: italic;
+        }
+
+        textarea {
+            width: 100%;
+            height: 50vh;
+            color: App.$third-color;
+            font-size: 1.5rem;
+            opacity: 0.5;
+            border: none;
+            outline: none;
+            resize: none;
+            overflow: hidden;
+            scroll-behavior: none;
+        }
+
+        .section-title {
+            display: block;
+            width: fit-content;
         }
 
         #mcq-bar {
@@ -186,7 +207,6 @@ main {
 
             button {
                 &:hover {
-                    
                     opacity: 1;
                     filter: brightness(110%);
                 }
