@@ -3,24 +3,13 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { SocketContext } from '../../context/socket';
 import { generateId } from '../../util/random';
-import { AiOutlineCheck, AiOutlineDelete } from 'react-icons/ai';
+import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 import Paper from '../../components/Paper';
-// import { IconContext } from "react-icons";
+import TextEditor from '../../components/TextEditor';
+
 
 export const FRQ = 'frq';
 export const MCQ = 'mcq'
-
-// const CheckButton = () => {
-//     return (
-//       <IconContext.Provider
-//         value={{ color: 'black'}}
-//       >
-//         <div>
-//           <AiOutlineCheck />
-//         </div>
-//       </IconContext.Provider>
-//     );
-//   }
 
 const questionTypeValues = [FRQ, MCQ]; // mcq includes t/f questions
 //const questionTypeNames = ['Free Response', 'Multiple Choice'];
@@ -69,7 +58,7 @@ const PlayerCreate = () => {
         e.preventDefault();
         const id = generateId();
         const index = questionData.answerChoices.length + 1;
-        setQuestionData({ ...questionData, answerChoices: [...questionData.answerChoices, { id, statement: 'Answer #' + index + '...', correct: false }] });
+        setQuestionData({ ...questionData, answerChoices: [...questionData.answerChoices, { id, statement: 'Answer #' + index, correct: false }] });
         if (questionData.answerChoices.length === 1 || questionData.answerChoices.length === 0) setAnswerData('0');
     }, [questionData]);
 
@@ -98,18 +87,24 @@ const PlayerCreate = () => {
     }, [questionData]);
 
     const paperFront = (
-        <div className='form-section'>
-            <h4 className='dark-text section-title'>Type a question here</h4>
-            <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
-                <textarea autoFocus maxLength={450}>{questionData.statement}</textarea>
-            </label>
+        <div>
+            <TextEditor />
+            <div className='form-section'>
+                <h4 className='dark-text section-title'>Type a question here</h4>
+                <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
+                    <textarea autoFocus maxLength={450}>{questionData.statement}</textarea>
+                </label>
+            </div>
         </div>
     );
 
     const paperBack = (
         <>
             <div className='form-section'>
-
+                <div id='mcq-bar' style={questionData.type !== MCQ ? { marginBottom: 0 } : {}}>
+                    <h4>Answer:</h4>
+                    {questionData.type === MCQ && <button className="button" style={{ pointerEvents: 'all' }} onClick={(e) => handleAddBlankMcqChoice(e)}>Add choice</button>}
+                </div>
                 {questionData.type === FRQ ? (
                         <label onChange={(e) => { e.preventDefault(); setAnswerData(e.target.value) }}>
                             <Answer
@@ -130,30 +125,12 @@ const PlayerCreate = () => {
                         handleRemoveChoice={handleRemoveMcqChoice}
                     />
                 )}
-                <div id='mcq-bar' style={questionData.type !== MCQ ? { marginBottom: 0,                
-                } : {}}>
-                    {questionData.type === MCQ && <button disabled={questionData.answerChoices.length >= 4} style={{ 
-                        pointerEvents: 'all',
-                        fontSize: '2rem',
-                        fontStyle: 'bold',
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '50%',
-                        border: 'none',
-                        left: '0',
-                        }} onClick={(e) => handleAddBlankMcqChoice(e)}>
-                        +
-                    </button>}
-                </div>
             </div>
             <div className='form-section'>
                 <input
                     disabled={questionData.answerChoices.length <= 0}
                     className='submit-button'
-                    style={{ width: '6rem', height: '3rem', fontSize: '1.25rem' ,
-                    opacity: '100%',
-                    color: 'rgba(76,88,117,255)',
-                }}
+                    style={{ width: '6rem', height: '3rem', fontSize: '1.25rem' }}
                     type='submit'
                     value='Toss It!' 
                 />
@@ -275,9 +252,8 @@ McqForm.propTypes = {
 const Choice = ({ correct, statement, id, handleChangeAnswer, handleUpdateChoice, handleRemoveChoice }) => {
     return (
         <div className='choice'
-            style={{
-                backgroundColor: correct ? 'rgba(14, 166, 11, 0.5)' : undefined,
-                 }}>
+            style={{ borderColor: correct ? 'rgba(30, 200, 25, 1)' : undefined,
+                backgroundColor: correct ? 'rgba(14, 166, 11, 0.5)' : undefined }}>
             <button
                 className='circle-button-check'
                 onClick={(e) => {
@@ -304,8 +280,8 @@ const Choice = ({ correct, statement, id, handleChangeAnswer, handleUpdateChoice
                     e.preventDefault();
                     handleRemoveChoice(id);
                 }}
-            >    
-            <AiOutlineDelete />            
+            >
+                <AiOutlineClose />
             </button>
         </div>
     );
