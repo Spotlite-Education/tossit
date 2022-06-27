@@ -5,6 +5,8 @@ import { SocketContext } from '../../context/socket';
 import { generateId } from '../../util/random';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 import Paper from '../../components/Paper';
+import TextEditor from '../../components/TextEditor';
+
 
 export const FRQ = 'frq';
 export const MCQ = 'mcq'
@@ -85,11 +87,14 @@ const PlayerCreate = () => {
     }, [questionData]);
 
     const paperFront = (
-        <div className='form-section'>
-            <h4 className='dark-text section-title'>Type a question here</h4>
-            <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
-                <textarea autoFocus maxLength={450}>{questionData.statement}</textarea>
-            </label>
+        <div>
+            <TextEditor />
+            <div className='form-section'>
+                <h4 className='dark-text section-title'>Type a question here</h4>
+                <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
+                    <textarea autoFocus maxLength={450}>{questionData.statement}</textarea>
+                </label>
+            </div>
         </div>
     );
 
