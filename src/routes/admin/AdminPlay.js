@@ -5,6 +5,34 @@ import { SocketContext } from '../../context/socket';
 import PlayerWorkBox from '../../components/PlayerWorkBox';
 import TimerDisplay from '../../components/TimerDisplay';
 
+const FlaggablePlayerWorkBox = ({ username, questionData, answerData, likes, responded, emitSetFlagged }) => {
+    const [flagged, setFlagged] = React.useState(false);
+
+    return (
+        <PlayerWorkBox
+            username={username}
+            questionData={questionData}
+            answerData={answerData}
+            likes={likes}
+            responded={responded}
+            flaggable={true}
+            flagged={flagged}
+            setFlagged={newFlagged => {
+                emitSetFlagged(newFlagged);
+                setFlagged(newFlagged);
+            }}
+        />
+    );
+}
+FlaggablePlayerWorkBox.propTypes = {
+    username: PropTypes.string.isRequired,
+    questionData: PropTypes.object.isRequired,
+    answerData: PropTypes.string.isRequired,
+    likes: PropTypes.number.isRequired,
+    responded: PropTypes.bool.isRequired,
+    emitSetFlagged: PropTypes.func.isRequired,
+}
+
 const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
     const socket = React.useContext(SocketContext);
     const params = useParams();
@@ -41,13 +69,13 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                 <h1 style={{verticalAlign: 'middle', textAlign: 'middle'}}>Planes:</h1>
                 <button
                     className='small-button'
-                    style={{ width: '8.5rem',paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canForceSetTosses ? 1 : 0.5, fontSize: '1.5vw' }}
+                    style={{ width: 'auto',paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canForceSetTosses ? 1 : 0.5, fontSize: '1.5vw' }}
                     disabled={!canForceSetTosses}
                     onClick={() => {
                         socket.emit('forceSetRoomTosses', params.roomCode);
                     }}
                 >
-                    Force Toss
+                    Force Save Tosses
                 </button>
                 <button
                     className='small-button'
@@ -96,13 +124,14 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                 >
                     {players.map((player, index) => {
                         if (player.toss.question) {
-                            return <PlayerWorkBox
+                            return <FlaggablePlayerWorkBox
                                 key={index}
                                 username={player.username}
                                 questionData={player.toss.question}
                                 answerData={player.toss.answer}
                                 likes={player.toss.likes}
                                 responded={player.responded}
+                                emitSetFlagged={flagged => socket.emit('setFlagged', { roomCode: params.roomCode, socketId: player.socketId, flagged })}
                             />;
                         }
                     })}

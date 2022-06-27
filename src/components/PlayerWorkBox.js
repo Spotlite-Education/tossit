@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FRQ, MCQ } from '../routes/player/PlayerCreate';
 import { generateId } from '../util/random';
 import { AiFillHeart } from 'react-icons/ai';
+import { BsFlag, BsFlagFill } from 'react-icons/bs';
 
 const Choice = ({ correct, statement }) => {
     return (
@@ -37,22 +38,7 @@ Choice.propTypes = {
     statement: PropTypes.string.isRequired,
 };
 
-const PlayerWorkBox = ({ username, questionData, answerData, likes, responded }) => {
-    // const [showing, setShowing] = React.useState('question');
-    // const handleSwitch = () => {
-    //     switch (showing) {
-    //         case 'question':
-    //             setShowing('answer');
-    //             break;
-    //         case 'answer':
-    //             setShowing('question');
-    //             break;
-    //         default:
-    //             setShowing('question');
-    //             break;
-    //     }
-    // }
-    
+const PlayerWorkBox = ({ username, questionData, answerData, likes, responded=true, flaggable=false, flagged=null, setFlagged=null }) => {
     const formAnswers = React.useCallback(() => {
         const intAnswer = parseInt(answerData);
 
@@ -93,14 +79,16 @@ const PlayerWorkBox = ({ username, questionData, answerData, likes, responded })
                     <p style={{ fontSize: '1.25rem', color: 'slategray' }}>{username}&apos;s plane</p>
                     <p style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Q: {questionData.statement}</p>
                 </div>
-                <div style={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'row', gap: '1.5rem', justifyContent: 'right', color: 'red' }}>
+                <div style={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'row', gap: '1.5rem', alignItems: 'center', justifyContent: 'right', color: 'red' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: 'red' }}>
                         <p style={{ color: 'rgb(3, 34, 84)', fontSize: '1.5rem' }}>{likes}</p>
-                        
+                        <AiFillHeart fill='#ff3d51' size='1.5rem' />
                     </div>
-                    {/* TODO: add flagging here */}
+                    {flaggable && <button type='button' onClick={() => setFlagged(!flagged)} style={{ border: 'none', backgroundColor: 'transparent' }}>
+                        {flagged ? <BsFlagFill style={{ fontSize: '1.5rem', fill: 'rgb(255, 82, 82)' }} />
+                        : <BsFlag style={{ fontSize: '1.5rem', fill: 'rgb(3, 34, 84)' }} />}
+                    </button>}
                 </div>
-                <AiFillHeart fill='#ff3d51' size='1.5rem' />
             </div>
             {choicesOrAnswer}
         </div>
@@ -111,7 +99,10 @@ PlayerWorkBox.propTypes = {
     questionData: PropTypes.object.isRequired,
     answerData: PropTypes.string.isRequired,
     likes: PropTypes.number.isRequired,
-    responded: PropTypes.bool.isRequired,
+    responded: PropTypes.bool,
+    flaggable: PropTypes.bool,
+    flagged: PropTypes.bool,
+    setFlagged: PropTypes.func,
 };
 
 export default PlayerWorkBox;

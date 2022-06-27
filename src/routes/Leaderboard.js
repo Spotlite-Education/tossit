@@ -32,7 +32,6 @@ const PlayerResult = ({ data }) => {
                     questionData={data.toss.question}
                     answerData={data.toss.answer}
                     likes={data.toss.likes}
-                    responded={true}
                 />
             </div>}
         </button>
