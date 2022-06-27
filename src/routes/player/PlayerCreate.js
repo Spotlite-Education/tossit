@@ -85,16 +85,12 @@ const PlayerCreate = () => {
     }, [questionData]);
 
     const paperFront = (
-        <>
-            <div className='form-section'>
-                <div className='dark-text'>This will be the formatting bar</div>
-            </div>
-            <div className='form-section' >
-                <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
-                    <input type='text' placeholder='Type your quiz question here...' value={questionData.statement}/>
-                </label>
-            </div>
-        </>
+        <div className='form-section'>
+            <h4 className='dark-text section-title'>Type a question here</h4>
+            <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
+                <textarea autoFocus maxLength={450}>{questionData.statement}</textarea>
+            </label>
+        </div>
     );
 
     const paperBack = (
@@ -160,29 +156,24 @@ const PlayerCreate = () => {
 
     // const typeBoxes = formTypeBoxes();
 
-    return (
-        <>            
+    return (           
         <main>
-            <div id='paper'>
-                <form onSubmit={(e) => handleCreate(e)}>
-                    {/* FOR FRQ OPTION
-                        <div className='form-section'>
-                        <h4>Type:</h4>
-                        {typeBoxes}
-                    </div> */}
-                    <Paper frontComponent={paperFront} backComponent={paperBack} size={1000}></Paper>
-
-                </form>                    
-                {/*
-                <DrawingBoard
-                    thickness={5} 
-                    color = "black" 
-                    style = "round" 
-                    onSubmit={setPicture}
-                /> */}
-                </div>
+            <form onSubmit={(e) => handleCreate(e)}>
+                {/* FOR FRQ OPTION
+                    <div className='form-section'>
+                    <h4>Type:</h4>
+                    {typeBoxes}
+                </div> */}
+                <Paper frontComponent={paperFront} backComponent={paperBack} size={800}></Paper>
+            </form>                    
+            {/*
+            <DrawingBoard
+                thickness={5} 
+                color = "black" 
+                style = "round" 
+                onSubmit={setPicture}
+            /> */}
         </main>
-        </>
     );
 }
 
