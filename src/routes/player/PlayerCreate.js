@@ -5,7 +5,6 @@ import { SocketContext } from '../../context/socket';
 import { generateId } from '../../util/random';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 import Paper from '../../components/Paper';
-import TextEditor from '../../components/TextEditor';
 //import TextEditor from '../../components/TextEditor';
 import { TossPlanes } from '../../components/TossPlanes';
 // import { IconContext } from "react-icons";
@@ -92,6 +91,7 @@ const PlayerCreate = () => {
         <>
         {/* <div>
             <TextEditor />
+        </div> */}
         <div className='form-section'>
             <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
                 <textarea placeholder={'Write a question here...'} autoFocus maxLength={450}>{questionData.statement}</textarea>
