@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { sanitizeCode } from '../util/filter';
 
 /*
  * width: width of the input box (should be 0 - 100%)
@@ -12,6 +13,12 @@ const inputBoxWidth = 2.5;
 const DashedInput = ({ width, height, numInputs, idxSplit=-1, splitString=null, outlineStyle, textId=null, onlyNumbers=false, onSubmit }) => {
     const outline = deriveOutline(outlineStyle);
     const handleChange = (index, e) => {
+        // let charCode = String.fromCharCode(e.which).toLowerCase();
+        // if ((e.ctrlKey || e.metaKey) && charCode === 'v') {
+        //     for (let i = 0; i < 6;) {
+        //         navigator.clipboard.writeText
+        //     }
+        // }
         const keyCode = e.keyCode;
         // dirty code to shift focus to the next input box
         if (keyCode === 13) {
@@ -49,6 +56,16 @@ const DashedInput = ({ width, height, numInputs, idxSplit=-1, splitString=null, 
         inputEl.current[Math.min(numInputs - 1, index + 1)].focus();
     }
 
+    const onPaste = (e) => {
+        const pasted = e.clipboardData.getData('Text');
+        const cleanCode = sanitizeCode(pasted);
+        if (cleanCode.length === 0) {
+            return;
+        }
+        setValues(cleanCode);
+        inputEl.current[cleanCode.length - 1].focus();
+    };
+
     const handleSubmit = () => {
         const fullCode = values.join('');
         if (fullCode.length === numInputs) {
@@ -71,6 +88,7 @@ const DashedInput = ({ width, height, numInputs, idxSplit=-1, splitString=null, 
                 style={{ outline: outline }}
                 textId={textId}
                 handleChange={handleChange}
+                onPaste={onPaste}
                 caretTransparent={true}
             />;
         }
@@ -113,7 +131,7 @@ const deriveOutline = (style) => {
     }
 }
 
-const InputBox = React.forwardRef(({ index, value, style, handleChange, caretTransparent=false, textId=null }, ref) => (
+const InputBox = React.forwardRef(({ index, value, style, handleChange, onPaste, caretTransparent=false, textId=null }, ref) => (
     <input
         ref={ref}
         type='text'
@@ -129,6 +147,7 @@ const InputBox = React.forwardRef(({ index, value, style, handleChange, caretTra
         }}
         onChange={(e) => e.preventDefault()}
         onKeyDown={(e) => handleChange(index, e)}
+        onPaste={(e) => onPaste(e)}
         maxLength={1}
         minLength={1}
     />
@@ -141,6 +160,7 @@ InputBox.propTypes = {
     value: PropTypes.string,
     style: PropTypes.object,
     handleChange: PropTypes.func.isRequired,
+    onPaste: PropTypes.func.isRequired,
     caretTransparent: PropTypes.bool,
     textId: PropTypes.string,
 };

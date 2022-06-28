@@ -1,0 +1,78 @@
+@use '../../App.scss';
+
+main {
+    width: 100%;
+    min-height: 75vh;
+}
+
+#result-paper {
+    width: 65%;
+    min-height: 50%;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+    color: App.$secondary;
+    background-color: white;
+
+    #header-bar {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 1rem;
+    }
+
+    #title {
+        position: static;
+        width: auto;
+        height: auto;
+        margin: 0;
+        font-size: 2.25rem;
+        color: App.$third-color;
+    }
+
+    #likes-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+
+        #likes-text {
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+            color: App.$secondary;
+        }
+    }
+
+    .detail {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+        color: App.$secondary;
+    }
+}
+
+.response-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 100%;
+    height: 3.5rem;
+    background-color: App.$secondary;
+
+    .username {
+        font-size: 1.25rem;
+    }
+
+    .correct-text {
+        margin-left: auto;
+        font-size: 1rem;
+    }
+}
+
+.correct {
+    background-color: rgba(14, 166, 11, 0.75);
+}
+
+.incorrect {
+    background-color: #ff3d51;
+}

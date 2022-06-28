@@ -51,7 +51,7 @@ const AdminSummary = ({ players, handleOpenLeaderboard }) => {
             }}>
                 <h1>Summary:</h1>
             </nav>
-            <main>
+            <main style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                 {players.map((player, index) => {
                     let correctResponses = 0;
                     player.responses.forEach(response => { correctResponses += response.isCorrect; });

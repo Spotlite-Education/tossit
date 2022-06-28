@@ -32,7 +32,7 @@ const PlayerRespond = ({ questionData, response, setResponse, liked, setLiked, h
                         <button type='button' id='like-button' onClick={() => setLiked(!liked)}>
                             {liked ? <AiFillHeart fill='#ff3d51' size={30} /> : <AiOutlineHeart color='#dcdcdc' size={30} />}
                         </button>
-                        <input className='submit-button' style={{ margin: 0 }} type='submit' value='Submit Answer' />
+                        <input disabled={!response} className='submit-button' style={{ margin: 0 }} type='submit' value='Submit Answer' />
                     </div>
                 </form>
             </main>

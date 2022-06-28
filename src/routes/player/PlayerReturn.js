@@ -1,33 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Corner from '../../components/Corner';
-
-const OtherResponse = ({ username, isCorrect }) => {
-    return (
-        <div style={{ display: 'flex', flexDirection: 'row', width: 200, height: 50 }}>
-            <h4 style={{ marginRight: 20 }}>{username}:</h4>
-            <span>{isCorrect ? 'Correct' : 'Incorrect'}</span>
-        </div>
-    );
-}
-OtherResponse.propTypes = {
-    username: PropTypes.string.isRequired,
-    isCorrect: PropTypes.bool.isRequired,
-};
+import { AiFillHeart } from 'react-icons/ai';
+import '../../styles/player/PlayerReturn.scss';
 
 const PlayerReturn = ({ likes, responses, othersResponses, handleOpenLeaderboard }) => {
-    let correctResponses = 0;
-    for (let i = 0; i < responses.length; i++) {
-        correctResponses += responses[i].isCorrect;
-    }
-    const correctPercentage = correctResponses / responses.length * 100;
+    let correctResponses = responses.filter(response => response.isCorrect);
+    const correctPercentage = correctResponses.length / responses.length * 100;
 
-    let correctOtherPlayers = 0;
-    for (let i = 0; i < othersResponses.length; i++) {
-        correctOtherPlayers += othersResponses[i].isCorrect;
-    }
-    const othersCorrectPercentage = correctOtherPlayers / othersResponses.length * 100;
-    
+    console.log(othersResponses);
+    let correctOtherPlayers = othersResponses.filter(response => response.isCorrect);
+    const othersCorrectPercentage = correctOtherPlayers.length / othersResponses.length * 100;
+
     return (
         <>
             <nav id='nav-bar' style= {{
@@ -37,27 +21,24 @@ const PlayerReturn = ({ likes, responses, othersResponses, handleOpenLeaderboard
             }}>
                 <h1>Tosses Returned!</h1>
             </nav>
-            <main style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '1.5rem' }}>
-                <h3>Likes your toss got: {likes}</h3>
-                <br />
-                <h3>Your Responses:</h3>
-                {responses.length === 1 ?
-                    <h4 style={{ marginBottom: '1.5rem' }}>Your one response was {correctResponses === 1 ? 'correct' : 'incorrect'}.</h4> :
-                    <h4 style={{ marginBottom: '1.5rem' }}>Out of {responses.length} total responses, you got {correctPercentage}% of them correctly.</h4>
-                }
-                <br />
-                <h3>Responses from Other Players:</h3>
-                {othersResponses.length === 1 ?
-                    <h4 style={{ marginBottom: '1.5rem' }}>The one player who responded got it {correctOtherPlayers === 1 ? 'correct' : 'incorrect'}.</h4> :
-                    <h4 style={{ marginBottom: '1.5rem' }}>Out of {othersResponses.length} players who responded, {othersCorrectPercentage}% of them were correct.</h4>
-                }
-                {othersResponses.map((otherResponse, index) => {
-                    return <OtherResponse
-                        key={index}
-                        username={otherResponse.username}
-                        isCorrect={otherResponse.isCorrect}
-                    />;
-                })}
+            <main>
+                <div id='result-paper'>
+                    <div id='header-bar'>
+                        <h3 id='title'>Your Summary:</h3>
+                        <div id='likes-container'>
+                            {/* TODO: make likes component so we don't have to reuse */}
+                            <p id='likes-text'>{likes}</p>
+                            <AiFillHeart fill='#ff3d51' size='2rem' />
+                        </div>
+                    </div>
+                    <p className='detail'>
+                        {correctPercentage}% ({correctResponses.length}/{responses.length}) Got your question correct.
+                    </p>
+                    <p className='detail'>
+                        You got {othersCorrectPercentage}% ({correctOtherPlayers.length}/{othersResponses.length}) of other questions correct.
+                    </p>
+                    {othersResponses.map((response, index) => <Response key={index} correct={response.isCorrect} name={response.username} />)}
+                </div>
             </main>
             <Corner corner='tl' className='link-box'>
                 <p className='link-text' style={{ color: '#FBFBFB', margin: '-0.5rem' }} onClick={handleOpenLeaderboard}>Leaderboard</p>
@@ -70,6 +51,21 @@ PlayerReturn.propTypes = {
     responses: PropTypes.array.isRequired,
     othersResponses: PropTypes.array.isRequired,
     handleOpenLeaderboard: PropTypes.func.isRequired,
+};
+
+const Response = ({ correct, name }) => {
+    if (correct) {
+        return (
+            <div className='response-container correct'>
+                <span className='username'>{name}&apos;s Question</span>
+                <span className='correct-text'><i>Correct</i></span>
+            </div>
+        );
+    }
+};
+Response.propTypes = {
+    correct: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired
 };
 
 export default PlayerReturn;

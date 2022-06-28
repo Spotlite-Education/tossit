@@ -108,9 +108,9 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                     })}
                 </div>
             </main>
-            <div id='footer' style={{ display: 'flex', gap: '1.5rem', paddingTop: '1.3rem', paddingBottom: '1.3rem' }}>
+            <div id='footer' style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', paddingTop: '1.3rem', paddingBottom: '1.3rem' }}>
                 {tossIteration > 0 &&
-                    <div style={{ width: '24rem', display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: 'auto', marginRight: '3rem', fontSize: '1.25vw' }}>
+                    <div style={{ width: '24rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25vw' }}>
                         <h2>Everyone has tossed {tossIteration} time{tossIteration === 1 ? '' : 's'}.</h2>
                     </div>
                 }
