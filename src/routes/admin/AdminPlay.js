@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { SocketContext } from '../../context/socket';
 import PlayerWorkBox from '../../components/PlayerWorkBox';
 import TimerDisplay from '../../components/TimerDisplay';
+import '../../styles/admin/AdminHome.scss';
 
 const FlaggablePlayerWorkBox = ({ username, questionData, answerData, likes, responded, emitSetFlagged }) => {
     const [flagged, setFlagged] = React.useState(false);
@@ -45,11 +46,12 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
     const canToss = (tossedPlayers.length === players.length) && (tossIteration < players.length - 1);
     const canReturn = !returned && tossIteration > 0;
     const canSummary = returned;
-
+    const tossText = tossIteration >= 1 ? "Toss Again" : "Toss";
+    
     const handleTossRoom = React.useCallback(() => {
         setTossIteration(tossIteration + 1);
         // TODO: add animation after clicking the toss button
-    }, []);
+    }, [tossIteration]);
 
     React.useEffect(() => {
         socket.once('forceTossRoom', () => {
@@ -86,7 +88,7 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                         handleTossRoom();
                     }}
                 >
-                    Toss
+                    {tossText}
                 </button>
                 <button
                     className='small-button'
@@ -114,17 +116,7 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                 />}
             </nav>
             <main>
-                <div
-                    style={{
-                        position: 'absolute',
-                        display: 'flex',
-                        flexWrap: 'wrap', 
-                        justifyContent: 'start',
-                        marginTop: '15',
-                        height: '75%',
-                        overflowY: 'scroll',                        
-                    }}
-                >
+                <div className='scroll-box'>
                     {players.map((player, index) => {
                         if (player.toss.question) {
                             return <FlaggablePlayerWorkBox

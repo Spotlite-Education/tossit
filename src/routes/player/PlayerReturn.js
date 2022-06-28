@@ -19,7 +19,7 @@ const PlayerReturn = ({ likes, responses, othersResponses, handleOpenLeaderboard
                 textAlign: 'center',
                 justifyContent: 'center',
             }}>
-                <h1>Tosses Returned!</h1>
+                <h1>Toss Returned!</h1>
             </nav>
             <main>
                 <div id='result-paper'>

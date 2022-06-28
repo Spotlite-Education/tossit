@@ -42,7 +42,7 @@ Choice.propTypes = {
     highlight: PropTypes.bool,
     statement: PropTypes.string.isRequired,
     isCorrect: PropTypes.bool,
-    //correctAnswer: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+    correctAnswer: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 };
 
 const Answer = ({ response, isCorrect, questionData, correctAnswer }) => {
@@ -147,7 +147,7 @@ PlayerResult.propTypes = {
     response: PropTypes.string.isRequired,
     isCorrect: PropTypes.bool,
     questionData: PropTypes.object.isRequired,
-    correctAnswer: PropTypes.string.isRequired,
+    correctAnswer: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
 };
 
 export default PlayerResult;

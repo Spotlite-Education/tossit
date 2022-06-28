@@ -34,7 +34,7 @@ const Paper = ({ frontComponent, backComponent, size }) => {
 Paper.propTypes = {
     frontComponent: PropTypes.element.isRequired,
     backComponent: PropTypes.element.isRequired,
-    size: PropTypes.number.isRequired,
+    size: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 }
 
 export default Paper;
