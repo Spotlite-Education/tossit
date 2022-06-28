@@ -32,10 +32,10 @@ const PlayerReturn = ({ likes, responses, othersResponses, handleOpenLeaderboard
                         </div>
                     </div>
                     <p className='detail'>
-                        {correctPercentage}% ({correctResponses.length}/{responses.length}) Got your question correct.
+                        {correctPercentage.toFixed(2)}% ({correctResponses.length}/{responses.length}) got your question correct.
                     </p>
                     <p className='detail'>
-                        You got {othersCorrectPercentage}% ({correctOtherPlayers.length}/{othersResponses.length}) of other questions correct.
+                        You got {othersCorrectPercentage.toFixed(2)}% ({correctOtherPlayers.length}/{othersResponses.length}) of other questions correct.
                     </p>
                     {othersResponses.map((response, index) => <Response key={index} correct={response.isCorrect} name={response.username} />)}
                 </div>
@@ -54,14 +54,12 @@ PlayerReturn.propTypes = {
 };
 
 const Response = ({ correct, name }) => {
-    if (correct) {
-        return (
-            <div className='response-container correct'>
-                <span className='username'>{name}&apos;s Question</span>
-                <span className='correct-text'><i>Correct</i></span>
-            </div>
-        );
-    }
+    return (
+        <div className={'response-container ' + (correct ? 'correct' : 'incorrect')}>
+            <span className='username'>{name}&apos;s Question</span>
+            <span className='correct-text'><i>{correct ? 'Correct' : 'Incorrect'}</i></span>
+        </div>
+    );
 };
 Response.propTypes = {
     correct: PropTypes.bool.isRequired,

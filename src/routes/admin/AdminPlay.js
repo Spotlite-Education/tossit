@@ -46,7 +46,6 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
     const canToss = (tossedPlayers.length === players.length) && (tossIteration < players.length - 1);
     const canReturn = !returned && tossIteration > 0;
     const canSummary = returned;
-    const tossText = tossIteration >= 1 ? "Toss Again" : "Toss";
     
     const handleTossRoom = React.useCallback(() => {
         setTossIteration(tossIteration + 1);
@@ -71,7 +70,7 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                 <h1 style={{verticalAlign: 'middle', textAlign: 'middle'}}>Planes:</h1>
                 <button
                     className='small-button'
-                    style={{ width: 'auto',paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canForceSetTosses ? 1 : 0.5, fontSize: '1.5vw' }}
+                    style={{ width: 'auto', paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canForceSetTosses ? 1 : 0.5, fontSize: '1.5vw' }}
                     disabled={!canForceSetTosses}
                     onClick={() => {
                         socket.emit('forceSetRoomTosses', params.roomCode);
@@ -81,14 +80,14 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                 </button>
                 <button
                     className='small-button'
-                    style={{ margin: '1rem', opacity: canToss ? 1 : 0.5, fontSize: '1.5vw' }}
+                    style={{ width: 'auto', paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canToss ? 1 : 0.5, fontSize: '1.5vw' }}
                     disabled={!canToss}
                     onClick={() => {
                         socket.emit('tossRoom', params.roomCode);
                         handleTossRoom();
                     }}
                 >
-                    {tossText}
+                    {tossIteration >= 1 ? 'Toss Again' : 'Toss'}
                 </button>
                 <button
                     className='small-button'
@@ -116,7 +115,7 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                 />}
             </nav>
             <main>
-                <div className='scroll-box'>
+                <div className='scroll-box' style={{ justifyContent: 'center' }}>
                     {players.map((player, index) => {
                         if (player.toss.question) {
                             return <FlaggablePlayerWorkBox

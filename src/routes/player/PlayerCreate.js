@@ -183,37 +183,40 @@ const PlayerCreate = () => {
     return (           
         <main>
             {tossed ? 
-            <>
-                <div id='loading'>
-                    <TossPlanes />
-                </div>
-                <div className='loading-text' style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',   
-                    transform: 'translate(-50%, 0%)',                 
-                }}>
-                    Tossing...
-                </div>
-                
+                <>
+                    <div id='loading'>
+                        <TossPlanes />
+                    </div>
+                    <div className='loading-text' style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',   
+                        transform: 'translate(-50%, 0%)',      
+                        display: 'flex',
+                        flexDirection: 'column',    
+                        alignItems: 'center'       
+                    }}>
+                        Tossing...
+                        <button
+                            className='small-button'
+                            style={{ margin: '1rem', fontSize: '1.5rem' }}
+                            onClick={() => {
+                                setTossed(false);
+                            }}
+                        >
+                            Edit
+                        </button>
+                    </div>
                 </>
             :
-                <>
-                    {flagged &&
-                        <ErrorDisplay
-                            errorMessage='Your toss has been flagged. Please revise in order to submit.'
-                            containerStyle={{ marginTop: '1rem' }}
-                        />
-                    }
-                    <form onSubmit={(e) => handleCreate(e)}>
-                        {/* FOR FRQ OPTION
+                <form onSubmit={(e) => handleCreate(e)}>
+                    {/* FOR FRQ OPTION
                         <div className='form-section'>
-                            <h4>Type:</h4>
-                            {typeBoxes}
-                        </div> */}
-                        <Paper frontComponent={paperFront} backComponent={paperBack} size={'70%'}></Paper>
-                    </form>
-                </>
+                        <h4>Type:</h4>
+                        {typeBoxes}
+                    </div> */}
+                    <Paper frontComponent={paperFront} backComponent={paperBack} size={'70%'}></Paper>
+                </form>  
             }
                               
             {/*
@@ -223,6 +226,13 @@ const PlayerCreate = () => {
                 style = "round" 
                 onSubmit={setPicture}
             /> */}
+
+            {flagged &&
+                <ErrorDisplay
+                    errorMessage='Your toss has been flagged. Please revise in order to submit.'
+                    containerStyle={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '1.5rem' }}
+                />
+            }
         </main>
     );
 }

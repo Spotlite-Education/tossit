@@ -6,8 +6,12 @@ import Corner from '../components/Corner';
 import PlayerWorkBox from '../components/PlayerWorkBox';
 import '../App.scss';
 import plane from '../assets/images/plane.svg';
+import { TossPlanes } from '../components/TossPlanes';
 
-const PlayerResult = ({ data }) => {
+const leaderboardSortBy = ['score', 'likes'];
+const leaderboardSortByNames = { score: 'Score', likes: 'Likes' };
+
+const PlayerResult = ({ data, property }) => {
     const [showToss, setShowToss] = React.useState(false);
 
     let placeColor;
@@ -23,10 +27,12 @@ const PlayerResult = ({ data }) => {
 
     return (
         <button className='leaderboard-result' onClick={() => setShowToss(!showToss)}>
-            <div style={{ display: 'flex', flexDirection: 'row', width: '100%',}}>
-                <img src={plane} style={{verticalAlign: 'middle', width: '50px', flex: 1, textAlign: 'left', filter: placeColor}} alt="plane"></img>
-                <div style={{ flex: 4, verticalAlign: 'middle', textAlign: 'center', color: '#9C9C9C' }}>{data.username}</div>
-                <div style={{ flex: 1, verticalAlign: 'middle', textAlign: 'right', color: '#CCCCCC ' }}>{data.score}</div>
+            <div style={{ display: 'flex', flexDirection: 'row', width: '100%', alignItems: 'center' }}>
+                <div style={{ flex: 1, display: 'flex', alignContent: 'center', justifyContent: 'center' }}>
+                    <img src={plane} style={{ width: '3rem', height: '3rem', filter: placeColor }} alt="plane"></img>
+                </div>
+                <div style={{ flex: 2, textAlign: 'center', color: '#9C9C9C' }}>{data.username}</div>
+                <div style={{ flex: 1, textAlign: 'right', color: '#CCCCCC ' }}>{leaderboardSortByNames[property]}: {data[property]}</div>
             </div>
 
             {showToss && <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -42,18 +48,33 @@ const PlayerResult = ({ data }) => {
 }
 PlayerResult.propTypes = {
     data: PropTypes.object.isRequired,
+    property: PropTypes.string.isRequired,
 };
 
 const Leaderboard = ({ handleExit }) => {
     const socket = React.useContext(SocketContext);
     const params = useParams();
 
-    const [leaderboard, setLeaderboard] = React.useState([]);
+    const [sortedLeaderboards, setSortedLeaderboards] = React.useState([]);
+    const [displayLeaderboardIndex, setDisplayLeaderboardIndex] = React.useState(0);
 
     React.useEffect(() => {
         socket.emit('getLeaderboard', params.roomCode);
         socket.once('leaderboard', leaderboard => {
-            setLeaderboard(leaderboard);
+            let newSortedLeaderboards = [];
+            leaderboardSortBy.forEach(property => {
+                const sorted = leaderboard.sort((a, b) => { return b[property] - a[property]; });
+                let curPlace = 0, prevProperty = undefined;
+                newSortedLeaderboards.push(sorted.map(leaderboardPlayerData => {
+                    curPlace += prevProperty !== leaderboardPlayerData[property];
+                    prevProperty = leaderboardPlayerData[property];
+                    return {
+                        ...leaderboardPlayerData,
+                        place: curPlace,
+                    };
+                }));
+            });
+            setSortedLeaderboards(newSortedLeaderboards);
         });
     }, []);
 
@@ -67,14 +88,50 @@ const Leaderboard = ({ handleExit }) => {
                 <h1>Leaderboard:</h1>
             </nav>
             <main>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', alignItems: 'center', marginTop: '2rem' }}>
-                    {leaderboard.map((data, index) =>
-                        <PlayerResult
-                            key={index}
-                            data={data}
-                        />
-                    )}
-                </div>
+                {sortedLeaderboards.length === 0 ?
+                    <>
+                        <div id='loading'>
+                            <TossPlanes />
+                        </div>
+                        <p className='loading-text' style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',   
+                            transform: 'translate(-50%, 5rem)',      
+                            display: 'flex',
+                            flexDirection: 'column',    
+                            alignItems: 'center'
+                        }}>
+                            Loading leaderboard...
+                        </p>
+                    </>
+                    :
+                    <>
+                        <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', fontSize: '1.8rem' }}>
+                            <p>Sort by:</p>
+                            {leaderboardSortBy.map((sortBy, index) =>
+                                <button
+                                    key={index}
+                                    className='small-button'
+                                    style={{ opacity: displayLeaderboardIndex === index ? 0.5 : 1 }}
+                                    disabled={displayLeaderboardIndex === index}
+                                    onClick={() => setDisplayLeaderboardIndex(index)}
+                                >
+                                    {leaderboardSortByNames[sortBy]}
+                                </button>)
+                            }
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%', alignItems: 'center', marginTop: '2rem' }}>
+                            {sortedLeaderboards[displayLeaderboardIndex].map((data, index) =>
+                                <PlayerResult
+                                    key={index}
+                                    data={data}
+                                    property={leaderboardSortBy[displayLeaderboardIndex]}
+                                />
+                            )}
+                        </div>
+                    </>
+                }
             </main>
             <Corner corner='tl' className='link-box'>
                 <p className='link-text' style={{ color: '#FBFBFB', margin: '-0.5rem'  }} onClick={handleExit}>Go Back</p>
