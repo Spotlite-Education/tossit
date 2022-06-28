@@ -5,6 +5,7 @@ import { SocketContext } from '../../context/socket';
 import { motion } from 'framer-motion';
 import Input from '../../components/Input';
 import * as constants from '../../util/constants';
+import ErrorDisplay from '../../components/ErrorDisplay';
 
 const PlayerNameBox = ({ username, handleKick }) => {
     return (
@@ -24,6 +25,8 @@ const AdminJoin = ({ players }) => {
 
     const [showTimer, setShowTimer] = React.useState(false);
 
+    const [errorExists, setErrorExists] = React.useState(false);
+
     if (showTimer) {
         return (
             <div>
@@ -41,9 +44,21 @@ const AdminJoin = ({ players }) => {
                         const minutes = parseInt(time.substring(0, 2));
                         const seconds = parseInt(time.substring(2, 4));
                         const durationSeconds = minutes * 60 + seconds;
-                        socket.emit('startSession', { roomCode: params.roomCode, durationSeconds });
+                        if (durationSeconds > constants.MIN_TIME) {
+                            socket.emit('startSession', { roomCode: params.roomCode, durationSeconds });
+                            setErrorExists(false);
+                        } else {
+                            setErrorExists(true);
+                        }
+
                     }}
                 />
+                {errorExists &&
+                    <ErrorDisplay
+                        errorMessage='Set time is too short!'
+                        containerStyle={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '1.5rem' }}
+                    />
+                }
             </div>
         );
     }

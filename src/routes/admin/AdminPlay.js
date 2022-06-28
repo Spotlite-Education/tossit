@@ -5,6 +5,7 @@ import { SocketContext } from '../../context/socket';
 import PlayerWorkBox from '../../components/PlayerWorkBox';
 import TimerDisplay from '../../components/TimerDisplay';
 import '../../styles/admin/AdminHome.scss';
+import ErrorDisplay from '../../components/ErrorDisplay';
 
 const FlaggablePlayerWorkBox = ({ username, questionData, answerData, likes, responded, emitSetFlagged }) => {
     const [flagged, setFlagged] = React.useState(false);
@@ -89,6 +90,12 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                 >
                     {tossIteration >= 1 ? 'Toss Again' : 'Toss'}
                 </button>
+                { tossIteration == 1 &&
+                    <ErrorDisplay
+                        errorMessage='Max Toss Limit Reached!'
+                        containerStyle={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '5rem' }}
+                    />
+                }
                 <button
                     className='small-button'
                     style={{ width: 'auto', paddingLeft: '1rem', paddingRight: '1rem', margin: '1rem', opacity: canReturn ? 1 : 0.5, fontSize: '1.5vw' }}
