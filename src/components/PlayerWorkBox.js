@@ -62,15 +62,14 @@ const PlayerWorkBox = ({ username, questionData, answerData, likes, responded=tr
             style={{
                 display: 'flex',
                 flexDirection: 'column',
-                minWidth: '35rem',
-                maxWidth: '50rem',
+                minWidth: '33rem',
                 height: 'fit-content',
                 boxSizing: 'border-box',
                 margin: '1.5rem',
                 padding: '1.5rem',
                 paddingTop: '1rem',
                 paddingBottom: '0.5rem',
-                backgroundColor: responded ? 'white' : 'rgb(235, 192, 52)',
+                backgroundColor: responded ? 'white' : 'rgb(240,240,240)',
                 textAlign: 'left',
             }}
         >

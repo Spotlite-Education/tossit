@@ -8,12 +8,13 @@
     box-sizing: border-box;
     width: 100%;
     height: 10rem;
-    background-color: App.$secondary;
+    background-color: transparent;
     font-family: 'Sans-Regular', sans-serif;
     h1 {
         font-size: 2.5rem;
     }
 }
+
 
 .room-code {
     position: absolute;

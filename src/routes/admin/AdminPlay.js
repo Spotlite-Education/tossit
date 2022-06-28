@@ -116,10 +116,13 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
             <main>
                 <div
                     style={{
+                        position: 'absolute',
                         display: 'flex',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        justifyContent: 'space-around'
+                        flexWrap: 'wrap', 
+                        justifyContent: 'start',
+                        marginTop: '15',
+                        height: '75%',
+                        overflowY: 'scroll',                        
                     }}
                 >
                     {players.map((player, index) => {
@@ -137,9 +140,10 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                     })}
                 </div>
             </main>
-            <div id='footer' style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', paddingTop: '1.3rem', paddingBottom: '1.3rem' }}>
+
+            <div id='footer' style={{ display: 'flex', gap: '1.5rem', paddingTop: '1rem', paddingBottom: '0.5rem' }}>
                 {tossIteration > 0 &&
-                    <div style={{ width: '24rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25vw' }}>
+                    <div style={{ display: 'flex', marginLeft: 'auto', marginRight: '15px', fontSize: '0.7rem', padding: '0.4rem' }}>
                         <h2>Everyone has tossed {tossIteration} time{tossIteration === 1 ? '' : 's'}.</h2>
                     </div>
                 }
