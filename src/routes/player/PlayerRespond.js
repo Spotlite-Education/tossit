@@ -29,13 +29,7 @@ const PlayerRespond = ({ questionData, response, setResponse, liked, setLiked, h
             <main>
                 <div
                     style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        flexWrap: 'wrap',
-                        alignItems: 'center',
-                        justifyContent: 'center',
                         width: '35rem',
-                        height: 'fit-content',
                         boxSizing: 'border-box',
                         padding: '1.5rem',
                         margin: '1.5rem',

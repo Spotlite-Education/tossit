@@ -22,13 +22,13 @@ const PlayerSummaryBox = ({ username, questionData, likes, correctResponses, tot
                 <div style={{ flex: 6, display: 'flex', flexDirection: 'column' }}>
                     <p style={{ fontSize: '1.25rem', color: 'slategray' }}>{username} answered {correctResponses}/{totalResponses} planes correctly.</p>
                     <span style={{ marginBottom: '0.5rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Question:</span>
-                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(questionData.editorContentHTML) }} className='response-question-container'></div>
                 </div>
                 <div style={{ flex: 1, height: '100%', display: 'flex', flexdirection: 'row', justifyContent: 'right', alignItems: 'center', gap: '5px' }}>
                     <p style={{ color: 'rgb(3, 34, 84)', fontSize: '1.5rem' }}>{likes}</p>
                     <AiFillHeart fill='#ff3d51' size='1.5rem' />
                 </div>
             </div>
+            <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(questionData.editorContentHTML) }} className='response-question-container'></div>
             <p style={{ fontSize: '1.25rem', color: 'slategray' }}>{correctOthersResponses}/{totalOthersResponses} players answered correctly.</p>
         </div>
     );

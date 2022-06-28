@@ -181,14 +181,9 @@ main {
 
 .response-question-container {
     * {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-wrap: wrap;
         color: black;
-        object-fit: contain;
-        max-width: 100%;
     }
+    overflow: hidden;
     padding-bottom: 2rem;
 }
 

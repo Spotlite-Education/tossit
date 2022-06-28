@@ -80,9 +80,6 @@ const Answer = ({ response, isCorrect, questionData, correctAnswer }) => {
                 <div className='scroll-box'>
                     <div 
                         style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            flexWrap: 'wrap',
                             minWidth: '35rem',
                             maxWidth: '35rem',
                             height: 'fit-content',

@@ -42,9 +42,9 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
     const [tossIteration, setTossIteration] = React.useState(0);
     const [returned, setReturned] = React.useState(false);
     
-    const tossedPlayers = players.filter(player => player.toss.question);
     const canForceSetTosses = tossIteration === 0;
-    const canToss = (tossedPlayers.length === players.length) && (tossIteration < players.length - 1);
+    const tossedPlayers = players.filter(player => (!player.toss.flagged && player.toss.question && player.toss.answer));
+    const canToss = (tossedPlayers.length >= 2) && (tossedPlayers.length === players.length) && (tossIteration < players.length - 1);
     const canReturn = !returned && tossIteration > 0;
     const canSummary = returned;
     
@@ -90,7 +90,7 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                 >
                     {tossIteration >= 1 ? 'Toss Again' : 'Toss'}
                 </button>
-                { tossIteration == 1 &&
+                { tossIteration >= players.length - 1 &&
                     <ErrorDisplay
                         errorMessage='Max Toss Limit Reached!'
                         containerStyle={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '5rem' }}

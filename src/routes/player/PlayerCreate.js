@@ -34,14 +34,21 @@ const PlayerCreate = () => {
     const [tossed, setTossed] = React.useState(false);
     const [editorState, setEditorState] = React.useState(() => EditorState.createEmpty());
 
+    const checkEditorIsEmpty = (plainTextLength) => { return plainTextLength === 0; } // TODO: still a crude solution
+
     const handleSetFlagged = React.useCallback(newFlagged => {
         setFlagged(newFlagged);
     }, []);
 
     const handleTossData = () => {
+        const currentEditorContent = editorState.getCurrentContent();
+        const plainTextLength = currentEditorContent.getPlainText('').length;
+        if (checkEditorIsEmpty(plainTextLength) || answerData === '') { // TODO: make more robust with questionData.statement (e.g. with other question types like FRQ - make more org'ed and clear)
+            return;
+        }
+        const editorContentHTML = draftToHtml(convertToRaw(currentEditorContent));
+        socket.emit('setToss', { question: { ...questionData, editorContentHTML, plainTextLength }, answer: answerData, roomCode: params.roomCode });
         setTossed(true);
-        const editorContentHTML = draftToHtml(convertToRaw(editorState.getCurrentContent()));
-        socket.emit('setToss', { question: { ...questionData, editorContentHTML }, answer: answerData, roomCode: params.roomCode });
     };
 
     React.useEffect(() => {
@@ -96,6 +103,12 @@ const PlayerCreate = () => {
         const indexOf = questionData.answerChoices.findIndex((choice) => choice.id === id);
         questionData.answerChoices.splice(indexOf, 1);
         setQuestionData({ ...questionData, answerChoices: questionData.answerChoices });
+
+        const numberOfQuestionChoices = questionData.answerChoices.length;
+        const answer = parseInt(answerData);
+        if (numberOfQuestionChoices === 0 || answer < 0 || answer >= numberOfQuestionChoices) {
+            setAnswerData('');
+        }
     }, [questionData]);
 
     const paperFront = (

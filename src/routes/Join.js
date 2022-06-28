@@ -46,7 +46,7 @@ const Join = () => {
 
         socket.once('kickPlayer', () => {
             console.log('You have been kicked by the admin of this room!');
-            setStatus('kicked');
+            window.location.reload();
         });
 
         socket.once('joined', () => {
@@ -76,9 +76,6 @@ const Join = () => {
                     <p className='loading-text'>Joining the room...</p>
                 </div>
             );
-        case 'kicked':
-            window.location.reload();
-            return null;
         case 'waiting':
             return (
                 <div id='loading'>
