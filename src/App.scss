@@ -151,11 +151,10 @@ main {
 
 .leaderboard-result {
     width: 50%;
-    background-color: inherit;
+    background-color: white;
     font: inherit;
     padding: 1rem;
-    border-radius: 1rem;
-    border-style: dashed;
+    border: none;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -163,7 +162,7 @@ main {
 }
 
 .leaderboard-result:hover {
-    background-color: rgba(76,88,117,0.1);
+    background-color: rgb(230, 230, 230);
 }
 
 #timer-text {
