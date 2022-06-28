@@ -8,6 +8,7 @@ import Paper from '../../components/Paper';
 //import TextEditor from '../../components/TextEditor';
 import { TossPlanes } from '../../components/TossPlanes';
 // import { IconContext } from "react-icons";
+import ErrorDisplay from '../../components/ErrorDisplay';
 
 export const FRQ = 'frq';
 export const MCQ = 'mcq'
@@ -27,19 +28,25 @@ const PlayerCreate = () => {
         answerChoices: [], // if type is 'frq', keep empty
     });
     const [answerData, setAnswerData] = React.useState(''); // mcq: index of correct answer choice, frq: exact correct answer string
+    const [flagged, setFlagged] = React.useState(false);
     const [tossed, setTossed] = React.useState(false);
 
-    const tossData = () => {
-        console.log('tossed data: ' + questionData.statement);
+    const handleSetFlagged = React.useCallback(newFlagged => {
+        setFlagged(newFlagged);
+    }, []);
+
+    const handleTossData = () => {
         setTossed(true);
         socket.emit('setToss', { question: questionData, answer: answerData, roomCode: params.roomCode });
     };
 
     React.useEffect(() => {
-        socket.on('forceSetToss', tossData);
+        socket.on('setFlagged', handleSetFlagged);
+        socket.on('forceSetToss', handleTossData);
 
         return () => {
-            socket.off('forceSetToss', tossData);
+            socket.off('setFlagged', handleSetFlagged);
+            socket.off('forceSetToss', handleTossData);
         };
     }, [socket, questionData, answerData]);
 
@@ -47,7 +54,7 @@ const PlayerCreate = () => {
         e.preventDefault();
         if (e.keyCode === 13) return false; // prevent submission when pressing enter TODO: fix
 
-        tossData();
+        handleTossData();
     };
 
     const handleUpdateQuestion = (key, value) => {
@@ -104,8 +111,7 @@ const PlayerCreate = () => {
         <>
             <div className='form-section'>
                 <div id='mcq-bar' style={questionData.type !== MCQ ? { marginBottom: 0 } : {}}>
-                    <h4>Answer:</h4>
-                    {questionData.type === MCQ && <button className="button" style={{ pointerEvents: 'all' }} onClick={(e) => handleAddBlankMcqChoice(e)}>Add choice</button>}
+                    <h4 style={{ color: 'slategray' }}>Answer:</h4>
                 </div>
                 {questionData.type === FRQ ? (
                         <label onChange={(e) => { e.preventDefault(); setAnswerData(e.target.value) }}>
@@ -183,21 +189,33 @@ const PlayerCreate = () => {
     return (           
         <main>
             {tossed ? 
-            <>
-                <div id='loading'>
-                    <TossPlanes />
-                </div>
-                <div className='loading-text' style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',   
-                    transform: 'translate(-50%, 0%)',                 
-                }}>
-                    Tossing...
-                </div>
+                <>
+                    <div id='loading'>
+                        <TossPlanes />
+                    </div>
+                    <div className='loading-text' style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',   
+                        transform: 'translate(-50%, 0%)',      
+                        display: 'flex',
+                        flexDirection: 'column',    
+                        alignItems: 'center'       
+                    }}>
+                        Tossing...
+                        <button
+                            className='small-button'
+                            style={{ margin: '1rem', fontSize: '1.5rem' }}
+                            onClick={() => {
+                                setTossed(false);
+                            }}
+                        >
+                            Edit
+                        </button>
+                    </div>
                 </>
             :
-                    <form onSubmit={(e) => handleCreate(e)}>
+                <form onSubmit={(e) => handleCreate(e)}>
                     {/* FOR FRQ OPTION
                         <div className='form-section'>
                         <h4>Type:</h4>
@@ -214,6 +232,13 @@ const PlayerCreate = () => {
                 style = "round" 
                 onSubmit={setPicture}
             /> */}
+
+            {flagged &&
+                <ErrorDisplay
+                    errorMessage='Your toss has been flagged. Please revise in order to submit.'
+                    containerStyle={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '1.5rem' }}
+                />
+            }
         </main>
     );
 }

@@ -27,7 +27,7 @@ const AdminJoin = ({ players }) => {
     if (showTimer) {
         return (
             <div>
-                <h1 style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%) translateY(-2rem)' }}>Set time to make questions:</h1>
+                <h1 style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%) translateY(-5rem)' }}>Set time to make questions:</h1>
                 <Input
                     width='30%'
                     height='2.5rem'
