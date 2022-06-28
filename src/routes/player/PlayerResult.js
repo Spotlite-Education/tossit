@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FRQ, MCQ } from './PlayerCreate';
 import { generateId } from '../../util/random';
+import DOMPurify from 'dompurify';
 
 const Choice = ({ type, highlight, statement, isCorrect=false }) => {
     return (
@@ -79,7 +80,9 @@ const Answer = ({ response, isCorrect, questionData, correctAnswer }) => {
                         style={{
                             display: 'flex',
                             flexDirection: 'column',
+                            flexWrap: 'wrap',
                             minWidth: '35rem',
+                            maxWidth: '50rem',
                             height: 'fit-content',
                             boxSizing: 'border-box',
                             margin: '1.5rem',
@@ -89,24 +92,28 @@ const Answer = ({ response, isCorrect, questionData, correctAnswer }) => {
                             backgroundColor: 'white',
                         }}
                     >
-                        <p style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Q: {questionData.statement}</p>
+                        <span style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Question:</span>
+                        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(questionData.editorContentHTML) }} className='response-question-container' />     
                         {answer}
                     </div>
                     <div 
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        minWidth: '35rem',
-                        height: 'fit-content',
-                        boxSizing: 'border-box',
-                        margin: '1.5rem',
-                        padding: '1.5rem',
-                        paddingTop: '1rem',
-                        paddingBottom: '0.5rem',
-                        backgroundColor: 'white',
-                    }}
-                >
-                    <p style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Q: {questionData.statement}</p>
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            flexWrap: 'wrap',
+                            minWidth: '35rem',
+                            maxWidth: '50rem',
+                            height: 'fit-content',
+                            boxSizing: 'border-box',
+                            margin: '1.5rem',
+                            padding: '1.5rem',
+                            paddingTop: '1rem',
+                            paddingBottom: '0.5rem',
+                            backgroundColor: 'white',
+                        }}
+                    >
+                    <span style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Question:</span>
+                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(response.editorContentHTML) }} />     
                     {self}
                 </div>
             </>

@@ -5,9 +5,11 @@ import { SocketContext } from '../../context/socket';
 import { generateId } from '../../util/random';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 import Paper from '../../components/Paper';
-//import TextEditor from '../../components/TextEditor';
+import { EditorState, convertToRaw } from 'draft-js';
+import TextEditor from '../../components/TextEditor';
 import { TossPlanes } from '../../components/TossPlanes';
 import ErrorDisplay from '../../components/ErrorDisplay';
+import draftToHtml from 'draftjs-to-html';
 // import { IconContext } from "react-icons";
 
 export const FRQ = 'frq';
@@ -30,6 +32,7 @@ const PlayerCreate = () => {
     const [answerData, setAnswerData] = React.useState(''); // mcq: index of correct answer choice, frq: exact correct answer string
     const [flagged, setFlagged] = React.useState(false);
     const [tossed, setTossed] = React.useState(false);
+    const [editorState, setEditorState] = React.useState(() => EditorState.createEmpty());
 
     const handleSetFlagged = React.useCallback(newFlagged => {
         setFlagged(newFlagged);
@@ -37,7 +40,8 @@ const PlayerCreate = () => {
 
     const handleTossData = () => {
         setTossed(true);
-        socket.emit('setToss', { question: questionData, answer: answerData, roomCode: params.roomCode });
+        const editorContentHTML = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+        socket.emit('setToss', { question: { ...questionData, editorContentHTML }, answer: answerData, roomCode: params.roomCode });
     };
 
     React.useEffect(() => {
@@ -57,10 +61,10 @@ const PlayerCreate = () => {
         handleTossData();
     };
 
-    const handleUpdateQuestion = (key, value) => {
-        setQuestionData({ ...questionData, [key]: value });
-        setTossed(false);
-    };
+    // const handleUpdateQuestion = (key, value) => {
+    //     setQuestionData({ ...questionData, [key]: value });
+    //     setTossed(false);
+    // };
 
     const handleAddBlankMcqChoice = React.useCallback((e) => {
         e.preventDefault();
@@ -95,16 +99,9 @@ const PlayerCreate = () => {
     }, [questionData]);
 
     const paperFront = (
-        <>
-        {/* <div>
-            <TextEditor />
-        </div> */}
-        <div className='form-section'>
-            <label onChange={(e) => { e.preventDefault(); handleUpdateQuestion('statement', e.target.value); }}>
-                <textarea placeholder={'Write a question here...'} autoFocus maxLength={450}>{questionData.statement}</textarea>
-            </label>
+        <div style={{ marginBottom: 'auto', width: '100%' }}>
+            <TextEditor state={editorState} setState={setEditorState} />
         </div>
-        </>
     );
 
     const paperBack = (
@@ -149,11 +146,11 @@ const PlayerCreate = () => {
                 <input
                     disabled={questionData.answerChoices.length <= 0}
                     className='submit-button'
-                    style={{ width: '6rem', height: '3rem', fontSize: '1.25rem' ,
-                    marginTop: 'auto',
-                    opacity: '100%',
-                    color: 'rgba(76,88,117,255)',
-                }}
+                    style={{ width: '6rem', height: '3rem', fontSize: '1.25rem',
+                        marginTop: 'auto',
+                        opacity: '100%',
+                        color: 'rgba(76,88,117,255)',
+                    }}
                     type='submit'
                     value='Toss It!' 
                 />

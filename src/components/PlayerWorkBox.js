@@ -4,6 +4,8 @@ import { FRQ, MCQ } from '../routes/player/PlayerCreate';
 import { generateId } from '../util/random';
 import { AiFillHeart } from 'react-icons/ai';
 import { BsFlag, BsFlagFill } from 'react-icons/bs';
+import DOMPurify from 'dompurify';
+import '../styles/Workbox.scss';
 
 const Choice = ({ correct, statement }) => {
     return (
@@ -76,7 +78,8 @@ const PlayerWorkBox = ({ username, questionData, answerData, likes, responded=tr
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div style={{ flex: 6, display: 'flex', flexDirection: 'column' }}>
                     <p style={{ fontSize: '1.25rem', color: 'slategray' }}>{username}&apos;s plane</p>
-                    <p style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Q: {questionData.statement}</p>
+                    <span style={{ marginBottom: '0.5rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Question:</span>
+                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(questionData.editorContentHTML) }} className='response-question-container'></div>
                 </div>
                 <div style={{ flex: 1, height: '100%', display: 'flex', flexDirection: 'row', gap: '1.5rem', alignItems: 'center', justifyContent: 'right', color: 'red' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: 'red' }}>

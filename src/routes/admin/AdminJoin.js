@@ -66,11 +66,13 @@ const AdminJoin = ({ players }) => {
                 }} 
             >
                 <div className='room-code'>
-                    <p style={{
-                        fontFamily: 'Sans-Regular',
-                        textAlign: 'center',
-                        fontSize: '2rem',
-                    }}>Your room code is:</p>
+                    <p 
+                        className='unselectable'
+                        style={{
+                            fontFamily: 'Sans-Regular',
+                            textAlign: 'center',
+                            fontSize: '2rem',
+                        }}>Your room code is:</p>
                     <h1 id='room-code-text' style={{
                         fontSize: '5rem',
                         textAlign: 'center',
