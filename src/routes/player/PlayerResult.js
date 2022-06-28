@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FRQ, MCQ } from './PlayerCreate';
 import { generateId } from '../../util/random';
 import DOMPurify from 'dompurify';
+import '../../styles/admin/AdminHome.scss';
 
 const Choice = ({ type, highlight, statement, isCorrect=false }) => {
     return (
@@ -76,13 +77,14 @@ const Answer = ({ response, isCorrect, questionData, correctAnswer }) => {
         case MCQ:
             return (
                 <>
+                <div className='scroll-box'>
                     <div 
                         style={{
                             display: 'flex',
                             flexDirection: 'column',
                             flexWrap: 'wrap',
                             minWidth: '35rem',
-                            maxWidth: '50rem',
+                            maxWidth: '35rem',
                             height: 'fit-content',
                             boxSizing: 'border-box',
                             margin: '1.5rem',
@@ -102,7 +104,7 @@ const Answer = ({ response, isCorrect, questionData, correctAnswer }) => {
                             flexDirection: 'column',
                             flexWrap: 'wrap',
                             minWidth: '35rem',
-                            maxWidth: '50rem',
+                            maxWidth: '35rem',
                             height: 'fit-content',
                             boxSizing: 'border-box',
                             margin: '1.5rem',
@@ -115,6 +117,7 @@ const Answer = ({ response, isCorrect, questionData, correctAnswer }) => {
                     <span style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Question:</span>
                     <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(response.editorContentHTML) }} />     
                     {self}
+                </div>
                 </div>
             </>
             );

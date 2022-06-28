@@ -65,6 +65,7 @@ const PlayerWorkBox = ({ username, questionData, answerData, likes, responded=tr
                 display: 'flex',
                 flexDirection: 'column',
                 minWidth: '33rem',
+                maxWidth: '33rem',
                 height: 'fit-content',
                 boxSizing: 'border-box',
                 margin: '1.5rem',
