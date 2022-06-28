@@ -7,9 +7,11 @@ import PlayerWorkBox from '../components/PlayerWorkBox';
 import '../App.scss';
 import plane from '../assets/images/plane.svg';
 import { TossPlanes } from '../components/TossPlanes';
+import { AiFillHeart } from 'react-icons/ai';
 
 const leaderboardSortBy = ['score', 'likes'];
 const leaderboardSortByNames = { score: 'Score', likes: 'Likes' };
+const leaderboardDetailAppend = { score: ' Pts', likes: <AiFillHeart fill='#ff3d51' style={{ marginLeft: '0.5rem' }} /> };
 
 const PlayerResult = ({ data, property }) => {
     const [showToss, setShowToss] = React.useState(false);
@@ -32,7 +34,7 @@ const PlayerResult = ({ data, property }) => {
                     <img src={plane} style={{ width: '3rem', height: '3rem', filter: placeColor }} alt="plane"></img>
                 </div>
                 <div style={{ flex: 2, textAlign: 'center', color: '#9C9C9C' }}>{data.username}</div>
-                <div style={{ flex: 1, textAlign: 'right', color: '#CCCCCC ' }}>{leaderboardSortByNames[property]}: {data[property]}</div>
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', textAlign: 'right', fontSize: '1.75rem', color: '#CCCCCC' }}>{data[property]}{leaderboardDetailAppend[property]}</div>
             </div>
 
             {showToss && <div style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
