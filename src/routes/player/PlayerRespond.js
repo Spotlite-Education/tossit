@@ -3,11 +3,16 @@ import PropTypes from 'prop-types';
 import { FRQ, MCQ } from './PlayerCreate';
 import { generateId } from '../../util/random';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
+import DOMPurify from 'dompurify';
 
 const PlayerRespond = ({ questionData, response, setResponse, liked, setLiked, handleRespond }) => {
     const handleSelectChoice = (index) => {
         setResponse(index.toString());
     };
+
+    React.useEffect(() => {
+        console.log(questionData);
+    }, []);
 
     return (
         <>
@@ -19,10 +24,27 @@ const PlayerRespond = ({ questionData, response, setResponse, liked, setLiked, h
                 height: 100,
                 textAlign: 'center',
             }}>
-                <h1 style={{ position: 'absolute', left: '1.5rem' }}>Question:</h1>
-                <h1 style={{ fontSize: '2rem' }}>{questionData.statement}</h1>
+                <h1 style={{ position: 'absolute', left: '1.5rem' }}>Respond:</h1>
             </nav>
             <main>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '35rem',
+                        height: 'fit-content',
+                        boxSizing: 'border-box',
+                        padding: '1.5rem',
+                        margin: '1.5rem',
+                        backgroundColor: 'white'
+                    }}
+                    className='response-question-container'
+                >   
+                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(questionData.editorContentHTML) }} />     
+                </div>
                 <form
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}
                     onSubmit={(e) => handleRespond(e)}

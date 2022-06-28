@@ -66,8 +66,12 @@ const DashedInput = ({ width, height, numInputs, idxSplit=-1, splitString=null, 
         if (cleanCode.length === 0) {
             return;
         }
+        const pastedLength = cleanCode.length;
+        for (let emptySpaceIndex = pastedLength; emptySpaceIndex < numInputs; emptySpaceIndex++) {
+            cleanCode.push('');
+        }
         setValues(cleanCode);
-        inputEl.current[cleanCode.length - 1].focus();
+        inputEl.current[pastedLength >= 6 ? 5 : pastedLength].focus();
     };
 
     const handleSubmit = () => {
