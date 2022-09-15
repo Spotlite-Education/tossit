@@ -111,8 +111,8 @@ const Answer = ({ response, isCorrect, questionData, correctAnswer }) => {
                             backgroundColor: 'white',
                         }}
                     >
-                    <span style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Question:</span>
-                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(response.editorContentHTML) }} />     
+                    <span style={{ marginBottom: '1rem', fontWeight: 600, fontSize: '1.75rem', color: 'rgb(54, 54, 54)' }}>Your Response:</span>
+                    <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(response.editorContentHTML) }} />
                     {self}
                 </div>
                 </div>

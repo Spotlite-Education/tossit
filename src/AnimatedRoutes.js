@@ -1,5 +1,5 @@
 import React from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Join from './routes/Join';
 import Create from './routes/Create';
 import AdminHome from './routes/admin/AdminHome';
@@ -18,7 +18,7 @@ function AnimatedRoutes() {
             <Route path='create' element={<Create />} />
             <Route path='/host/:roomCode' element={<AdminHome />} />
             <Route path=':roomCode' element={<PlayerHome/>} />
-            {/* <Route path='*' element={<ErrorPage />} */}
+            <Route path='*' element={<Navigate to='/' />} />
             </Routes>
         </AnimatePresence>
     )

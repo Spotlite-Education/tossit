@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { SocketContext } from '../../context/socket';
+import { useCheckRoomExists } from '../../util/checkhooks';
 import '../../styles/player/PlayerHome.scss';
 import PlayerCreate from './PlayerCreate';
 import PlayerRespond from './PlayerRespond';
@@ -13,12 +14,11 @@ import TimerDisplay from '../../components/TimerDisplay';
 
 const PlayerHome = () => {
     const socket = React.useContext(SocketContext);
+    useCheckRoomExists(socket);
+
     const params = useParams();
     const navigate = useNavigate();
 
-    const { state } = useLocation();
-    const username = state.username;
-    const timerData = state.timerData;
     React.useEffect(() => {
         socket.emit('checkEnterPlayerHome', params.roomCode);
         socket.once('checkFail', ({ message }) => {
@@ -27,6 +27,13 @@ const PlayerHome = () => {
             return;
         });
     }, []);
+
+    const { state } = useLocation();
+    if (!state) {
+        return null;
+    }
+    const username = state.username;
+    const timerData = state.timerData;
 
     const [status, setStatus] = React.useState('create');
     const [score, setScore] = React.useState(0);

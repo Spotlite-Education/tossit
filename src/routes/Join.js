@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useCheckRoomExists } from '../util/checkhooks';
 import Input from '../components/Input';
 import Corner from '../components/Corner';
 import '../styles/Join.scss';
@@ -16,6 +17,7 @@ const Join = () => {
     const [username, setUsername] = React.useState('');
 
     const socket = React.useContext(SocketContext);
+    useCheckRoomExists(socket);
     const navigate = useNavigate();
     
     const handleError = React.useCallback(({ error }) => {
@@ -46,12 +48,12 @@ const Join = () => {
 
         socket.once('kickPlayer', () => {
             console.log('You have been kicked by the admin of this room!');
-            window.location.reload();
+            navigate(0);
         });
 
         socket.once('joined', () => {
             setStatus('waiting');
-        })
+        });
 
         socket.once('startSession', ({ startTime, durationSeconds }) => {
             setTimeout(() => {
