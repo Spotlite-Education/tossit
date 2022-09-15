@@ -38,6 +38,10 @@ const PlayerCreate = () => {
 
     const handleSetFlagged = React.useCallback(newFlagged => {
         setFlagged(newFlagged);
+        if (newFlagged)
+        {
+            setTossed(false);
+        }
     }, []);
 
     const handleTossData = () => {

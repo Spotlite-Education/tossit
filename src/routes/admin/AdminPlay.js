@@ -2,38 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { SocketContext } from '../../context/socket';
-import PlayerWorkBox from '../../components/PlayerWorkBox';
 import TimerDisplay from '../../components/TimerDisplay';
 import '../../styles/admin/AdminHome.scss';
 import ErrorDisplay from '../../components/ErrorDisplay';
-
-const FlaggablePlayerWorkBox = ({ username, questionData, answerData, likes, responded, emitSetFlagged }) => {
-    const [flagged, setFlagged] = React.useState(false);
-
-    return (
-        <PlayerWorkBox
-            username={username}
-            questionData={questionData}
-            answerData={answerData}
-            likes={likes}
-            responded={responded}
-            flaggable={true}
-            flagged={flagged}
-            setFlagged={newFlagged => {
-                emitSetFlagged(newFlagged);
-                setFlagged(newFlagged);
-            }}
-        />
-    );
-}
-FlaggablePlayerWorkBox.propTypes = {
-    username: PropTypes.string.isRequired,
-    questionData: PropTypes.object.isRequired,
-    answerData: PropTypes.string.isRequired,
-    likes: PropTypes.number.isRequired,
-    responded: PropTypes.bool.isRequired,
-    emitSetFlagged: PropTypes.func.isRequired,
-}
+import PlayerWorkDisplay from '../../components/PlayerWorkDisplay';
 
 const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
     const socket = React.useContext(SocketContext);
@@ -122,21 +94,11 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                 />}
             </nav>
             <main>
-                <div className='scroll-box' style={{ justifyContent: 'center' }}>
-                    {players.map((player, index) => {
-                        if (player.toss.question) {
-                            return <FlaggablePlayerWorkBox
-                                key={index}
-                                username={player.username}
-                                questionData={player.toss.question}
-                                answerData={player.toss.answer}
-                                likes={player.toss.likes}
-                                responded={player.responded}
-                                emitSetFlagged={flagged => socket.emit('setFlagged', { roomCode: params.roomCode, socketId: player.socketId, flagged })}
-                            />;
-                        }
-                    })}
-                </div>
+                <PlayerWorkDisplay
+                    players={players}
+                    roomCode={params.roomCode}
+                    socket={socket}
+                />
             </main>
 
             <div id='footer' style={{ display: 'flex', gap: '1.5rem', paddingTop: '1rem', paddingBottom: '0.5rem' }}>
