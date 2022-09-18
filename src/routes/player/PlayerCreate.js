@@ -10,6 +10,7 @@ import TextEditor from '../../components/TextEditor';
 import { TossPlanes } from '../../components/TossPlanes';
 import ErrorDisplay from '../../components/ErrorDisplay';
 import draftToHtml from 'draftjs-to-html';
+import * as constants from '../../util/constants';
 // import { IconContext } from "react-icons";
 
 export const FRQ = 'frq';
@@ -116,7 +117,7 @@ const PlayerCreate = () => {
     }, [questionData]);
 
     const paperFront = (
-        <div style={{ marginBottom: 'auto', width: '100%' }}>
+        <div style={{ marginBottom: 'auto', width: '100%', height: '100%' }}>
             <TextEditor state={editorState} setState={setEditorState} />
         </div>
     );
@@ -144,9 +145,8 @@ const PlayerCreate = () => {
                         handleRemoveChoice={handleRemoveMcqChoice}
                     />
                 )}
-                <div id='mcq-bar' style={questionData.type !== MCQ ? { marginBottom: 0,                
-                } : {}}>
-                    {questionData.type === MCQ && <button disabled={questionData.answerChoices.length >= 4} style={{ 
+                <div id='mcq-bar' style={questionData.type !== MCQ ? { marginBottom: 0 } : {}}>
+                    {questionData.type === MCQ && <button disabled={questionData.answerChoices.length >= constants.TOSS.CREATION.ANSWER.MAX_MCQ_CHOICES} style={{ 
                         pointerEvents: 'all',
                         fontSize: '2rem',
                         fontStyle: 'bold',
@@ -172,7 +172,7 @@ const PlayerCreate = () => {
                     value='Toss It!' 
                 />
             </div>
-        </>        
+        </>
     );
 
     // FOR FRQ: 
@@ -233,7 +233,7 @@ const PlayerCreate = () => {
                         {typeBoxes}
                     </div> */}
                     <Paper frontComponent={paperFront} backComponent={paperBack} size={'70%'}></Paper>
-                </form>  
+                </form>
             }
                               
             {/*
@@ -247,7 +247,6 @@ const PlayerCreate = () => {
             {flagged &&
                 <ErrorDisplay
                     errorMessage='Your toss has been flagged. Please revise in order to submit.'
-                    containerStyle={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '1.5rem' }}
                 />
             }
         </main>

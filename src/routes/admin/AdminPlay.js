@@ -65,7 +65,6 @@ const AdminPlay = ({ players, timerData, handleOpenSummary }) => {
                 { tossIteration >= players.length - 1 &&
                     <ErrorDisplay
                         errorMessage='Max Toss Limit Reached!'
-                        containerStyle={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '5rem' }}
                     />
                 }
                 <button

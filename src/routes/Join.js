@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCheckRoomExists } from '../util/checkhooks';
 import Input from '../components/Input';
 import Corner from '../components/Corner';
+import ErrorDisplay from '../components/ErrorDisplay';
 import '../styles/Join.scss';
 import { SocketContext } from '../context/socket';
 import { LoadingPlane } from '../components/LoadingPlane';
@@ -15,6 +16,7 @@ const Join = () => {
     const [showUsername, setShowUsername] = React.useState(false);
     const [status, setStatus] = React.useState('');
     const [username, setUsername] = React.useState('');
+    const [errorMessage, setErrorMessage] = React.useState('');
 
     const socket = React.useContext(SocketContext);
     useCheckRoomExists(socket);
@@ -23,10 +25,10 @@ const Join = () => {
     const handleError = React.useCallback(({ error }) => {
         setStatus('');
         if (error === 'roomCode') {
+            setErrorMessage('Room code does not exist. Please enter a valid room code!');
             setShowUsername(false);
         } else if (error === 'username') {
-            //alert('Enter a valid username');
-            // do nothing is fine - otherwise, it will always alert because form submits too fast
+            setErrorMessage('Username is invalid. Please enter a valid username!');
         }
     }, []);
     React.useEffect(() => {
@@ -37,12 +39,22 @@ const Join = () => {
         };
     }, [socket]);
 
+    const handleSubmitRoomCode = newRoomCode => {
+        setErrorMessage('');
+        socket.emit('checkRoomExists', newRoomCode);
+        socket.once('successMessage', successRoomCode => {
+            setRoomCode(successRoomCode);
+            setShowUsername(true);
+        });
+    }
+
     const handleChange = (e) => {
         setUsername(e.target.value);
     }
 
-    const handleJoin = (e, username) => { // FIX WHY IS IT BEING CALLED BY ROOMACODOJEOPDJPOA JDOP
+    const handleJoin = (e, username) => {
         e.preventDefault();
+        setErrorMessage('');
         setStatus('loading');
         socket.emit('joinRoom', { roomCode, username } );
 
@@ -94,31 +106,33 @@ const Join = () => {
     return (
       <>
         <main>
-            {/* Title */}
-            {!showUsername && <React.Fragment>
-                <img src={CombinedLogo} className='logo' />
-                <Input
-                    width='30%'
-                    height='2.5rem'
-                    numInputs={constants.ROOM_CODE_LEFT_LENGTH + constants.ROOM_CODE_RIGHT_LENGTH}
-                    outlineStyle='underscore'
-                    idxSplit={constants.ROOM_CODE_LEFT_LENGTH}
-                    splitString='-'
-                    textId='room-code-text'
-                    onSubmit={newRoomCode => {
-                        setRoomCode(newRoomCode);
-                        setShowUsername(true);
-                    }}
+            {
+                showUsername ?
+                <> {/* Username Input */}
+                    <h1 id='raised-subtitle'>NAME</h1>
+                    <form onSubmit={(e) => handleJoin(e, username)}>
+                        <input type='text' id='nameInput' autoFocus maxLength={20} value={username} onChange={(e) => handleChange(e)}></input>
+                    </form>
+                </> :
+                <> {/* Title, Room Code Input */}
+                    <img src={CombinedLogo} className='logo' />
+                    <Input
+                        width='30%'
+                        height='2.5rem'
+                        numInputs={constants.ROOM_CODE.LEFT_LENGTH + constants.ROOM_CODE.RIGHT_LENGTH}
+                        outlineStyle='underscore'
+                        idxSplit={constants.ROOM_CODE.LEFT_LENGTH}
+                        splitString='-'
+                        textId='room-code-text'
+                        onSubmit={handleSubmitRoomCode}
+                    />
+                </>
+            }
+            {errorMessage &&
+                <ErrorDisplay
+                    errorMessage={errorMessage}
                 />
-            </React.Fragment>}
-            
-            {/* Enter name */}
-            {showUsername && <React.Fragment>
-                <h1 id='raised-subtitle'>NAME</h1>
-                <form onSubmit={(e) => handleJoin(e, username)}>
-                    <input type='text' id='nameInput' autoFocus maxLength={20} value={username} onChange={(e) => handleChange(e)}></input>
-                </form>
-            </React.Fragment>}
+            }
             <Corner corner='tr'>
                 <Link className='link-text' to='/create'>To Teacher Mode</Link>
             </Corner>

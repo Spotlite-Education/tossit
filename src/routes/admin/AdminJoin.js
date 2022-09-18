@@ -35,6 +35,7 @@ const AdminJoin = ({ players }) => {
                     width='30%'
                     height='2.5rem'
                     numInputs={4}
+                    inputNumberLimit={constants.TOSS.CREATION.TIME.MAX_INPUTS}
                     idxSplit={2}
                     splitString=':'
                     outlineStyle='underscore'
@@ -44,7 +45,7 @@ const AdminJoin = ({ players }) => {
                         const minutes = parseInt(time.substring(0, 2));
                         const seconds = parseInt(time.substring(2, 4));
                         const durationSeconds = minutes * 60 + seconds;
-                        if (durationSeconds > constants.MIN_TIME) {
+                        if (durationSeconds >= constants.TOSS.CREATION.TIME.MIN_SECONDS) {
                             socket.emit('startSession', { roomCode: params.roomCode, durationSeconds });
                             setErrorExists(false);
                         } else {
@@ -56,7 +57,6 @@ const AdminJoin = ({ players }) => {
                 {errorExists &&
                     <ErrorDisplay
                         errorMessage='Set time is too short!'
-                        containerStyle={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: '1.5rem' }}
                     />
                 }
             </div>
@@ -91,7 +91,7 @@ const AdminJoin = ({ players }) => {
                     <h1 id='room-code-text' style={{
                         fontSize: '5rem',
                         textAlign: 'center',
-                    }}>{params.roomCode.substring(0, constants.ROOM_CODE_LEFT_LENGTH) + '-' + params.roomCode.substring(constants.ROOM_CODE_RIGHT_LENGTH, params.roomCode.length)}</h1>
+                    }}>{params.roomCode.substring(0, constants.ROOM_CODE.LEFT_LENGTH) + '-' + params.roomCode.substring(constants.ROOM_CODE.RIGHT_LENGTH, params.roomCode.length)}</h1>
                 </div>
             </motion.div>
 

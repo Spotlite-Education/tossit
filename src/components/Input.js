@@ -10,7 +10,7 @@ import { sanitizeCode } from '../util/filter';
  * outlineStyle: style of the inputBoxes. 'solid', 'dashed' or 'underscore' (default: 'underscore')
  */
 const inputBoxWidth = 2.5;
-const DashedInput = ({ width, height, numInputs, idxSplit=-1, splitString=null, outlineStyle, textId=null, onlyNumbers=false, onSubmit, inputNumberLimit=[9,9,5,9]}) => {
+const DashedInput = ({ width, height, numInputs, idxSplit=-1, splitString=null, outlineStyle, textId=null, onlyNumbers=false, onSubmit, inputNumberLimit=[]}) => {
     const outline = deriveOutline(outlineStyle);
     const handleChange = (index, e) => {
         // let charCode = String.fromCharCode(e.which).toLowerCase();
@@ -47,10 +47,10 @@ const DashedInput = ({ width, height, numInputs, idxSplit=-1, splitString=null, 
             return;
         }
 
-        //Timer input restrictions
-        if (onlyNumbers && !(keyCode >= 48 && keyCode <= 48 + inputNumberLimit[index])) return;
+        // Timer input restrictions
+        if (onlyNumbers && !(keyCode >= 48 && keyCode <= 48 + (inputNumberLimit.length === 0 ? 9 : inputNumberLimit[index]))) return;
 
-        //Code input restrictions
+        // Code input restrictions
         if(!onlyNumbers && (keyCode <= 46 || keyCode >= 91)) return;
         
         const newChar = String.fromCharCode(keyCode);

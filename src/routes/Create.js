@@ -45,8 +45,8 @@ const Create = () => {
                 fontSize: '1.2rem',
                 fontFamily: 'Sans-Regular',
                 top: '52%',
-                left: '48%',
-                transform: 'translate(-30%, 0%)',
+                left: '50%',
+                transform: 'translate(-50%, 0%)',
             }}>Teacher Mode</p>
             <button
                 style= {{
