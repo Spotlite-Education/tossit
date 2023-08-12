@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/tossit/static/css/main.7afbb4b6.css",
-    "main.js": "/tossit/static/js/main.192d7a82.js",
-    "static/media/Inter-Bold.ttf": "/tossit/static/media/Inter-Bold.1eca2d329458b92342aa.ttf",
-    "static/media/Inter-Medium.ttf": "/tossit/static/media/Inter-Medium.4ebf1acf62f447ea2f0d.ttf",
-    "static/media/Inter-Thin.ttf": "/tossit/static/media/Inter-Thin.32a2156a01dfb1834cac.ttf",
-    "static/media/Inter-Light.ttf": "/tossit/static/media/Inter-Light.a6cdc9ac687f817dbfb5.ttf",
-    "static/media/Inter-Regular.ttf": "/tossit/static/media/Inter-Regular.a3e5baa244e35d0f891d.ttf",
-    "static/media/ProductSans-ThinItalic.ttf": "/tossit/static/media/ProductSans-ThinItalic.2a6fe185cd27b1f54ec4.ttf",
-    "static/media/RobotoMono-Medium.ttf": "/tossit/static/media/RobotoMono-Medium.e04fa2d8ef59775dc652.ttf",
-    "static/media/logocombined.svg": "/tossit/static/media/logocombined.602b4fbc3e02fa73e08597885dc971be.svg",
-    "static/media/plane.svg": "/tossit/static/media/plane.2a9501afbb75cf0d296a8a7c4705fa8c.svg",
-    "index.html": "/tossit/index.html",
-    "static/media/fold.svg": "/tossit/static/media/fold.13512b709400f92aa01b.svg",
-    "main.7afbb4b6.css.map": "/tossit/static/css/main.7afbb4b6.css.map",
-    "main.192d7a82.js.map": "/tossit/static/js/main.192d7a82.js.map"
+    "main.css": "/static/css/main.250b2cc4.css",
+    "main.js": "/static/js/main.bd5b5b25.js",
+    "static/media/Inter-Bold.ttf": "/static/media/Inter-Bold.1eca2d329458b92342aa.ttf",
+    "static/media/Inter-Medium.ttf": "/static/media/Inter-Medium.4ebf1acf62f447ea2f0d.ttf",
+    "static/media/Inter-Thin.ttf": "/static/media/Inter-Thin.32a2156a01dfb1834cac.ttf",
+    "static/media/Inter-Light.ttf": "/static/media/Inter-Light.a6cdc9ac687f817dbfb5.ttf",
+    "static/media/Inter-Regular.ttf": "/static/media/Inter-Regular.a3e5baa244e35d0f891d.ttf",
+    "static/media/ProductSans-ThinItalic.ttf": "/static/media/ProductSans-ThinItalic.2a6fe185cd27b1f54ec4.ttf",
+    "static/media/RobotoMono-Medium.ttf": "/static/media/RobotoMono-Medium.e04fa2d8ef59775dc652.ttf",
+    "static/media/logocombined.svg": "/static/media/logocombined.602b4fbc3e02fa73e08597885dc971be.svg",
+    "static/media/plane.svg": "/static/media/plane.2a9501afbb75cf0d296a8a7c4705fa8c.svg",
+    "index.html": "/index.html",
+    "static/media/fold.svg": "/static/media/fold.13512b709400f92aa01b.svg",
+    "main.250b2cc4.css.map": "/static/css/main.250b2cc4.css.map",
+    "main.bd5b5b25.js.map": "/static/js/main.bd5b5b25.js.map"
   },
   "entrypoints": [
-    "static/css/main.7afbb4b6.css",
-    "static/js/main.192d7a82.js"
+    "static/css/main.250b2cc4.css",
+    "static/js/main.bd5b5b25.js"
   ]
 }
