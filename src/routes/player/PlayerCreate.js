@@ -24,10 +24,8 @@ const PlayerCreate = () => {
     const socket = React.useContext(SocketContext);
     const params = useParams();
     
-    const [questionData, setQuestionData] = React.useState({
+    const [questionData, setQuestionData] = React.useState({ // note: question draft.js statement is in "editorState" variable.
         type: questionTypeValues[1],
-        statement: '',
-        pictureURL: null, // supplementary picture diagram for question statement
         answerChoices: [], // if type is 'frq', keep empty
     });
     const [answerData, setAnswerData] = React.useState(''); // mcq: index of correct answer choice, frq: exact correct answer string
@@ -35,7 +33,9 @@ const PlayerCreate = () => {
     const [tossed, setTossed] = React.useState(false);
     const [editorState, setEditorState] = React.useState(() => EditorState.createEmpty());
 
-    const checkEditorIsEmpty = (plainTextLength) => { return plainTextLength === 0; } // TODO: still a crude solution
+    const checkEditorIsEmpty = () => {
+        return editorState.getCurrentContent().getPlainText('').length === 0; // TODO: still a crude solution
+    }
 
     const handleSetFlagged = React.useCallback(newFlagged => {
         setFlagged(newFlagged);
@@ -46,12 +46,12 @@ const PlayerCreate = () => {
     }, []);
 
     const handleTossData = () => {
-        const currentEditorContent = editorState.getCurrentContent();
-        const plainTextLength = currentEditorContent.getPlainText('').length;
-        if (checkEditorIsEmpty(plainTextLength) || answerData === '') { // TODO: make more robust with questionData.statement (e.g. with other question types like FRQ - make more org'ed and clear)
+        if (checkEditorIsEmpty() || answerData === '') {
             return;
         }
+        const currentEditorContent = editorState.getCurrentContent();
         const editorContentHTML = draftToHtml(convertToRaw(currentEditorContent));
+        const plainTextLength = currentEditorContent.getPlainText('').length;
         socket.emit('setToss', { question: { ...questionData, editorContentHTML, plainTextLength }, answer: answerData, roomCode: params.roomCode });
         setTossed(true);
     };
